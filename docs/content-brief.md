@@ -12,7 +12,7 @@ The product has so far run only against the simulator (2 sites, ~700 devices). T
 |---|---|---|
 | Brand | "SpectraDCIM" (one word, as in the logo) | "Spectra DCIM" |
 | Customers | none shown; "Early access / design partner" framing | logo wall, testimonials, ROI numbers |
-| Protocols | SNMP v2c/v3 + traps/INFORMs, gNMI streaming, Redfish, BACnet/IP (COV), Modbus/TCP | IPMI polling, sFlow |
+| Protocols | May be named only inside ordinary sentences: SNMP v2c/v3, gNMI streaming, Redfish, BACnet/IP, Modbus/TCP | IPMI polling, sFlow. **Any highlighted protocol: no strips, marquees, tables, chips, badges, mono labels, diagram labels or headings (decided 2026-11-16)** |
 | Scale | "collector fleet sharded by site and network plane" | any device-count claim |
 | Security | SNMPv3 authPriv, mTLS-enrolled collectors, signed releases, per-collector encrypted credentials, audit trail on alarm actions, role model (viewer/operator/admin) | SSO/SAML/LDAP, SOC 2, ISO 27001, "enterprise-grade security" (label SSO and user accounts "on the roadmap") |
 | Deployment | self-hosted / on-premises | SaaS, air-gapped certified |
@@ -44,7 +44,7 @@ Open decisions (defaults used below are marked):
 - Worth copying: Sunbird's per-module pages and "What is…" SEO hub; Modius's "Works With" protocol/vendor page and three-track partner programme; EkkoSense's persona questions; Hyperview's product tour, public docs and plain pricing page; Packet Power's "Problems we solve" nav item.
 - Gaps to use: only Modius lists protocols; most hide pricing; "single pane of glass" and invented categories (DCOI, UIIM) are everywhere; grey-space depth (plant, electrical) is thin on IT-first vendors; Vertiv no longer sells a full DCIM suite.
 
-Positioning for SpectraDCIM: **one model for white space and grey space, and one alarm per real problem.** Engineering-honest tone, protocols named, numbers sourced.
+Positioning for SpectraDCIM: **one model for white space and grey space, and one alarm per real problem.** Engineering-honest tone, equipment named, numbers sourced. Protocols are not a headline feature (see section 1).
 
 ---
 
@@ -75,9 +75,9 @@ Footer: product links, Works With, Resources, Company, Partners, Contact, Privac
 
 ### 4.1 Home
 - **Hero** — H1: "Power, cooling and IT. One system, watched as one."
-  Sub: "SpectraDCIM monitors every site from the utility feed to the server outlet, across SNMP, gNMI, Redfish, BACnet and Modbus, and turns alarm floods into the one problem that caused them."
+  Sub: "SpectraDCIM monitors every site from the utility feed to the server outlet, and turns alarm floods into the one problem that caused them."
   CTAs: "Request a demo" (primary), "Tour the platform" (secondary). Visual: product mock — 3-D hall with heat map, alarm rail beside it.
-- **Protocol strip** (instead of logo wall): SNMP v2c/v3 · gNMI · Redfish · BACnet/IP · Modbus/TCP · REST API.
+- **Equipment strip** (instead of logo wall): Servers · Switches · PDUs · UPS · Switchgear · Generators · Chillers · CRAHs · CDUs.
 - **Problem band** — "Most outages start in the plant, not the rack." Three sourced stats (45% power; 54% over $100k; 46% staffing).
 - **Three pillars**
   1. "From utility feed to outlet" — power chain, redundancy, headroom, stranded kW, PUE.
@@ -116,8 +116,8 @@ Footer: product links, Works With, Resources, Company, Partners, Contact, Privac
 - Blocks: discovery queue and commissioning; estate tree site → room → row → rack → U; rack elevations; contracts, spares, reservations, tags; maintenance windows; export to Jira Assets (beta).
 
 ### 4.8 Works With
-- H1: "Named protocols. Named device classes. No black box."
-- Protocol table: SNMP v2c/v3 (poll, traps, INFORMs) · gNMI streaming · Redfish · BACnet/IP incl. COV · Modbus/TCP.
+- H1: "Named Device Classes. Open Integrations. No Black Box."
+- "How it connects" paragraph (sentences only, no table): "Collectors sit on your network and read each device over the interface it already exposes. IT equipment is read over SNMP, gNMI streaming and Redfish; power and cooling plant over BACnet and Modbus. Traps and change-of-value updates are taken as they happen and confirmed by polling."
 - Device classes: IT (servers/BMC, switches, routers, firewalls, load balancers, storage) · Power (utility feed, transformer, switchgear, ATS, generator, UPS, RPP, PDU) · Cooling (CRAH, chiller, pump, tower, valve, CDU) · Sensors and meters · Fire panels (monitoring only).
 - Integrations: REST API with OpenAPI, WebSocket feed, Prometheus metrics, SMTP email, Jira / JSM (beta).
 - Architecture: Go collectors per network plane, pools and shard map, disk spool, signed self-update, mTLS, Docker/.deb/.rpm. Self-hosted platform on PostgreSQL + TimescaleDB.
@@ -148,7 +148,7 @@ Footer: product links, Works With, Resources, Company, Partners, Contact, Privac
 
 ### 4.13 Company
 - H1: "Built by people who think the plant matters as much as the rack."
-- Sections: why we built it; principles ("Name the protocol", "One alarm per problem", "No LLM in the detection path", "Say what is not built yet"); how we test (full protocol-accurate simulated data centre); contact.
+- Sections: why we built it; principles ("Say exactly what it does", "One alarm per problem", "No LLM in the detection path", "Say what is not built yet"); how we test (full protocol-accurate simulated data centre); contact.
 
 ### 4.14 Request a demo
 - H1: "See your kind of site in SpectraDCIM."
@@ -305,3 +305,31 @@ Stack: Lenis for smooth scrolling, GSAP + ScrollTrigger for scroll-driven motion
 | Accordion | FAQ | height animate 0.3 s, plus icon rotates to minus |
 | Toggle | Get Started cards (if a plan switch is added later) | sliding pill, numbers cross-fade |
 | Page transition | between pages | 0.3 s fade |
+
+---
+
+## 7. Decisions of 2026-11-16 (these override sections 5 and 6 where they differ)
+
+The Stitch prompts in section 5 are the originals and still carry protocol strips, the blue/cyan palette and wave backgrounds. The live Stitch screens were changed as below; use this section, not section 5, when building.
+
+### 7.1 Protocols
+Never highlighted. No strip, marquee, table, chip, badge, mono label, diagram label or heading names a protocol. Protocol names appear only inside sentences (Works With "How it connects" paragraph, Home FAQ answer, Power "where readings come from" sentence). Integrations (REST API, WebSocket, Prometheus, email, Jira) may still be listed.
+
+### 7.2 Background
+Pure black page. Hero and footer: `assets/bg/silk-2560.webp` (Unsplash, free licence, see `assets/bg/CREDITS.md`) under `linear-gradient(rgba(0,0,0,.55) 0%, #000 100%)`, reversed in the footer. Header transparent over the hero. No glow blobs, no SVG waves.
+
+### 7.3 Type, colour, links, buttons (measured on the Nexios reference; implemented in `assets/nexios-skin.css`)
+| Item | Value |
+|---|---|
+| Headings, navigation | Poppins 500, Title Case, line-height 1.1 |
+| Hero H1 | 67 px, gradient text #F1F2FF to #CCCFD8 |
+| Section H2 / card title | 42 px / 22 px, #F1F2FF |
+| Body, button labels | system font stack, 16 px, weight 400 |
+| Body text | #CCCFD8 |
+| Accent text, links, active nav | #7E91CB |
+| Accent fill (buttons, CTA band) | #5974C7; deep #354B8E; icon tile #6074B2 |
+| Primary button | #5974C7, white label, letter-spacing 1 px, padding 13 x 30, radius 6, border 2 px white 24 %, shadow 0 5px 23px -6px #6175B3 |
+| Secondary button | #1A1C38, border 2 px white 9 %, shadow 0 5px 18px -6px rgba(89,116,199,.36) |
+| Surfaces | #0A0B16, #13152A, #1A1C38; card border 1 px white 9 % |
+
+The earlier blue #3b82f6 and cyan #22d3ee are retired, including in the logo wordmark ("DCIM" is #7E91CB).
