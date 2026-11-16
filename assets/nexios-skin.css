@@ -1,0 +1,61 @@
+/* SpectraDCIM skin: fonts, text colours, links and buttons measured on the Nexios reference (2026-11-16).
+   Values only (font names, sizes, hex colours); no Nexios files are used. */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+/* ---------- fonts ---------- */
+body,p,li,span,label,input,textarea,select,td,th,button,a,div{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif!important}
+h1,h2,h3,h4,h1 *,h2 *,h3 *,h4 *,header nav a,header nav a *{font-family:"Poppins",sans-serif!important;font-weight:500!important;line-height:1.1!important;text-transform:capitalize!important;letter-spacing:normal!important}
+.material-symbols-outlined{font-family:"Material Symbols Outlined"!important;font-weight:normal!important;line-height:1!important;text-transform:none!important;letter-spacing:normal!important}
+[class*="font-mono"]{font-family:ui-monospace,Menlo,Consolas,monospace!important}
+.font-semibold,.font-bold,.font-extrabold{font-weight:500!important}
+h1[class],h1:not([class]){font-size:67px!important}
+h2[class],h2:not([class]){font-size:42px!important}
+h3[class],h3:not([class]),h4[class],h4:not([class]){font-size:22px!important}
+
+/* ---------- text colours ---------- */
+body{background-color:#000!important;color:#CCCFD8!important}
+h2,h3,h4{color:#F1F2FF!important}
+h1[class],h1:not([class]){color:#F1F2FF!important;background-image:linear-gradient(#F1F2FF 0%,#CCCFD8 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;padding-bottom:5px}
+h1 span,h2 [class*="bg-clip-text"],h3 [class*="bg-clip-text"]{background-image:linear-gradient(130deg,#7E91CB 0%,#354B8E 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important}
+p,[class*="text-[#cccfd8]"],.text-on-surface{color:#CCCFD8!important}
+[class*="text-[#8b8fa3]"],[class*="text-[#8c909f]"],[class*="text-[#c2c6d6]"],.text-outline,.text-on-surface-variant{color:rgba(204,207,216,.72)!important}
+
+/* ---------- accent: electric blue and cyan become periwinkle ---------- */
+[class*="text-[#3b82f6]"],[class*="text-[#2563eb]"],[class*="text-[#4d8eff]"],[class*="text-[#adc6ff]"],[class*="text-[#5de6ff]"],[class*="text-[#22d3ee]"],[class*="text-[#00cbe6]"],.text-primary,.text-primary-container,.text-secondary,.text-secondary-container,.text-tertiary,.text-primary-fixed-dim{color:#7E91CB!important}
+[class*="bg-[#3b82f6]"]:not([class*="bg-[#3b82f6]/"]),[class*="bg-[#2563eb]"]:not([class*="bg-[#2563eb]/"]),[class*="bg-[#4d8eff]"]:not([class*="bg-[#4d8eff]/"]),.bg-primary,.bg-primary-container{background-color:#5974C7!important}
+[class*="bg-[#3b82f6]/"],[class*="bg-[#2563eb]/"],[class*="bg-[#4d8eff]/"]{background-color:rgba(89,116,199,.16)!important}
+[class*="bg-[#5de6ff]"]:not([class*="bg-[#5de6ff]/"]),[class*="bg-[#22d3ee]"]:not([class*="bg-[#22d3ee]/"]),[class*="bg-[#adc6ff]"]:not([class*="bg-[#adc6ff]/"]),.bg-secondary,.bg-secondary-container,.bg-tertiary{background-color:#7E91CB!important}
+[class*="border-[#3b82f6]"],[class*="border-[#2563eb]"],[class*="border-[#22d3ee]"],[class*="border-[#5de6ff]"],.border-primary,.border-primary-container,.border-secondary{border-color:rgba(126,145,203,.5)!important}
+[class*="from-[#3b82f6]"]:not([class*="blur-"]):not([class*="bg-clip-text"]),[class*="from-[#2563eb]"]:not([class*="blur-"]):not([class*="bg-clip-text"]){background-image:none!important;background-color:#5974C7!important}
+[class*="bg-clip-text"]{background-image:linear-gradient(130deg,#7E91CB 0%,#354B8E 100%)!important}
+[class*="rgba(59,130,246"],[class*="rgba(34,211,238"]{box-shadow:0 5px 23px -6px #6175B3!important}
+
+/* ---------- surfaces ---------- */
+.bg-background,.bg-surface,.bg-surface-dim{background-color:#000!important}
+.bg-surface-container-lowest,.bg-surface-container-low{background-color:#0A0B16!important}
+.bg-surface-container{background-color:#13152A!important}
+.bg-surface-container-high,.bg-surface-container-highest,.bg-surface-bright{background-color:#1A1C38!important}
+
+/* ---------- links ---------- */
+header nav a{font-size:16px!important;color:#F1F2FF!important;text-decoration:none!important}
+header nav a:hover,header nav a[aria-current],header nav a.active{color:#7E91CB!important}
+header span span{color:#7E91CB!important;-webkit-text-fill-color:#7E91CB!important}
+main a:not([class*="bg-"]),footer a:not([class*="bg-"]){text-decoration:none!important}
+main a:not([class*="bg-"]):hover,footer a:not([class*="bg-"]):hover{color:#F1F2FF!important}
+main a[class*="text-[#3b82f6]"],main a.text-primary,main a.text-secondary{letter-spacing:1px!important}
+
+/* ---------- buttons ---------- */
+a[class*="bg-[#3b82f6]"]:not([class*="rounded-full"]),button[class*="bg-[#3b82f6]"]:not([class*="rounded-full"]),a[class*="bg-[#2563eb]"]:not([class*="rounded-full"]),button[class*="bg-[#2563eb]"]:not([class*="rounded-full"]),a.bg-primary-container:not([class*="rounded-full"]),button.bg-primary-container:not([class*="rounded-full"]),a.bg-primary:not([class*="rounded-full"]),button.bg-primary:not([class*="rounded-full"]){background:#5974C7!important;color:#fff!important;font-size:16px!important;font-weight:400!important;letter-spacing:1px!important;line-height:25px!important;padding:13px 30px!important;border:2px solid rgba(255,255,255,.24)!important;border-radius:6px!important;box-shadow:0 5px 23px -6px #6175B3!important}
+a[class*="bg-[#3b82f6]"] *,button[class*="bg-[#3b82f6]"] *,a[class*="bg-[#2563eb]"] *,button[class*="bg-[#2563eb]"] *,a.bg-primary-container *,button.bg-primary-container *,a.bg-primary *,button.bg-primary *{color:#fff!important;font-weight:400!important}
+a[class*="bg-[#3b82f6]"]:hover,button[class*="bg-[#3b82f6]"]:hover,a.bg-primary-container:hover,button.bg-primary-container:hover{background:#6074B2!important}
+a[class*="bg-[#0f172a]"],button[class*="bg-[#0f172a]"],a[class*="bg-[#111827]"],button[class*="bg-[#111827]"],a[class*="bg-[#1a1c38]"],button[class*="bg-[#1a1c38]"],a[class*="bg-[#161f38]"],button[class*="bg-[#161f38]"]{background:#1A1C38!important;color:#fff!important;font-size:16px!important;font-weight:400!important;letter-spacing:1px!important;line-height:25px!important;padding:13px 30px!important;border:2px solid rgba(255,255,255,.09)!important;border-radius:6px!important;box-shadow:0 5px 18px -6px rgba(89,116,199,.36)!important}
+.rounded-full[class*="bg-[#3b82f6]"],.rounded-full.bg-primary,.rounded-full.bg-primary-container{background-color:#6074B2!important}
+.rounded-full.bg-primary *,.rounded-full.bg-primary-container *{color:#F1F2FF!important}
+
+/* ---------- pill labels above headings ---------- */
+[class*="rounded-full"][class*="border-[#3b82f6]"]{background-color:#13152A!important;border-color:rgba(126,145,203,.5)!important;box-shadow:none!important}
+[class*="rounded-full"][class*="border-[#3b82f6]"] *{font-family:"Poppins",sans-serif!important;font-size:14px!important;font-weight:500!important;text-transform:capitalize!important;letter-spacing:normal!important;color:#7E91CB!important}
+
+/* ---------- form fields ---------- */
+input,textarea,select{background-color:#0A0B16!important;border:1px solid rgba(255,255,255,.09)!important;border-radius:6px!important;color:#F1F2FF!important}
+input:focus,textarea:focus,select:focus{border-color:#7E91CB!important;box-shadow:none!important;outline:none!important}
