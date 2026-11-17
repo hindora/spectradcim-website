@@ -1,46 +1,27 @@
 ---
-// Three bars crossed by a rising line, redrawn as vector in the site palette.
+// The original SpectraDCIM logo (mark and wordmark), with its dark background removed.
+// Source artwork: assets/brand/spectradcim-logo-original.png
+import dims from '../../public/brand/_logo.json';
 interface Props {
+  /** displayed height in px */
   size?: number;
 }
-const { size = 40 } = Astro.props;
-const id = `lg-${Math.random().toString(36).slice(2, 8)}`;
+const { size = 56 } = Astro.props;
+const width = Math.round((dims.w / dims.h) * size);
 ---
 
 <a class="logo" href="/" aria-label="SpectraDCIM home">
-  <svg width={size * 1.15} height={size} viewBox="0 0 46 40" fill="none" aria-hidden="true">
-    <defs>
-      <linearGradient id={id} x1="0" y1="0" x2="46" y2="40" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#5DE6FF"></stop>
-        <stop offset="1" stop-color="#3B82F6"></stop>
-      </linearGradient>
-    </defs>
-    <g stroke={`url(#${id})`} stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
-      <rect x="4" y="3" width="8" height="34" rx="1.5"></rect>
-      <rect x="18" y="3" width="8" height="34" rx="1.5"></rect>
-      <rect x="32" y="3" width="8" height="34" rx="1.5"></rect>
-      <path d="M1.5 30 L44.5 10"></path>
-    </g>
-  </svg>
-  <span class="logo__word">Spectra<b>DCIM</b></span>
+  <img src="/brand/spectradcim-logo.png" width={width} height={size} alt="SpectraDCIM" decoding="async" />
 </a>
 
 <style>
   .logo {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    color: var(--head);
   }
-  .logo__word {
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 26px;
-    line-height: 1;
-    letter-spacing: -0.01em;
-  }
-  .logo__word b {
-    font-weight: 700;
-    color: #4cc3ff;
+  .logo img {
+    display: block;
+    height: auto;
+    max-width: 100%;
   }
 </style>

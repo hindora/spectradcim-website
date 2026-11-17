@@ -11,3 +11,9 @@ Thumbs.db
 .idea/
 .vscode/
 .playwright-mcp/
+
+# Raw DCIM captures: only the ones assets/captures-raw/crop.py reads are kept in git.
+assets/captures-raw/*.png
+!assets/captures-raw/rack.png
+!assets/captures-raw/incident-page-old.png
+!assets/captures-raw/assets-inventory.png

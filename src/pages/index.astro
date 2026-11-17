@@ -378,7 +378,8 @@ const guides = [
   }
   .about__row {
     display: grid;
-    grid-template-columns: 300px minmax(0, 1fr);
+    /* The screen gets the wider column: at 300px its chart text could not be read. */
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
     gap: 40px;
     margin-top: 44px;
     align-items: center;
@@ -399,8 +400,8 @@ const guides = [
     position: relative;
   }
   .why__panel {
-    padding: clamp(18px, 2.2vw, 30px);
-    min-height: 420px;
+    padding: 12px;
+    min-height: 0;
     display: grid;
     align-content: center;
   }

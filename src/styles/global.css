@@ -204,6 +204,11 @@ a:hover {
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
 }
 
+/* A whole-page screen beside a short text block: the screen gets the wider column. */
+.split--wide-right {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+}
+
 .split--top {
   align-items: start;
 }
@@ -215,7 +220,8 @@ a:hover {
   }
 
   .split,
-  .split--wide-left {
+  .split--wide-left,
+  .split--wide-right {
     grid-template-columns: minmax(0, 1fr);
   }
 }

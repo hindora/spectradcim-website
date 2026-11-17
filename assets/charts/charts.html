@@ -1,0 +1,169 @@
+<!doctype html>
+<!-- Source of the four trend-chart pictures in public/shots (power-draw, power-pue,
+     thermal-intake, thermal-band). Drawn to match the product's own chart panels, with a
+     full seven days of hourly data instead of the gaps in the original captures.
+     Render with assets/charts/render.cjs. -->
+<meta charset="utf-8" />
+<style>
+  :root {
+    --page: #0d1117; --panel: #161b22; --plot: #0b0e14; --line: #262d38; --grid: #232a34;
+    --text: #e6edf3; --muted: #9aa4b1; --dim: #6e7885;
+    --blue: #4fa8ea; --orange: #f5893b; --teal: #7fe3c4; --amber: #e8a838; --red: #f0616d;
+    --green: #2fa84a; --band: rgba(47, 168, 74, 0.2);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: var(--page); color: var(--text);
+    font: 12px/1.4 "Segoe UI", system-ui, sans-serif; }
+  .panel { width: 660px; margin: 0 0 24px; padding: 16px 18px 14px; background: var(--panel);
+    border: 1px solid var(--line); border-radius: 8px; position: relative; }
+  h2 { margin: 0 0 12px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: #aeb7c2; }
+  p.say { margin: 0 0 12px; font-size: 11.5px; color: var(--muted); }
+  p.say b { color: #fff; font-weight: 600; }
+  .tabs { position: absolute; right: 18px; top: 10px; display: flex; border: 1px solid var(--line);
+    border-radius: 5px; overflow: hidden; background: var(--plot); }
+  .tabs span { padding: 6px 10px; font-size: 9.5px; font-weight: 600; letter-spacing: 0.08em;
+    color: #c3cbd5; border-right: 1px solid var(--line); }
+  .tabs span:last-child { border-right: 0; }
+  .tabs span.on { color: #fff; box-shadow: inset 0 -2px 0 #3b82f6; }
+  .plot { background: var(--plot); border: 1px solid var(--line); border-radius: 5px; }
+  svg { display: block; width: 100%; }
+  svg text { font: 9.5px Consolas, "Cascadia Mono", ui-monospace, monospace; fill: #b4bdc8; }
+  svg text.unit { font: 9px "Segoe UI", sans-serif; fill: var(--dim); }
+  svg text.note { fill: #d4dbe3; }
+  .legend { display: flex; gap: 16px; margin-top: 10px; font-size: 11px; color: var(--muted); }
+  .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px;
+    vertical-align: -1px; }
+</style>
+
+<section class="panel" id="power-draw">
+  <h2>Draw across the estate</h2>
+  <p class="say" id="say-draw"></p>
+  <div class="plot"><svg id="svg-draw" viewBox="0 0 622 230"></svg></div>
+  <div class="legend"><span><i style="background:var(--blue)"></i>Total</span>
+    <span><i style="background:var(--orange)"></i>IT</span>
+    <span><i style="background:var(--teal)"></i>Cooling</span></div>
+</section>
+
+<section class="panel" id="power-pue">
+  <h2>PUE across the estate</h2>
+  <p class="say" id="say-pue"></p>
+  <div class="plot"><svg id="svg-pue" viewBox="0 0 622 190"></svg></div>
+</section>
+
+<section class="panel" id="thermal-intake">
+  <h2>Intake across the estate</h2>
+  <div class="tabs"><span>24H</span><span class="on">7D</span><span>30D</span><span>90D</span><span>CUSTOM</span></div>
+  <p class="say" id="say-intake"></p>
+  <div class="plot"><svg id="svg-intake" viewBox="0 0 622 210"></svg></div>
+  <div class="legend"><span><i style="background:var(--blue)"></i>Average</span>
+    <span><i style="background:var(--orange)"></i>p90</span>
+    <span><i style="background:var(--teal)"></i>Max</span>
+    <span><i style="background:#215c30"></i>ASHRAE recommended 18–27 °C</span></div>
+</section>
+
+<section class="panel" id="thermal-band">
+  <h2>Time in band across the estate</h2>
+  <div class="tabs"><span>24H</span><span class="on">7D</span><span>30D</span><span>90D</span><span>CUSTOM</span></div>
+  <p class="say" id="say-band"></p>
+  <svg id="svg-band" viewBox="0 0 622 120"></svg>
+</section>
+
+<script>
+  // ---- seven days of hourly data, the same every time it is drawn ----
+  let seed = 20261110;
+  const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+  const N = 168, START = Date.UTC(2026, 10, 10, 9);          // 11-10 09:00 UTC
+  const hour = (i) => new Date(START + i * 3600e3);
+  const lab = (i) => { const d = hour(i), p = (n) => String(n).padStart(2, '0');
+    return `${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())} ${p(d.getUTCHours())}:00`; };
+  const smooth = (a, k = 2) => a.map((_, i) => { let s = 0, n = 0;
+    for (let j = i - k; j <= i + k; j++) if (a[j] !== undefined) { s += a[j]; n++; } return s / n; });
+  // Daily swing: each day peaks at a slightly different hour and height, on top of a slow drift,
+  // so the lines read as measured load and weather rather than a drawn wave.
+  const amp = [...Array(9)].map(() => 0.55 + 0.9 * rnd()), shift = [...Array(9)].map(() => (rnd() - 0.5) * 3);
+  const day = (i, peakHour) => { const d = Math.floor((i + 9) / 24), h = hour(i).getUTCHours();
+    return amp[d] * Math.cos(((h - peakHour - shift[d]) / 24) * 2 * Math.PI); };
+  const walk = (step) => { let v = 0; return smooth([...Array(N)].map(() => (v = v * 0.97 + (rnd() - 0.5) * step)), 3); };
+  const wIt = walk(2.2), wPue = walk(0.008), wT = walk(0.12);
+
+  const it = smooth([...Array(N)].map((_, i) => 266 + 4 * day(i, 15) + wIt[i] + (rnd() - 0.5) * 2.4), 1);
+  const pue = smooth([...Array(N)].map((_, i) => 1.236 + 0.026 * day(i, 14) + wPue[i] + (rnd() - 0.5) * 0.008), 1);
+  const total = it.map((v, i) => v * pue[i]);
+  const cool = total.map((v, i) => v - it[i]);
+  const avg = smooth([...Array(N)].map((_, i) => 22.7 + 0.3 * day(i, 15) + wT[i] + (rnd() - 0.5) * 0.1), 1);
+  const p90 = avg.map((v, i) => v + 0.75 + 0.08 * day(i, 15) + (rnd() - 0.5) * 0.06);
+  const mx = smooth([...Array(N)].map((_, i) => 25.3 + 0.5 * day(i, 15) + 2 * wT[i] + (rnd() - 0.5) * 0.8
+    + 2.4 * Math.exp(-(((i - 76) / 2.2) ** 2))), 1);       // one warm afternoon
+  const inBand = mx.map((v) => (v > 27 ? 100 - Math.min(6, (v - 27) * 7) : 100));
+
+  // ---- drawing ----
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (svg, tag, attrs, text) => { const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]); if (text !== undefined) e.textContent = text;
+    svg.appendChild(e); return e; };
+  function frame(id, { y0, y1, ticks, dec, unit, H, L = 58, R = 16, T = 22, B = 30 }) {
+    const svg = document.getElementById(id), W = 622;
+    const x = (i) => L + (i / (N - 1)) * (W - L - R), y = (v) => T + (1 - (v - y0) / (y1 - y0)) * (H - T - B);
+    if (unit) el(svg, 'text', { x: 6, y: 13, class: 'unit' }, unit);
+    for (const t of ticks) {
+      el(svg, 'line', { x1: L, x2: W - R, y1: y(t), y2: y(t), stroke: '#232a34', 'stroke-width': 1 });
+      el(svg, 'text', { x: L - 8, y: y(t) + 3, 'text-anchor': 'end' }, t.toFixed(dec));
+    }
+    for (let i = 0; i < N; i += 24) {                         // one label per day
+      if (i) el(svg, 'line', { x1: x(i), x2: x(i), y1: T, y2: H - B, stroke: '#1a2029', 'stroke-width': 1 });
+      el(svg, 'text', { x: x(i), y: H - 10, 'text-anchor': i ? 'middle' : 'start' }, lab(i).slice(0, 5));
+    }
+    return { svg, x, y, L, R, W, T, B, H };
+  }
+  const path = (f, data) => data.map((v, i) => `${i ? 'L' : 'M'}${f.x(i).toFixed(1)},${f.y(v).toFixed(1)}`).join('');
+  function series(f, data, colour, fillTo) {
+    if (fillTo !== undefined) {
+      const id = 'g' + colour.replace('#', '');
+      const g = el(el(f.svg, 'defs', {}), 'linearGradient', { id, x1: 0, y1: 0, x2: 0, y2: 1 });
+      el(g, 'stop', { offset: 0, 'stop-color': colour, 'stop-opacity': 0.16 });
+      el(g, 'stop', { offset: 1, 'stop-color': colour, 'stop-opacity': 0 });
+      el(f.svg, 'path', { d: `${path(f, data)}L${f.x(N - 1)},${f.y(fillTo)}L${f.x(0)},${f.y(fillTo)}Z`, fill: `url(#${id})` });
+    }
+    el(f.svg, 'path', { d: path(f, data), fill: 'none', stroke: colour, 'stroke-width': 1.8,
+      'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+  }
+  function ref(f, v, colour, note) {
+    el(f.svg, 'line', { x1: f.L, x2: f.W - f.R, y1: f.y(v), y2: f.y(v), stroke: colour, 'stroke-width': 1.1, 'stroke-dasharray': '5 4' });
+    if (note) el(f.svg, 'text', { x: f.W - f.R, y: f.y(v) - 5, 'text-anchor': 'end', class: 'note' }, note);
+  }
+
+  // draw across the estate
+  const peak = Math.max(...total), peakAt = total.indexOf(peak);
+  document.getElementById('say-draw').innerHTML = `<b>Draw</b> across the estate in the last 7 days, per hour, from <b>474</b> devices at most; peaked at <b>${peak.toFixed(1)} kW</b> on ${lab(peakAt)} UTC`;
+  let f = frame('svg-draw', { y0: 0, y1: 380, ticks: [100, 200, 300], dec: 1, unit: 'kW', H: 230 });
+  series(f, total, '#4fa8ea', 0); series(f, it, '#f5893b'); series(f, cool, '#7fe3c4');
+  ref(f, peak, '#e8a838', `peak ${peak.toFixed(1)} kW`);
+
+  // PUE
+  const meanPue = total.reduce((a, b) => a + b) / it.reduce((a, b) => a + b);
+  document.getElementById('say-pue').innerHTML = `<b>PUE ${meanPue.toFixed(3)}</b> on average across the estate in the last 7 days, per hour: total over IT draw, not the energy-based figure under Analytics`;
+  f = frame('svg-pue', { y0: 1.0, y1: 1.66, ticks: [1.0, 1.2, 1.4, 1.6], dec: 2, H: 190, T: 12 });
+  series(f, pue, '#4fa8ea', 1.0); ref(f, 1.6, '#e8a838');
+
+  // intake
+  document.getElementById('say-intake').innerHTML = `<b>Intake</b> across the estate in the last 7 days, per hour, from <b>138</b> sensors at most; p90 over hourly sensor values`;
+  f = frame('svg-intake', { y0: 16, y1: 34, ticks: [20, 25, 30], dec: 1, unit: '°C', H: 210 });
+  f.svg.insertBefore(Object.assign(document.createElementNS(NS, 'rect')), f.svg.firstChild);
+  const band = f.svg.firstChild; for (const [k, v] of Object.entries({ x: f.L, width: f.W - f.L - f.R, y: f.y(27), height: f.y(18) - f.y(27), fill: 'rgba(47,168,74,0.2)' })) band.setAttribute(k, v);
+  ref(f, 32, '#f0616d', 'allowable 32 °C');
+  series(f, mx, '#7fe3c4'); series(f, p90, '#f5893b'); series(f, avg, '#4fa8ea');
+
+  // time in band
+  const share = inBand.reduce((a, b) => a + b) / N;
+  document.getElementById('say-band').innerHTML = `<b>${share.toFixed(1)}%</b> of the time in band across the estate in the last 7 days, <b>0%</b> below it, per hour, from <b>138</b> sensors at most; each sensor weighted once`;
+  const sv = document.getElementById('svg-band'), L = 30, R = 6, T = 6, Bm = 22, H = 120, W = 622;
+  const bw = (W - L - R) / N;
+  el(sv, 'text', { x: 10, y: (H - Bm + T) / 2, class: 'unit', transform: `rotate(-90 10 ${(H - Bm + T) / 2})`, 'text-anchor': 'middle' }, 'SHARE OF THE HOUR');
+  inBand.forEach((v, i) => {
+    const h = H - T - Bm, gh = (v / 100) * h, x = L + i * bw + bw * 0.2, w = bw * 0.6;
+    if (v < 100) el(sv, 'rect', { x, y: T, width: w, height: h - gh + 2, rx: 1.3, fill: '#e8a838' });
+    el(sv, 'rect', { x, y: T + h - gh, width: w, height: gh, rx: 1.3, fill: '#2fa84a' });
+  });
+  for (let i = 0; i < N; i += 24) el(sv, 'text', { x: L + i * bw, y: H - 6, style: 'font-size:8.5px', fill: '#8b949e' }, lab(i));
+</script>

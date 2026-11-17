@@ -1,150 +1,150 @@
 {
-"hall-temp": [
-1800,
-886
-],
-"replay-bar": [
-2400,
-968
-],
-"replay-wide": [
-2400,
-772
-],
-"viewer-full": [
-1800,
-894
-],
-"hall-alarm": [
-1800,
-994
-],
-"hall-power": [
-1800,
-886
-],
-"hallb-inlet": [
-1800,
-886
-],
-"plan-heat": [
-1440,
-1320
-],
-"plant": [
-1800,
-1003
-],
-"site-view": [
-1800,
-986
-],
-"building": [
-1800,
-1017
-],
-"incidents": [
-1800,
-661
-],
-"incident-page": [
-1520,
-1120
-],
-"incident-cause": [
-1130,
-520
-],
-"incident-evidence": [
-1130,
-450
-],
-"home": [
-1800,
-476
-],
-"inventory": [
-1800,
-753
-],
-"discovery": [
-1800,
-374
-],
-"placement": [
-1800,
-355
-],
-"maintenance": [
-1800,
-335
-],
-"assets-overview": [
-1800,
-731
-],
-"rack": [
-1800,
-809
-],
-"rack-feeds": [
-1800,
-447
-],
-"rack-redundancy": [
-1512,
-210
-],
-"rack-unusual": [
-1240,
-340
-],
-"platform": [
-1800,
-1112
-],
-"connectivity": [
-1800,
-1024
-],
-"world": [
-1800,
-748
-],
-"power-top": [
-1800,
-382
-],
-"power-headroom": [
-1610,
-460
-],
-"power-draw": [
-1800,
-574
-],
-"power-pue": [
-1800,
-460
-],
-"thermal-top": [
-1800,
-553
-],
-"thermal-intake": [
-1800,
-359
-],
-"thermal-band": [
-1800,
-266
-],
-"capacity": [
-1800,
-545
-],
-"analytics": [
-1800,
-967
-]
+ "hall-temp": [
+  1800,
+  886
+ ],
+ "replay-bar": [
+  2560,
+  1396
+ ],
+ "replay-wide": [
+  2560,
+  1396
+ ],
+ "viewer-full": [
+  2560,
+  1396
+ ],
+ "hall-alarm": [
+  2560,
+  1396
+ ],
+ "hall-power": [
+  2560,
+  1396
+ ],
+ "hallb-inlet": [
+  2560,
+  1396
+ ],
+ "plan-heat": [
+  2560,
+  1396
+ ],
+ "plant": [
+  2560,
+  1396
+ ],
+ "site-view": [
+  2560,
+  1396
+ ],
+ "building": [
+  2560,
+  1396
+ ],
+ "incidents": [
+  1834,
+  893
+ ],
+ "incident-page": [
+  1506,
+  1134
+ ],
+ "incident-cause": [
+  605,
+  246
+ ],
+ "incident-evidence": [
+  678,
+  439
+ ],
+ "home": [
+  2500,
+  1065
+ ],
+ "inventory": [
+  1905,
+  780
+ ],
+ "discovery": [
+  2125,
+  1177
+ ],
+ "placement": [
+  1784,
+  696
+ ],
+ "maintenance": [
+  2124,
+  295
+ ],
+ "assets-overview": [
+  2130,
+  1680
+ ],
+ "rack": [
+  1800,
+  809
+ ],
+ "rack-feeds": [
+  905,
+  190
+ ],
+ "rack-redundancy": [
+  1009,
+  164
+ ],
+ "rack-unusual": [
+  1268,
+  378
+ ],
+ "platform": [
+  2174,
+  1335
+ ],
+ "connectivity": [
+  2560,
+  1370
+ ],
+ "world": [
+  2500,
+  1260
+ ],
+ "power-top": [
+  2509,
+  645
+ ],
+ "power-headroom": [
+  842,
+  224
+ ],
+ "power-draw": [
+  1320,
+  692
+ ],
+ "power-pue": [
+  1320,
+  594
+ ],
+ "thermal-top": [
+  2509,
+  610
+ ],
+ "thermal-intake": [
+  1320,
+  654
+ ],
+ "thermal-band": [
+  1320,
+  452
+ ],
+ "capacity": [
+  2509,
+  610
+ ],
+ "analytics": [
+  1358,
+  168
+ ]
 }

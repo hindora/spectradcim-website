@@ -133,6 +133,8 @@ const pueChecks = [
           A hall with free rack space can still be full, because power or cooling ran out before the floor did.
           SpectraDCIM measures all four against what is installed and names the limit.
         </SectionHead>
+      </div>
+      <div>
         <div class="card card--raised forecast" data-anim="up-block">
           <h3>A Forecast That States Its Limits</h3>
           <p>
@@ -142,9 +144,10 @@ const pueChecks = [
           <Shot name="analytics" alt="Analytics: the binding constraint, and a plain statement where no rating is recorded" />
         </div>
       </div>
-      <div data-anim="up-block">
-        <Shot name="capacity" alt="Capacity: space, power and cooling used per site, and which runs out first" />
-      </div>
+    </div>
+    <!-- The capacity table is as wide as the app page, so it gets the full width: in half a column its figures could not be read. -->
+    <div class="wrap capacity-wide" data-anim="up-block">
+      <Shot name="capacity" alt="Capacity: space, power and cooling used per site, and which runs out first" />
     </div>
   </section>
 
@@ -340,6 +343,13 @@ const pueChecks = [
     max-width: 58ch;
   }
 
+  .capacity-wide {
+    margin-top: 48px;
+  }
+  .forecast :global(.shot),
+  .trio :global(.shot) {
+    margin-top: 18px;
+  }
   /* forecast */
   .forecast__rows {
     margin-top: 22px;
