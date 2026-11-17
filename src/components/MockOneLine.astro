@@ -1,0 +1,134 @@
+---
+// Simplified one-line diagram: two feeds, each with transformer, bus, generator and UPS, meeting at a dual-corded rack.
+// Illustrative values only.
+interface Props {
+  title?: string;
+}
+const { title = 'Site 1 / One-Line' } = Astro.props;
+const sides = [
+  { x: 150, tag: 'A', ups: '62%', gx: 52, load: '0.94 MW' },
+  { x: 370, tag: 'B', ups: '58%', gx: 468, load: '0.88 MW' },
+];
+---
+
+<div class="mock oneline" role="img" aria-label="Illustration of a one-line power diagram with two feeds, each through a transformer, a bus with a standby generator and a UPS, down to one dual-corded rack">
+  <div class="mock__bar"><i></i><i></i><i></i>{title}<span class="mono">2N intact</span></div>
+  <svg viewBox="0 0 520 392" preserveAspectRatio="xMidYMid meet">
+    {
+      sides.map((s) => (
+        <g>
+          {/* utility */}
+          <circle class="ol-node" cx={s.x} cy="34" r="13" />
+          <path class="ol-sym" d={`M${s.x - 7} 34q3.5 -8 7 0t7 0`} />
+          <text class="ol-t" x={s.x + 22} y="31">Feed {s.tag}</text>
+          <text class="ol-v" x={s.x + 22} y="46">{s.load}</text>
+          <line class="ol-live" x1={s.x} y1="47" x2={s.x} y2="76" />
+          {/* transformer */}
+          <circle class="ol-node" cx={s.x} cy="86" r="10" />
+          <circle class="ol-node" cx={s.x} cy="100" r="10" />
+          <line class="ol-live" x1={s.x} y1="110" x2={s.x} y2="140" />
+          {/* bus */}
+          <line class="ol-bus" x1={s.x - 78} y1="140" x2={s.x + 78} y2="140" />
+          {/* generator on the outer end of the bus */}
+          <line class="ol-idle" x1={s.gx} y1="140" x2={s.gx} y2="176" />
+          <rect class="ol-brk" x={s.gx - 5} y="152" width="10" height="10" />
+          <circle class="ol-node" cx={s.gx} cy="190" r="14" />
+          <text class="ol-g" x={s.gx} y="195" text-anchor="middle">G</text>
+          <text class="ol-m" x={s.gx} y="222" text-anchor="middle">Ready</text>
+          {/* ups */}
+          <line class="ol-live" x1={s.x} y1="140" x2={s.x} y2="196" />
+          <rect class="ol-brk ol-brk--on" x={s.x - 5} y="160" width="10" height="10" />
+          <rect class="ol-box" x={s.x - 46} y="196" width="92" height="46" rx="8" />
+          <text class="ol-t" x={s.x} y="216" text-anchor="middle">UPS {s.tag}</text>
+          <text class="ol-v" x={s.x} y="232" text-anchor="middle">{s.ups} load</text>
+          <line class="ol-live" x1={s.x} y1="242" x2={s.x} y2="272" />
+          {/* panel */}
+          <rect class="ol-box" x={s.x - 34} y="272" width="68" height="30" rx="6" />
+          <text class="ol-t" x={s.x} y="292" text-anchor="middle">RPP {s.tag}</text>
+          <path class="ol-live" d={`M${s.x} 302V326H260V340`} />
+        </g>
+      ))
+    }
+    {/* open tie between the two buses */}
+    <line class="ol-idle" x1="228" y1="140" x2="292" y2="140" />
+    <rect class="ol-brk" x="255" y="135" width="10" height="10" />
+    <text class="ol-m" x="260" y="126" text-anchor="middle">Tie open</text>
+    {/* rack */}
+    <rect class="ol-rack" x="184" y="340" width="152" height="38" rx="8" />
+    <text class="ol-t" x="260" y="357" text-anchor="middle">Rack R3-07</text>
+    <text class="ol-v" x="260" y="371" text-anchor="middle">A 2.9 kW / B 2.9 kW</text>
+  </svg>
+</div>
+
+<style>
+  .oneline svg {
+    width: 100%;
+    height: auto;
+    background-color: #06070f;
+    background-image: var(--grid-lines);
+    background-size: 30px 30px;
+  }
+  .ol-node {
+    fill: var(--ink-1);
+    stroke: var(--accent-text);
+    stroke-width: 1.5;
+  }
+  .ol-sym {
+    fill: none;
+    stroke: var(--head);
+    stroke-width: 1.5;
+  }
+  .ol-live {
+    fill: none;
+    stroke: var(--accent-text);
+    stroke-width: 2;
+  }
+  .ol-idle {
+    stroke: var(--muted);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+    opacity: 0.6;
+  }
+  .ol-bus {
+    stroke: var(--head);
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+  .ol-brk {
+    fill: var(--ink-0);
+    stroke: var(--muted);
+    stroke-width: 1.5;
+  }
+  .ol-brk--on {
+    fill: var(--ok);
+    stroke: var(--ok);
+  }
+  .ol-box {
+    fill: var(--ink-1);
+    stroke: var(--line-strong);
+  }
+  .ol-rack {
+    fill: var(--ink-2);
+    stroke: var(--accent-text);
+    stroke-width: 1.5;
+  }
+  .ol-t {
+    fill: var(--head);
+    font-family: var(--font-head);
+    font-size: 12px;
+  }
+  .ol-v {
+    fill: var(--accent-text);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .ol-m {
+    fill: var(--muted);
+    font-size: 10.5px;
+  }
+  .ol-g {
+    fill: var(--head);
+    font-family: var(--font-head);
+    font-size: 13px;
+  }
+</style>

@@ -1,0 +1,402 @@
+---
+import Backdrop from '../components/Backdrop.astro';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+
+const classes = [
+  { icon: 'rack', title: 'IT', items: ['Servers and their management controllers', 'Switches', 'Routers', 'Firewalls', 'Load balancers', 'Storage'] },
+  { icon: 'power', title: 'Power', items: ['Utility feed', 'Transformer', 'Switchgear', 'Transfer switch', 'Generator', 'UPS', 'Remote power panel', 'Rack PDU'] },
+  { icon: 'fan', title: 'Cooling', items: ['CRAH', 'Chiller', 'Pump', 'Cooling tower', 'Valve', 'Coolant distribution unit'] },
+  { icon: 'thermal', title: 'Sensors And Fire', items: ['Temperature and humidity sensors', 'Power and energy meters', 'Fire panels, monitoring only'] },
+];
+
+const integrations = [
+  { icon: 'file', title: 'REST API With OpenAPI', text: 'Everything the console shows can be read through the API, and the OpenAPI description documents every call.' },
+  { icon: 'chart', title: 'WebSocket Feed', text: 'Subscribe to live readings and alarm changes as they happen, without asking again and again.' },
+  { icon: 'layers', title: 'Prometheus Metrics', text: 'Metrics published in the Prometheus format, ready for the monitoring you already run.' },
+  { icon: 'mail', title: 'Email', text: 'Alarm notifications sent through your own mail server.' },
+  { icon: 'link', title: 'Jira / JSM', beta: true, text: 'Tickets opened from incidents, and inventory exported to Jira Assets.' },
+];
+
+const flow = [
+  { icon: 'rack', title: 'Devices', text: 'IT, power, cooling, sensors' },
+  { icon: 'search', title: 'Collectors', text: 'One pool per network plane' },
+  { icon: 'chart', title: 'Stream', text: 'Readings and events in order' },
+  { icon: 'layers', title: 'Platform', text: 'Rules, correlation, history' },
+  { icon: 'cube', title: 'Console And API', text: 'People and other systems' },
+];
+
+const facts = [
+  { title: 'A Collector Per Network Plane', text: 'Production, management and plant networks each get their own collectors, so no plane has to be bridged to another.' },
+  { title: 'Pools And A Shard Map', text: 'Collectors work in pools. A shard map decides which collector reads which device, and hands the work over if one stops.' },
+  { title: 'Disk Spool', text: 'If the link to the platform drops, a collector keeps reading and stores the results on disk until it can send them.' },
+  { title: 'Signed Self-Update', text: 'Collectors update themselves only from releases that carry a valid signature.' },
+  { title: 'Your Choice Of Package', text: 'Collectors are written in Go and ship as a Docker image, a .deb package or an .rpm package.' },
+  { title: 'Self-Hosted Platform', text: 'The platform runs on your own infrastructure and stores its data in PostgreSQL with TimescaleDB.' },
+];
+
+const today = [
+  'Encrypted, authenticated device polling',
+  'Collectors enrolled with mutual TLS',
+  'Signed releases',
+  'Device credentials encrypted for each collector',
+  'Audit trail on alarm actions',
+  'Three roles: viewer, operator and admin',
+];
+const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
+---
+
+<Base
+  title="Works With"
+  description="The device classes SpectraDCIM reads, the systems it shares data with, and how collectors connect to your equipment without agents."
+>
+  <PageHero slot="hero" pill="Works With" title="Named Device Classes. Open Integrations. No Black Box." center>
+    What SpectraDCIM reads, what it shares, how the pieces are deployed and how they are secured, stated plainly.
+  </PageHero>
+
+  <!-- how it connects -->
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <SectionHead pill="How It Connects" title="Standard Interfaces, No Agents">
+          Collectors sit on your network and read each device over the interface it already exposes. IT equipment is
+          read over SNMP, gNMI streaming and Redfish; power and cooling plant over BACnet and Modbus. Traps and
+          change-of-value updates are taken as they happen and confirmed by polling.
+        </SectionHead>
+      </div>
+      <div class="card card--grid" data-anim="up">
+        <ul class="checks">
+          <li><span><strong>Nothing installed on the equipment.</strong> Devices are read the way their makers intended.</span></li>
+          <li><span><strong>Everything stays inside your network.</strong> The collectors and the platform run on infrastructure you control, and so does your telemetry.</span></li>
+          <li><span><strong>Fast and certain.</strong> An event raises the alarm at once, and the next polled reading confirms it.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- device classes -->
+  <section class="section pbg">
+    <Backdrop view="ups" />
+    <div class="wrap">
+      <SectionHead pill="Device Classes" title="The Equipment It Reads" center>
+        White space and grey space in one model. Each class comes with its own readings and alarm rules.
+      </SectionHead>
+      <div class="grid grid-4">
+        {
+          classes.map((c) => (
+            <div class="card card--raised cls" data-anim="up-block">
+              <span class="tile">
+                <Icon name={c.icon} />
+              </span>
+              <h3>{c.title}</h3>
+              <ul>
+                {c.items.map((i) => <li>{i}</li>)}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- integrations -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Integrations" title="Your Data Is Yours To Use">
+        Open ways out of the platform, for scripts, dashboards and the tools your teams already work in.
+      </SectionHead>
+      <div class="grid grid-3">
+        {
+          integrations.map((n) => (
+            <div class="card card--grid" data-anim="up">
+              <span class="tile">
+                <Icon name={n.icon} />
+              </span>
+              <h3>
+                {n.title}
+                {n.beta && <span class="tag">Beta</span>}
+              </h3>
+              <p>{n.text}</p>
+            </div>
+          ))
+        }
+        <a class="card silk-card intg-cta" href="/demo" data-anim="up">
+          <h3>Need Something Else?</h3>
+          <p>Tell us which system you need to reach and we will show how the API covers it.</p>
+          <span class="link-arrow">
+            Request a demo
+            <span class="circle"><Icon name="arrow" size={16} /></span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- architecture -->
+  <section class="section pbg">
+    <Backdrop view="yard" />
+    <div class="wrap">
+      <SectionHead pill="Architecture" title="Where Each Part Runs" center>
+        A fleet of collectors, sharded by site and network plane, feeds one self-hosted platform.
+      </SectionHead>
+
+      <div class="card card--grid arch" role="img" aria-label="Illustration of the architecture: devices are read by collectors, which send a stream to the platform, which serves the console and the API" data-anim="up-block">
+        <div class="arch__scope arch__scope--site"><span>Each Site</span></div>
+        <div class="arch__scope arch__scope--core"><span>Self-Hosted Platform</span></div>
+        <ol class="arch__flow">
+          {
+            flow.map((f, k) => (
+              <li class:list={['arch__node', { 'arch__node--hi': k === 3 }]}>
+                <span class="tile">
+                  <Icon name={f.icon} />
+                </span>
+                <strong>{f.title}</strong>
+                <small>{f.text}</small>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="grid grid-3 facts">
+        {
+          facts.map((f) => (
+            <div class="fact" data-anim="up">
+              <h3>{f.title}</h3>
+              <p>{f.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- security -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Security" title="What Is In Place, And What Is Not Yet">
+        We would rather list the gaps ourselves than have you find them in a review.
+      </SectionHead>
+      <div class="grid grid-2 sec">
+        <div class="card card--raised" data-anim="up-block">
+          <h3>Today</h3>
+          <ul class="checks">
+            {today.map((t) => <li>{t}</li>)}
+          </ul>
+        </div>
+        <div class="card sec__road" data-anim="up-block">
+          <h3>On The Roadmap</h3>
+          <ul class="road">
+            {roadmap.map((t) => <li>{t}</li>)}
+          </ul>
+          <p>These are not available today. Ask us where they stand before you plan around them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .checks li > span {
+    min-width: 0;
+  }
+  .split :global(.sec-head) {
+    margin-bottom: 0;
+  }
+
+  /* device classes */
+  .cls ul {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+  }
+  .cls li {
+    padding: 11px 0;
+    border-top: 1px solid var(--line);
+    color: var(--body);
+    line-height: 1.35;
+  }
+
+  /* integrations */
+  .intg-cta {
+    display: grid;
+    align-content: space-between;
+    gap: 18px;
+    border-color: rgba(126, 145, 203, 0.5);
+  }
+  .intg-cta p {
+    color: var(--body);
+  }
+
+  /* architecture */
+  .arch {
+    padding: clamp(46px, 5vw, 64px) clamp(18px, 2.4vw, 34px) clamp(22px, 2.4vw, 34px);
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    column-gap: 22px;
+  }
+  .arch__scope {
+    grid-row: 1;
+    position: relative;
+    border: 1px dashed rgba(126, 145, 203, 0.5);
+    border-radius: 14px;
+    margin: -28px -8px -10px;
+    z-index: 0;
+  }
+  .arch__scope--site {
+    grid-column: 1;
+  }
+  .arch__scope--core {
+    grid-column: 2;
+  }
+  .arch__scope span {
+    position: absolute;
+    top: -11px;
+    left: 16px;
+    padding: 0 10px;
+    background: var(--ink-0);
+    font-family: var(--font-head);
+    font-size: 13px;
+    color: var(--accent-text);
+  }
+  .arch__flow {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 22px;
+  }
+  .arch__node {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 6px;
+    padding: 20px 10px;
+    text-align: center;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--ink-1);
+  }
+  .arch__node--hi {
+    border-color: rgba(126, 145, 203, 0.6);
+    background: var(--ink-2);
+  }
+  .arch__node .tile {
+    margin-bottom: 8px;
+  }
+  .arch__node strong {
+    font-family: var(--font-head);
+    font-weight: 500;
+    color: var(--head);
+  }
+  .arch__node small {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+  .arch__node:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 46px;
+    right: -18px;
+    width: 9px;
+    height: 9px;
+    border-top: 2px solid var(--accent-text);
+    border-right: 2px solid var(--accent-text);
+    transform: rotate(45deg);
+    z-index: 2;
+  }
+  @media (max-width: 860px) {
+    .arch {
+      grid-template-columns: 1fr;
+      padding-top: clamp(22px, 2.4vw, 34px);
+    }
+    .arch__scope {
+      display: none;
+    }
+    .arch__flow {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+    .arch__node {
+      grid-template-columns: 54px minmax(0, 1fr);
+      justify-items: start;
+      text-align: left;
+      column-gap: 16px;
+      padding: 16px;
+    }
+    .arch__node .tile {
+      grid-row: 1 / span 2;
+      margin: 0;
+    }
+    .arch__node:not(:last-child)::after {
+      top: auto;
+      right: auto;
+      bottom: -18px;
+      left: 38px;
+      transform: rotate(135deg);
+    }
+  }
+
+  .facts {
+    margin-top: clamp(36px, 4vw, 56px);
+    gap: 32px 40px;
+  }
+  .fact {
+    padding-top: 20px;
+    border-top: 2px solid var(--accent-deep);
+  }
+  .fact h3 {
+    font-size: 19px;
+    line-height: 1.25;
+  }
+  .fact p {
+    margin-top: 10px;
+  }
+
+  /* security */
+  .sec .card {
+    display: grid;
+    gap: 22px;
+    align-content: start;
+  }
+  .sec__road {
+    border-style: dashed;
+    border-color: var(--line-strong);
+    background: transparent;
+  }
+  .road {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .road li {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    align-items: center;
+    color: var(--head);
+  }
+  .road li::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px dashed var(--accent-text);
+  }
+  .sec__road p {
+    font-size: 14px;
+    color: var(--muted);
+  }
+</style>

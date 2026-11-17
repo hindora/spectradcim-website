@@ -1,0 +1,15 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  href: string;
+  variant?: 'primary' | 'dark' | 'light';
+  anim?: boolean;
+}
+const { href, variant = 'primary', anim = false } = Astro.props;
+const cls = ['btn', variant !== 'primary' && `btn--${variant}`].filter(Boolean).join(' ');
+---
+
+<a class={cls} href={href} data-anim={anim ? 'up' : undefined}>
+  <span><slot /></span>
+  <Icon name="chevron" size={16} />
+</a>

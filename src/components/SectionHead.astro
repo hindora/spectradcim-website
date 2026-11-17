@@ -1,0 +1,16 @@
+---
+// Pill label, heading and optional intro. Each part rises on scroll, as on the reference.
+interface Props {
+  pill?: string;
+  title: string;
+  center?: boolean;
+  as?: 'h1' | 'h2';
+}
+const { pill, title, center = false, as: Tag = 'h2' } = Astro.props;
+---
+
+<div class:list={['sec-head', { center }]}>
+  {pill && <span class="pill" data-anim="up">{pill}</span>}
+  <Tag data-anim="up">{title}</Tag>
+  {Astro.slots.has('default') && <p class="lead" data-anim="up"><slot /></p>}
+</div>

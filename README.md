@@ -4,15 +4,36 @@ Public marketing website for SpectraDCIM, data centre infrastructure management 
 
 ## Status
 
-Design stage. Page designs live in Google Stitch (project "SpectraDCIM Platform Landing Page"). No site code yet.
+Site code in progress: Astro 5, static output, no UI framework. Page designs were drafted in Google Stitch (project "SpectraDCIM Platform Landing Page") and rebuilt here by hand.
+
+## Run
+
+```
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # static site in dist/
+```
 
 ## Contents
 
 | Path | What |
 |---|---|
-| `docs/content-brief.md` | Claim rules, site map, page copy, Stitch prompts, motion spec |
-| `assets/bg/` | Hero and footer background photo (web sizes + original) and its licence note |
-| `assets/nexios-skin.css` | Fonts, text colours, link and button styles applied over the Stitch pages |
+| `src/pages/` | One `.astro` file per page (14 pages) |
+| `src/layouts/Base.astro` | Head, header on the silk photo, footer, motion script |
+| `src/components/` | Header, footer, buttons, section head, page hero, CTA band, icons, product mock panels |
+| `src/styles/global.css` | Design tokens and shared classes |
+| `src/scripts/motion.js` | Scroll entrances, counters, carousel, tabs, form feedback |
+| `public/bg/` | Hero and footer background photo (web sizes) |
+| `docs/content-brief.md` | Claim rules, site map, page copy, decisions (section 7 overrides section 5) |
+| `assets/` | Source photo with licence note, and the skin CSS used on the Stitch drafts |
+
+## Motion
+
+Matches the reference kit: elements stay hidden until they enter the viewport, then rise once (`fadeInUp`, 1.25 s, ease) or zoom in. Add `data-anim="up"` to small elements and `data-anim="up-block"` to tall blocks; do not nest them. The equipment marquee, 2 s counters, persona carousel and FAQ accordion are in the same script and stylesheet. Everything is visible without JavaScript and motion is off under `prefers-reduced-motion`.
+
+## Not connected yet
+
+Forms have no mailbox or backend; submitting shows a notice saying so. Guides on the Resources page are titles only.
 
 ## Design rules
 

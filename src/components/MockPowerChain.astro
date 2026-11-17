@@ -1,0 +1,136 @@
+---
+// The supply chain from utility to outlet as one line, each stage with a live-style readout.
+// Illustrative values only.
+const steps = [
+  { name: 'Utility', a: '11.0 kV', b: '1.82 MW', state: 'ok', note: 'Feed A live' },
+  { name: 'Transformer', a: '2.5 MVA', b: '73% load', state: 'ok', note: 'Winding 68 °C' },
+  { name: 'Switchgear', a: '415 V', b: '2,610 A', state: 'ok', note: 'Main closed' },
+  { name: 'ATS / Generator', a: 'On utility', b: 'Gen ready', state: 'ok', note: 'Fuel 86%' },
+  { name: 'UPS', a: '62% load', b: '14 min', state: 'warn', note: 'Module on bypass' },
+  { name: 'RPP', a: '148 A', b: 'of 225 A', state: 'ok', note: 'Panel 66%' },
+  { name: 'PDU', a: '5.8 kW', b: 'of 7.4 kW', state: 'ok', note: 'Phases balanced' },
+  { name: 'Outlet', a: '1.9 A', b: 'On', state: 'ok', note: 'Outlet 14' },
+];
+---
+
+<div class="mock chain" role="img" aria-label="Illustration of the power chain from utility through transformer, switchgear, generator transfer, UPS, panel and PDU to a single outlet, with a reading at each stage">
+  <div class="mock__bar"><i></i><i></i><i></i>Site 1 / Power Chain / Feed A<span class="mono">1.82 MW in</span></div>
+  <div class="chain__scroll">
+    <ol>
+      {
+        steps.map((s, k) => (
+          <li class:list={{ warn: s.state === 'warn' }}>
+            <span class="chain__n mono">{k + 1}</span>
+            <strong>{s.name}</strong>
+            <span class="chain__val mono">{s.a}</span>
+            <span class="chain__val chain__val--b mono">{s.b}</span>
+            <small>
+              <span class:list={['dot', { 'dot--warn': s.state === 'warn' }]} />
+              {s.note}
+            </small>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</div>
+
+<style>
+  .chain__scroll {
+    overflow-x: auto;
+    padding: 26px 18px 22px;
+    background-image: var(--grid-lines);
+    background-size: 34px 34px;
+  }
+  .chain ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(128px, 1fr));
+    gap: 22px;
+    min-width: 1180px;
+  }
+  .chain li {
+    position: relative;
+    display: grid;
+    gap: 4px;
+    align-content: start;
+    padding: 14px 14px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--ink-1);
+  }
+  .chain li.warn {
+    border-color: var(--warn);
+  }
+  /* connector to the next stage, with a slow pulse travelling downstream */
+  .chain li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 34px;
+    width: 23px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-deep) 0 40%, var(--head) 50%, var(--accent-deep) 60% 100%);
+    background-size: 300% 100%;
+    animation: chainFlow 2.4s linear infinite;
+  }
+  @keyframes chainFlow {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: 0 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .chain li:not(:last-child)::after {
+      animation: none;
+      background: var(--accent-text);
+    }
+  }
+  .chain__n {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent-tile);
+    color: var(--head);
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  .chain strong {
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--head);
+    white-space: nowrap;
+  }
+  .chain__val {
+    font-size: 18px;
+    color: var(--head);
+    margin-top: 6px;
+    white-space: nowrap;
+  }
+  .chain__val--b {
+    font-size: 13px;
+    color: var(--accent-text);
+    margin-top: 0;
+  }
+  .chain small {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .chain small .dot {
+    flex: none;
+    margin-right: 6px;
+  }
+</style>

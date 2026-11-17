@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Backdrop from '../components/Backdrop.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Sections that sit on the silk photo together with the header (hero, and on Home the marquee). */
+  heroClass?: string;
+  /** Hero background view: racks, aisle, heat, hall, site, net or world. Defaults by page. */
+  bg?: string;
+}
+const { title, description, heroClass = '', bg } = Astro.props;
+
+// Hero background: a real 3-D, first-person or world-map view from the product (simulated estate),
+// chosen to match what the page is about.
+const byPath: Record<string, string> = {
+  '/': 'fpv', // first-person view down a server-room aisle
+  '/platform': 'building', // the whole building, every level
+  '/platform/power': 'ups', // UPS room
+  '/platform/thermal': 'heat', // hall coloured by temperature
+  '/platform/visualization': 'fpv', // first-person walk down the aisle
+  '/platform/alarms': 'plant', // chiller plant, where the worked example starts
+  '/platform/assets': 'racks',
+  '/works-with': 'netroom', // network room
+  '/solutions': 'world', // sites on the world map
+  '/early-access': 'hall',
+  '/partners': 'world',
+  '/resources': 'aisle',
+  '/company': 'building', // the whole facility (the compound view is the footer)
+  '/demo': 'aisle',
+};
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const view = bg ?? byPath[path] ?? 'hall';
+const fullTitle = title === 'Home' ? 'SpectraDCIM | Power, Cooling And IT Watched As One' : `${title} | SpectraDCIM`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href={`/bg/${view}-2400.webp`} media="(min-width: 801px)" />
+    <!-- Content is visible without JavaScript; entrances only arm once this class is set. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <div class:list={['pbg', heroClass]}>
+      <Backdrop view={view} />
+      <slot name="hero" />
+    </div>
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '../scripts/motion.js';
+    </script>
+  </body>
+</html>

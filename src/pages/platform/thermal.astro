@@ -1,0 +1,568 @@
+---
+import Shot from '../../components/Shot.astro';
+import Backdrop from '../../components/Backdrop.astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import MockHall from '../../components/MockHall.astro';
+import MockChart from '../../components/MockChart.astro';
+import MockPlant from '../../components/MockPlant.astro';
+
+// envelope mock: axis runs 10 to 40 °C
+const pos = (t: number) => ((t - 10) / 30) * 100;
+const rooms = [
+  { name: 'Hall A', min: 19.2, max: 27.9, mean: 23.4, note: 'Row 3 above recommended', sev: 'warn' },
+  { name: 'Hall B', min: 18.6, max: 25.8, mean: 22.1, note: 'Inside recommended', sev: '' },
+  { name: 'Network Room', min: 18.1, max: 23.6, mean: 20.7, note: 'Inside recommended', sev: '' },
+];
+const ticks = [10, 18, 27, 35, 40];
+
+const plantChecks = [
+  { b: 'Chiller staging.', t: 'Which machines are running, at what load, and which one stages next.' },
+  { b: 'Loop delta-T.', t: 'Supply, return and flow together, so a low delta-T is seen as it develops.' },
+  { b: 'Pumps, towers and valves.', t: 'Speeds and positions beside the temperatures they are meant to hold.' },
+];
+
+const units = [
+  {
+    icon: 'fan',
+    title: 'CRAH Monitoring',
+    text: 'For air-cooled halls: supply and return air, fan speed and chilled water valve position for every unit, read against the room it serves.',
+    label: 'CRAH 4, Hall A',
+    aria: 'Illustration of readings for one CRAH unit: supply air, return air, fan speed and valve position',
+    read: [
+      { k: 'Supply air', v: '21.4', u: '°C' },
+      { k: 'Return air', v: '33.8', u: '°C' },
+      { k: 'Fan', v: '64', u: '%' },
+      { k: 'Valve', v: '58', u: '%' },
+    ],
+  },
+  {
+    icon: 'drop',
+    title: 'CDU Monitoring',
+    text: 'For liquid-cooled halls: secondary loop supply and return, flow and pump speed for every coolant distribution unit, beside the racks on its loop.',
+    label: 'CDU 2, Hall C',
+    aria: 'Illustration of readings for one coolant distribution unit: secondary supply, secondary return, flow and pump speed',
+    read: [
+      { k: 'Secondary supply', v: '32.0', u: '°C' },
+      { k: 'Secondary return', v: '42.3', u: '°C' },
+      { k: 'Flow', v: '310', u: 'l/min' },
+      { k: 'Pump', v: '71', u: '%' },
+    ],
+  },
+];
+
+const chain = [
+  { name: 'Plant', icon: 'drop', event: 'Chilled water supply lost', count: 'The cause', t: '14:02:11', sev: 'crit' },
+  { name: 'Unit', icon: 'fan', event: 'Supply air temperature rising', count: '6 units', t: '14:02:40', sev: 'warn' },
+  { name: 'Zone', icon: 'map', event: 'Rack inlets above allowed band', count: '48 racks', t: '14:03:25', sev: 'warn' },
+  { name: 'Server', icon: 'rack', event: 'Fan speed raised', count: '212 servers', t: '14:03:58', sev: 'info' },
+];
+
+const anomalyChecks = [
+  { b: 'Opt-in.', t: 'Findings stay off until you turn them on.' },
+  { b: 'Learned per point.', t: 'Each reading is compared with its own usual pattern, and the panel says when it is still learning.' },
+  { b: 'Operator feedback.', t: 'Confirm or dismiss a finding, and the answer is kept with it.' },
+  { b: 'Plain statistics.', t: 'Baselines and data-quality checks. There is no LLM in the detection path.' },
+];
+---
+
+<Base
+  title="Thermal & Cooling"
+  description="Chillers, pumps, room units and rack inlets in one model, so a warm row can be followed back to the plant behind it."
+>
+  <PageHero slot="hero" pill="Platform" title="From Chiller Plant To Server Inlet, One Cooling Picture">
+    Chillers, pumps, towers, CRAHs, CDUs and rack inlets in one model, so a warm row can be followed back to the plant
+    that caused it.
+    <Shot slot="visual" name="hallb-inlet" alt="Server hall in 3-D with rack faces coloured by inlet and outlet temperature" />
+  </PageHero>
+
+  <!-- envelope -->
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <SectionHead pill="Thermal View" title="Every Rack Inlet Against Its ASHRAE Envelope">
+          Rack inlets across the estate are read against ASHRAE TC 9.9 thermal envelopes. You see how many sit in the
+          recommended range, how many are only allowable, and where the exceptions are.
+        </SectionHead>
+        <Shot name="thermal-intake" alt="Intake temperature across the estate against the ASHRAE recommended band" />
+      </div>
+      <Shot name="thermal-band" alt="Share of time in band across the estate" />
+    </div>
+  </section>
+
+  <!-- plant -->
+  <section class="section pbg">
+    <Backdrop view="plant" />
+    <div class="wrap split">
+      <div data-anim="up-block">
+        <Shot name="plant" alt="Central plant in 3-D: chillers and pumps" />
+      </div>
+      <div>
+        <SectionHead pill="Cooling Plant" title="The Plant Room, Read Like The White Space">
+          Chillers, pumps, cooling towers and valves on one panel, with the trend behind every reading. The building
+          management system keeps control of the plant. SpectraDCIM reads it.
+        </SectionHead>
+        <ul class="checks" data-anim="up">
+          {
+            plantChecks.map((c) => (
+              <li>
+                <span>
+                  <strong>{c.b}</strong> {c.t}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- air and liquid -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Air And Liquid" title="Room Units For Both Kinds Of Hall" center>
+        Air-cooled and liquid-cooled halls sit in the same model, each with the unit that serves it.
+      </SectionHead>
+      <div class="grid grid-2">
+        {
+          units.map((u) => (
+            <div class="card card--grid unit" data-anim="up-block">
+              <span class="tile">
+                <Icon name={u.icon} />
+              </span>
+              <h3>{u.title}</h3>
+              <p>{u.text}</p>
+              <div class="unit__read" role="img" aria-label={u.aria}>
+                <div class="unit__label">
+                  <span class="dot" />
+                  {u.label}
+                </div>
+                <div class="unit__grid">
+                  {u.read.map((r) => (
+                    <div>
+                      <span>{r.k}</span>
+                      <b class="mono">
+                        {r.v}
+                        <small>{r.u}</small>
+                      </b>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- chain -->
+  <section class="section pbg">
+    <Backdrop view="under" />
+    <div class="wrap">
+      <SectionHead pill="Correlation" title="Correlation That Follows The Cooling Chain">
+        When the plant fails, the units, the zones and the servers downstream all raise alarms. SpectraDCIM knows which
+        unit serves which zone, so the symptoms fold under the cause.
+      </SectionHead>
+      <ol class="cchain" aria-label="Illustration of one plant failure and the symptoms it causes downstream, in order">
+        {
+          chain.map((c, k) => (
+            <li class:list={['card', 'card--raised', 'cchain__step', c.sev]} data-anim="up">
+              <div class="cchain__head">
+                <span class="tile">
+                  <Icon name={c.icon} />
+                </span>
+                <span class="cchain__n mono">{k + 1}</span>
+              </div>
+              <h3>{c.name}</h3>
+              <p class="cchain__event">
+                <span class={`dot dot--${c.sev}`} />
+                {c.event}
+              </p>
+              <p class="cchain__meta mono">
+                <span>{c.count}</span>
+                <span>{c.t}</span>
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="cchain__foot">
+        <p data-anim="up">
+          In a simulated chiller-plant loss, 727 raw alarms were presented as 9 console lines and 1 summary alarm.
+        </p>
+        <a class="link-arrow" href="/platform/alarms" data-anim="up">
+          How alarms and incidents work
+          <span class="circle"><Icon name="arrow" size={16} /></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- anomaly -->
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <SectionHead pill="Anomaly Findings" title="Findings On Learned Baselines, When You Want Them">
+          A threshold catches a reading that is too high. A baseline catches one that is unusual for that point at that
+          time, such as a return temperature drifting while still inside its limits.
+        </SectionHead>
+        <ul class="checks" data-anim="up">
+          {
+            anomalyChecks.map((c) => (
+              <li>
+                <span>
+                  <strong>{c.b}</strong> {c.t}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="card card--raised finding" data-anim="up-block">
+        <Shot name="rack-unusual" alt="Rack page: open conditions and unusual behaviour for one rack" />
+        <div class="finding__row" role="img" aria-label="Illustration of one anomaly finding awaiting an operator's decision">
+          <span class="dot dot--info"></span>
+          <div>
+            <strong>Return air above its usual range for this hour</strong>
+            <small>Finding, not an alarm. Still inside the alarm limit.</small>
+          </div>
+          <em>Confirm</em>
+          <em>Dismiss</em>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  /* envelope */
+  .census__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .census__grid > div {
+    padding: 18px 16px;
+    display: grid;
+    gap: 8px;
+    align-content: start;
+  }
+  .census__grid > div + div {
+    border-left: 1px solid var(--line);
+  }
+  .census__grid b {
+    font-weight: 500;
+    font-size: clamp(26px, 2.6vw, 36px);
+    line-height: 1;
+    color: var(--head);
+  }
+  .census__grid span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .census__grid b span {
+    font-size: inherit;
+    color: inherit;
+  }
+  .env__body {
+    padding: 20px 20px 16px;
+    display: grid;
+    gap: 22px;
+  }
+  .env__cap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2px 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .env__cap strong {
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--head);
+  }
+  .env__track {
+    position: relative;
+    height: 26px;
+    margin-top: 10px;
+    border-radius: 6px;
+    background: var(--ink-0);
+  }
+  .env__track > * {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+  .env__allow {
+    border-radius: 6px;
+    background: var(--ink-2);
+  }
+  .env__rec {
+    background: var(--accent-deep);
+    opacity: 0.75;
+  }
+  .env__range {
+    top: 8px;
+    bottom: 8px;
+    border-radius: 5px;
+    background: var(--head);
+  }
+  .env__range.warn {
+    background: linear-gradient(90deg, var(--head) 70%, var(--warn));
+  }
+  .env__mean {
+    width: 3px;
+    margin-left: -1px;
+    top: 3px;
+    bottom: 3px;
+    border-radius: 2px;
+    background: var(--accent-text);
+    box-shadow: 0 0 8px var(--accent-text);
+  }
+  .env__vals {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .env__axis {
+    position: relative;
+    height: 16px;
+    margin-top: -8px;
+    border-top: 1px solid var(--line);
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .env__axis span {
+    position: absolute;
+    top: 4px;
+    transform: translateX(-50%);
+  }
+  .env__axis span:first-child {
+    transform: none;
+  }
+  .env__axis span:last-child {
+    transform: translateX(-100%);
+  }
+  .env__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .env__legend i {
+    display: inline-block;
+    width: 12px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: -1px;
+  }
+  .env__legend .env__key {
+    height: 5px;
+    width: 18px;
+    vertical-align: 2px;
+    background: var(--head);
+  }
+
+  /* checks with a bold lead-in */
+  .checks li span {
+    min-width: 0;
+  }
+
+  /* room units */
+  .unit {
+    display: grid;
+    align-content: start;
+  }
+  .unit p {
+    max-width: 52ch;
+  }
+  .unit__read {
+    margin-top: 26px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #06070f;
+    font-size: 13px;
+  }
+  .unit__label {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .unit__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .unit__grid > div {
+    padding: 14px;
+    display: grid;
+    gap: 4px;
+  }
+  .unit__grid > div + div {
+    border-left: 1px solid var(--line);
+  }
+  .unit__grid span {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .unit__grid b {
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--head);
+    white-space: nowrap;
+  }
+  .unit__grid small {
+    font-size: 11px;
+    margin-left: 3px;
+    color: var(--muted);
+  }
+  @media (max-width: 520px) {
+    .unit__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .unit__grid > div:nth-child(3) {
+      border-left: 0;
+    }
+    .unit__grid > div:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+    }
+  }
+
+  /* cooling chain */
+  .cchain {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .cchain__step {
+    padding: 24px;
+    overflow: visible;
+  }
+  .cchain__step.crit {
+    border-color: var(--crit);
+  }
+  .cchain__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .cchain__n {
+    font-size: 14px;
+    color: var(--accent-text);
+  }
+  .cchain__event {
+    margin-top: 14px;
+    color: var(--head);
+    font-size: 15px;
+  }
+  .cchain__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .cchain__step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50px;
+    width: 25px;
+    height: 2px;
+    background: var(--accent-text);
+  }
+  .cchain__foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px 40px;
+    margin-top: 36px;
+  }
+  .cchain__foot p {
+    max-width: 60ch;
+    font-size: 18px;
+    color: var(--head);
+  }
+  @media (max-width: 1000px) {
+    .cchain {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .cchain__step::after {
+      display: none;
+    }
+  }
+  @media (max-width: 640px) {
+    .cchain {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* anomaly finding */
+  .finding {
+    display: grid;
+    gap: 16px;
+    padding: clamp(18px, 2.2vw, 30px);
+  }
+  .finding__row {
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1fr) auto auto;
+    gap: 12px;
+    align-items: center;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--ink-0);
+    font-size: 13px;
+  }
+  .finding__row .dot {
+    margin: 0;
+  }
+  .finding__row strong {
+    display: block;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--head);
+  }
+  .finding__row small {
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .finding__row em {
+    font-style: normal;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    color: var(--body);
+    white-space: nowrap;
+  }
+  @media (max-width: 520px) {
+    .finding__row {
+      grid-template-columns: 10px minmax(0, 1fr);
+    }
+    .finding__row em {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+</style>

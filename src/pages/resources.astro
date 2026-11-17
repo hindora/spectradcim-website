@@ -1,0 +1,335 @@
+---
+import Backdrop from '../components/Backdrop.astro';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+
+const chips = [
+  { id: 'all', label: 'All' },
+  { id: 'guides', label: 'Guides' },
+  { id: 'power', label: 'Power' },
+  { id: 'cooling', label: 'Cooling' },
+  { id: 'alarms', label: 'Alarms' },
+  { id: 'sustainability', label: 'Sustainability' },
+];
+
+const guides = [
+  { topics: ['guides'], topic: 'Guides', title: 'DCIM vs BMS vs EPMS', text: 'Three systems, three jobs, and the gaps between them.' },
+  { topics: ['power', 'sustainability'], topic: 'Power', title: 'How To Calculate PUE', text: 'What goes above the line, what goes below it, and where the meters need to be.' },
+  { topics: ['alarms'], topic: 'Alarms', title: 'Traps vs Polling: Why You Need Both', text: 'The trap makes it fast. The poll makes it true.' },
+  { topics: ['alarms'], topic: 'Alarms', title: 'Alarm Floods And ISA-18.2', text: 'What the standard says about floods, and what it means for a data centre console.' },
+  { topics: ['sustainability'], topic: 'Sustainability', title: 'EU EED Reporting For Data Centres', text: 'Who has to report, which figures are asked for, and what you need to measure.' },
+  { topics: ['cooling'], topic: 'Cooling', title: 'Monitoring Liquid Cooling', text: 'What to read from a CDU, and which readings tell you a loop is in trouble.' },
+];
+
+const approach = [
+  { icon: 'file', title: 'Plain Language', text: 'Each guide answers one question an operator actually asks, in the words they would use.' },
+  { icon: 'cube', title: 'Worked Examples', text: 'Examples come from our simulated data centre, and are labelled as simulated every time.' },
+  { icon: 'link', title: 'Sources Named', text: 'When we quote a figure or a standard, the source is on the page next to it.' },
+];
+---
+
+<Base
+  title="Resources"
+  description="Plain guides on DCIM, power, cooling, alarms and sustainability reporting for people who run data centres."
+>
+  <PageHero slot="hero" pill="Resources" title="Plain Answers About Running Data Centres" center>
+    Guides on power, cooling, alarms and reporting, from the people building SpectraDCIM. The first ones are being
+    written now.
+  </PageHero>
+
+  <!-- featured -->
+  <section class="section--tight">
+    <div class="wrap">
+      <div class="card card--raised feature" data-anim="up-block">
+        <div class="feature__art" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="feature__text">
+          <p class="guide__topic">Guides <span class="tag">Coming soon</span></p>
+          <h2>What Is DCIM?</h2>
+          <p class="lead">
+            What the term covers, what it does not, and where it meets the building management system. The place to
+            start if you are deciding whether you need one.
+          </p>
+          <ul class="checks">
+            <li>What a DCIM reads, and from which equipment</li>
+            <li>Where its job ends and the plant controls begin</li>
+            <li>The questions to ask before you buy one</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- guides -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Guides" title="What We Are Writing">
+        None of these is published yet, so none of them is a link. Filter by topic to see what is planned.
+      </SectionHead>
+      <div class="chips" role="group" aria-label="Filter guides by topic" data-anim="up" data-chips>
+        {
+          chips.map((c) => (
+            <button type="button" class="chip" data-filter={c.id} aria-pressed={c.id === 'all' ? 'true' : 'false'}>
+              {c.label}
+            </button>
+          ))
+        }
+      </div>
+      <p class="chips__count" role="status" data-anim="up" data-count-line>Showing all 6 planned guides.</p>
+      <div class="grid grid-3" data-guides>
+        {
+          guides.map((g, k) => (
+            <article class="card card--raised guide" data-topic={g.topics.join(' ')} data-anim="up-block">
+              <div class={`guide__art guide__art--${k % 3}`} aria-hidden="true" />
+              <p class="guide__topic">
+                {g.topic} <span class="tag">Coming soon</span>
+              </p>
+              <h3>{g.title}</h3>
+              <p>{g.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- approach -->
+  <section class="section pbg">
+    <Backdrop view="racks" />
+    <div class="wrap">
+      <SectionHead pill="How We Write" title="Three Rules For Every Guide" center />
+      <div class="grid grid-3">
+        {
+          approach.map((a) => (
+            <div class="card card--grid" data-anim="up">
+              <span class="tile">
+                <Icon name={a.icon} />
+              </span>
+              <h3>{a.title}</h3>
+              <p>{a.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="card silk-card next" data-anim="up">
+        <div>
+          <h3>Tell Us What To Write Next</h3>
+          <p>If there is a question about running a data centre you cannot find a straight answer to, ask us for it.</p>
+        </div>
+        <a class="link-arrow" href="/demo">
+          Suggest a topic
+          <span class="circle"><Icon name="arrow" size={16} /></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<script>
+  const group = document.querySelector('[data-chips]');
+  const cards = document.querySelectorAll('[data-guides] [data-topic]');
+  const line = document.querySelector('[data-count-line]');
+  if (group) {
+    group.addEventListener('click', (ev) => {
+      const chip = ev.target instanceof Element ? ev.target.closest('[data-filter]') : null;
+      if (!chip) return;
+      const topic = chip.getAttribute('data-filter');
+      group.querySelectorAll('[data-filter]').forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      let shown = 0;
+      cards.forEach((card) => {
+        const match = topic === 'all' || (card.getAttribute('data-topic') || '').split(' ').includes(topic || '');
+        card.toggleAttribute('hidden', !match);
+        if (match) shown += 1;
+      });
+      if (line) {
+        line.textContent =
+          topic === 'all'
+            ? `Showing all ${shown} planned guides.`
+            : `Showing ${shown} of ${cards.length} planned guides: ${chip.textContent?.trim()}.`;
+      }
+    });
+  }
+</script>
+
+<style>
+  /* featured */
+  .feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: clamp(24px, 3.4vw, 52px);
+    align-items: center;
+    padding: 14px;
+  }
+  .feature__text {
+    padding: clamp(10px, 2vw, 28px) clamp(10px, 2vw, 28px) clamp(14px, 2vw, 28px) 0;
+  }
+  .feature__text h2 {
+    margin-bottom: 18px;
+  }
+  .feature__text .checks {
+    margin-top: 26px;
+  }
+  .feature__art {
+    position: relative;
+    min-height: 340px;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--ink-0);
+    background-image: var(--grid-lines);
+    background-size: 28px 28px;
+  }
+  .feature__art::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 28% 66%, color-mix(in srgb, var(--accent-text) 55%, transparent), transparent 44%),
+      radial-gradient(circle at 74% 30%, color-mix(in srgb, var(--accent) 50%, transparent), transparent 40%);
+  }
+  .feature__art span {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--head) 26%, transparent);
+    transform: translate(-50%, -50%);
+  }
+  .feature__art span:nth-child(1) {
+    width: 90px;
+    height: 90px;
+    background: color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+  .feature__art span:nth-child(2) {
+    width: 190px;
+    height: 190px;
+  }
+  .feature__art span:nth-child(3) {
+    width: 300px;
+    height: 300px;
+    border-style: dashed;
+  }
+  @media (max-width: 900px) {
+    .feature {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .feature__art {
+      min-height: 220px;
+    }
+    .feature__text {
+      padding: 0 14px 18px;
+    }
+  }
+
+  /* chips */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chip {
+    min-height: 44px;
+    padding: 8px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--ink-1);
+    color: var(--body);
+    font-family: var(--font-head);
+    font-size: 15px;
+    cursor: pointer;
+    transition:
+      background 0.15s ease-in-out,
+      color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out;
+  }
+  .chip:hover {
+    border-color: var(--accent-text);
+    color: var(--head);
+  }
+  .chip[aria-pressed='true'] {
+    background: var(--accent);
+    border-color: var(--line-strong);
+    color: var(--head);
+  }
+  .chips__count {
+    margin: 18px 0 28px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* guide cards (same form as Home) */
+  .guide {
+    padding: 14px 14px 28px;
+  }
+  .guide[hidden] {
+    display: none;
+  }
+  .guide > :not(.guide__art) {
+    padding-inline: 14px;
+  }
+  .guide__art {
+    height: 170px;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    background-color: var(--ink-0);
+    background-image: var(--grid-lines);
+    background-size: 28px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .guide__art::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .guide__art--0::after {
+    background:
+      radial-gradient(circle at 30% 60%, color-mix(in srgb, var(--accent-text) 55%, transparent), transparent 42%),
+      radial-gradient(circle at 72% 36%, color-mix(in srgb, var(--accent) 50%, transparent), transparent 38%);
+  }
+  .guide__art--1::after {
+    background:
+      linear-gradient(
+        90deg,
+        transparent 31%,
+        color-mix(in srgb, var(--accent-text) 40%, transparent) 31% 35%,
+        transparent 35% 64%,
+        color-mix(in srgb, var(--accent-text) 40%, transparent) 64% 68%,
+        transparent 68%
+      ),
+      radial-gradient(circle at 50% 110%, color-mix(in srgb, var(--accent) 50%, transparent), transparent 60%);
+  }
+  .guide__art--2::after {
+    background:
+      repeating-linear-gradient(115deg, transparent 0 22px, color-mix(in srgb, var(--accent-text) 22%, transparent) 22px 24px),
+      radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--accent) 55%, transparent), transparent 50%);
+  }
+  .guide__topic {
+    font-size: 14px;
+    color: var(--accent-text);
+    margin-bottom: 10px;
+  }
+  .guide h3 + p {
+    margin-top: 10px;
+  }
+
+  /* next */
+  .next {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 40px;
+  }
+  .next p {
+    max-width: 56ch;
+  }
+</style>

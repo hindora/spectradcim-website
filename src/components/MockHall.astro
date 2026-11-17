@@ -1,0 +1,152 @@
+---
+// Stylised data hall: isometric rack rows coloured by inlet temperature, with an optional replay scrubber.
+// Illustrative values only.
+interface Props {
+  scrubber?: boolean;
+  title?: string;
+}
+const { scrubber = false, title = 'Hall A / Thermal' } = Astro.props;
+
+const rows = 4;
+const cols = 11;
+const heat = (r: number, c: number) => {
+  // one warm pocket in row 2, a cooler end by the cooling units
+  const d = Math.hypot(c - 7.2, (r - 1.4) * 2.2);
+  return Math.max(0, 1 - d / 4.2);
+};
+const colour = (h: number) => {
+  if (h > 0.78) return ['#e5484d', '#a82f33', '#7d2226'];
+  if (h > 0.55) return ['#e3a008', '#a87706', '#7c5804'];
+  if (h > 0.3) return ['#7e91cb', '#5974c7', '#354b8e'];
+  return ['#4a5a94', '#34427a', '#232d57'];
+};
+const W = 26;
+const H = 13;
+const Z = 34;
+const racks = [];
+for (let r = 0; r < rows; r++) {
+  for (let c = 0; c < cols; c++) {
+    const gx = c * 1.08;
+    const gy = r * 2.1;
+    const x = 290 + (gx - gy) * W;
+    const y = 62 + (gx + gy) * H;
+    const [top, left, right] = colour(heat(r, c));
+    racks.push({ x, y, top, left, right, k: r * cols + c });
+  }
+}
+---
+
+<div class="mock hall" role="img" aria-label="Illustration of a data hall floor with racks coloured by inlet temperature">
+  <div class="mock__bar"><i></i><i></i><i></i>{title}<span class="mono">Inlet 18 to 27 &deg;C</span></div>
+  <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <radialGradient id="hall-glow" cx="62%" cy="48%" r="45%">
+        <stop offset="0" stop-color="#e5484d" stop-opacity=".28"></stop>
+        <stop offset="1" stop-color="#e5484d" stop-opacity="0"></stop>
+      </radialGradient>
+    </defs>
+    <polygon points="290,40 616,203 350,336 24,173" fill="#0a0b16" stroke="rgba(255,255,255,.09)"></polygon>
+    <polygon points="290,40 616,203 350,336 24,173" fill="url(#hall-glow)"></polygon>
+    {
+      racks.map((k) => (
+        <g transform={`translate(${k.x.toFixed(1)} ${k.y.toFixed(1)})`}>
+          <polygon points={`0,${-Z} ${W},${H - Z} 0,${2 * H - Z} ${-W},${H - Z}`} fill={k.top} />
+          <polygon points={`${-W},${H - Z} 0,${2 * H - Z} 0,${2 * H} ${-W},${H}`} fill={k.left} />
+          <polygon points={`${W},${H - Z} 0,${2 * H - Z} 0,${2 * H} ${W},${H}`} fill={k.right} />
+        </g>
+      ))
+    }
+  </svg>
+  <div class="hall__legend">
+    <span><i style="background:#4a5a94"></i>Cool</span>
+    <span><i style="background:#7e91cb"></i>Normal</span>
+    <span><i style="background:#e3a008"></i>Warm</span>
+    <span><i style="background:#e5484d"></i>Over limit</span>
+  </div>
+  {
+    scrubber && (
+      <div class="hall__scrub" aria-hidden="true">
+        <span class="hall__play" />
+        <div class="hall__track">
+          <b />
+        </div>
+        <span class="mono">-01:42:10</span>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .hall svg {
+    width: 100%;
+    height: auto;
+    background: radial-gradient(60% 60% at 50% 40%, #10122a, #06070f);
+  }
+  .hall__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .hall__legend i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: -1px;
+  }
+  .hall__scrub {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .hall__play {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background:
+      conic-gradient(from 90deg at 40% 50%, transparent 0 0) center / 0 0,
+      var(--accent-tile);
+    position: relative;
+  }
+  .hall__play::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 7px;
+    border: 6px solid transparent;
+    border-left: 9px solid var(--head);
+  }
+  .hall__track {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--ink-2);
+    position: relative;
+  }
+  .hall__track b {
+    position: absolute;
+    inset: 0 38% 0 0;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent-deep), var(--accent-text));
+  }
+  .hall__track b::after {
+    content: '';
+    position: absolute;
+    right: -7px;
+    top: -4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--head);
+    box-shadow: 0 0 12px var(--accent-text);
+  }
+</style>

@@ -1,0 +1,334 @@
+---
+import Shot from '../components/Shot.astro';
+import Backdrop from '../components/Backdrop.astro';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+
+const principles = [
+  {
+    icon: 'search',
+    title: 'Say Exactly What It Does',
+    text: 'We describe the product by what it reads, shows and records. If we cannot show a claim in a demo, it does not go on this site.',
+  },
+  {
+    icon: 'bell',
+    title: 'One Alarm Per Problem',
+    text: 'A lost chiller plant should be one line on the console with its symptoms folded under it, not hundreds of alarms competing for attention.',
+  },
+  {
+    icon: 'chart',
+    title: 'No LLM In The Detection Path',
+    text: 'Anomaly detection uses statistical baselines and data-quality checks that an operator can inspect and correct. No language model decides what is an alarm.',
+  },
+  {
+    icon: 'flag',
+    title: 'Say What Is Not Built Yet',
+    text: 'The product has so far run against a simulated estate, not a customer site. The Jira integration is in beta. We label both that way.',
+  },
+];
+
+const power = [
+  { label: 'Utility feed', value: '11 kV', state: '' },
+  { label: 'Switchgear', value: 'Closed', state: '' },
+  { label: 'UPS', value: '62 %', state: '' },
+  { label: 'PDUs', value: '412 kW', state: '' },
+];
+const cooling = [
+  { label: 'Cooling towers', value: 'Running', state: '' },
+  { label: 'Chillers', value: 'Tripped', state: 'crit' },
+  { label: 'Pumps', value: 'No flow', state: 'warn' },
+  { label: 'CRAHs', value: '24.8 °C', state: 'warn' },
+];
+
+const contact = [
+  { href: '/demo', icon: 'mail', label: 'Request a demo' },
+  { href: '/early-access', icon: 'flag', label: 'Apply for early access' },
+  { href: '/partners', icon: 'handshake', label: 'Partner with us' },
+];
+---
+
+<Base
+  title="Company"
+  description="Why SpectraDCIM was built, the four principles behind it, and how it is tested against a full simulated data centre."
+>
+  <PageHero slot="hero" pill="Company" title="Built By People Who Think The Plant Matters As Much As The Rack" center>
+    SpectraDCIM is data centre infrastructure management software that watches power, cooling and IT as one system.
+  </PageHero>
+
+  <!-- why -->
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <SectionHead pill="Why We Built It" title="An Outage Does Not Stop At The Hall Door" />
+        <div class="stack why__text">
+          <p data-anim="up">
+            Most monitoring tools watch either the IT room or the plant. The building management system knows a pump has
+            tripped. The IT tools know the servers are throttling. Nobody is shown that the first caused the second, so
+            the people on shift work it out by hand while the hall warms.
+          </p>
+          <p data-anim="up">
+            We built SpectraDCIM to hold both halves in one model: the electrical chain from the utility feed to the
+            outlet, the cooling chain from the chiller to the server inlet, and the IT equipment that depends on them.
+            When something fails upstream, the console shows the cause first.
+          </p>
+        </div>
+      </div>
+      <div class="grid why__stats">
+        <div class="stat" data-anim="up">
+          <div class="stat__num"><span data-count="45">45</span><em>%</em></div>
+          <div class="stat__label">Impactful Outages Caused By Power</div>
+          <p class="stat__cap">Uptime Institute Global Data Center Survey, 2025</p>
+        </div>
+        <div class="stat" data-anim="up">
+          <div class="stat__num"><span data-count="14">14</span><em>%</em></div>
+          <div class="stat__label">Caused By Cooling</div>
+          <p class="stat__cap">Uptime Institute Global Data Center Survey, 2025</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- principles -->
+  <section class="section pbg">
+    <Backdrop view="fpv" />
+    <div class="wrap">
+      <SectionHead pill="Principles" title="Four Things We Hold To" center>
+        They carry equal weight. Each one is a rule about the product and about how we describe it.
+      </SectionHead>
+      <ul class="grid grid-2 principles">
+        {
+          principles.map((p) => (
+            <li class="card card--grid principle" data-anim="up">
+              <span class="tile">
+                <Icon name={p.icon} />
+              </span>
+              <div>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- how we test -->
+  <section class="section">
+    <div class="wrap split">
+      <div class="card card--glow topo-card" data-anim="up-block">
+        <Shot name="site-view" alt="The simulated site in 3-D: building, substation, generator yard and compound" />
+      </div>
+      <div>
+        <SectionHead pill="How We Test" title="Against A Whole Data Centre, Simulated">
+          SpectraDCIM is tested against a full simulated data centre: two sites, each with its chiller plant, its
+          electrical chain and its IT equipment.
+        </SectionHead>
+        <div class="stack">
+          <p data-anim="up">
+            Every simulated device answers over the same management interfaces as the real equipment it stands for, so
+            the collectors read it exactly as they would read a live site. We can trip a chiller, fail a UPS or block a
+            filter, and watch what the platform does from the first alarm to the incident.
+          </p>
+          <p data-anim="up">
+            In a simulated chiller-plant loss, 727 raw alarms were presented as 9 console lines and 1 summary alarm.
+          </p>
+          <p class="test__limit" data-anim="up">
+            <span class="dot dot--info" aria-hidden="true"></span>This is the proof we have today. The product has not
+            yet run on a customer site, which is what early access is for.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section class="section pbg" id="contact">
+    <Backdrop view="world" />
+    <div class="wrap split split--top">
+      <div>
+        <SectionHead pill="Contact" title="How To Reach Us">
+          Contact details will be published here before launch. Until then, each of these routes leads to the right
+          form.
+        </SectionHead>
+      </div>
+      <ul class="contact">
+        {
+          contact.map((c) => (
+            <li data-anim="up">
+              <a class="card card--raised contact__item" href={c.href}>
+                <span class="ico">
+                  <Icon name={c.icon} size={20} />
+                </span>
+                {c.label}
+                <span class="contact__go" aria-hidden="true">
+                  <Icon name="arrow" size={16} />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .why__text {
+    --gap: 20px;
+  }
+  .why__stats {
+    gap: 24px;
+  }
+
+  /* principles */
+  .principles,
+  .contact {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .principle {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+  }
+  .principle .tile {
+    margin-bottom: 0;
+  }
+  @media (max-width: 480px) {
+    .principle {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* topology mock */
+  .topo-card {
+    padding: clamp(18px, 2.2vw, 30px);
+  }
+  .topo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .topo__lane {
+    display: grid;
+    gap: 18px;
+    grid-template-rows: auto repeat(4, minmax(0, 1fr));
+  }
+  .topo__head {
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .topo__node,
+  .topo__racks {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--ink-1);
+    color: var(--head);
+  }
+  .topo__node .mono,
+  .topo__racks .mono {
+    color: var(--muted);
+  }
+  /* connector down to the next node */
+  .topo__node::after {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 100%;
+    width: 1px;
+    height: 19px;
+    background: var(--line-strong);
+  }
+  .topo__lane .topo__node:last-child::after {
+    height: 26px;
+  }
+  .topo__node--crit {
+    border-color: var(--crit);
+  }
+  .topo__node--warn {
+    border-color: var(--warn);
+  }
+  .topo__racks {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+    z-index: 1;
+    border-color: var(--warn);
+    background: var(--ink-2);
+  }
+  @media (max-width: 420px) {
+    .topo {
+      gap: 10px;
+    }
+    .topo__node,
+    .topo__racks {
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+  }
+
+  .test__limit {
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--ink-0);
+    font-size: 15px;
+  }
+
+  /* contact */
+  .contact {
+    display: grid;
+    gap: 14px;
+  }
+  .contact__item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    color: var(--head);
+    font-family: var(--font-head);
+  }
+  .contact__item:hover {
+    color: var(--head);
+  }
+  .contact__item .ico {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent-tile);
+  }
+  .contact__go {
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--ink-2);
+    transition:
+      transform 0.2s ease,
+      background 0.15s ease-in-out;
+  }
+  .contact__item:hover .contact__go {
+    transform: rotate(-45deg);
+    background: var(--accent);
+  }
+</style>

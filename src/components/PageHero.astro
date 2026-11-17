@@ -1,0 +1,31 @@
+---
+// Hero for inner pages. Sits on the silk photo; an optional visual goes in the "visual" slot.
+import Btn from './Btn.astro';
+interface Props {
+  pill: string;
+  title: string;
+  center?: boolean;
+  cta?: boolean;
+}
+const { pill, title, center = false, cta = true } = Astro.props;
+const hasVisual = Astro.slots.has('visual');
+---
+
+<section class:list={['page-hero', { center: center && !hasVisual }]}>
+  <div class:list={['wrap', { split: hasVisual }]}>
+    <div>
+      <span class="pill" data-anim="up">{pill}</span>
+      <h1 data-anim="up">{title}</h1>
+      {Astro.slots.has('default') && <p class="lead" data-anim="up"><slot /></p>}
+      {
+        cta && (
+          <div class="btn-row">
+            <Btn href="/demo" anim>Request A Demo</Btn>
+            <Btn href="/platform" variant="dark" anim>Tour The Platform</Btn>
+          </div>
+        )
+      }
+    </div>
+    {hasVisual && <div data-anim="up-block"><slot name="visual" /></div>}
+  </div>
+</section>

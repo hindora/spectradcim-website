@@ -1,0 +1,261 @@
+---
+// Chilled water plant panel: chillers, loop readings, pumps, towers and a bypass valve.
+// Illustrative values only.
+const chillers = [
+  { id: 'CH-1', state: 'Running', load: 72 },
+  { id: 'CH-2', state: 'Running', load: 68 },
+  { id: 'CH-3', state: 'Standby', load: 0 },
+];
+const loop = [
+  { k: 'Supply', v: '12.0', u: '°C' },
+  { k: 'Return', v: '18.1', u: '°C' },
+  { k: 'Delta-T', v: '6.1', u: 'K' },
+  { k: 'Flow', v: '142', u: 'l/s' },
+];
+const pumps = [
+  { id: 'P-1', v: 64 },
+  { id: 'P-2', v: 64 },
+  { id: 'P-3', v: 0 },
+];
+const towers = [
+  { id: 'CT-1', v: 55 },
+  { id: 'CT-2', v: 52 },
+  { id: 'CT-3', v: 0 },
+];
+---
+
+<div class="mock plant" role="img" aria-label="Illustration of a cooling plant panel with three chillers, loop supply and return temperatures, pump speeds, tower fan speeds and a bypass valve position">
+  <div class="mock__bar"><i></i><i></i><i></i>Site 1 / Chilled Water Plant<span class="mono">2 of 3 staged</span></div>
+  <div class="plant__body">
+    <div class="plant__chillers">
+      {
+        chillers.map((c) => (
+          <div class:list={['plant__ch', { off: !c.load }]}>
+            <div class="plant__ch-top">
+              <strong>{c.id}</strong>
+              <span>
+                <i class:list={['dot', { 'dot--info': !c.load }]} />
+                {c.state}
+              </span>
+            </div>
+            <div class="plant__ring" style={`--p:${c.load}`}>
+              <b class="mono">{c.load ? `${c.load}%` : 'Off'}</b>
+            </div>
+            <small>{c.load ? 'Of rated load' : 'Next to stage'}</small>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="plant__loop">
+      {
+        loop.map((l) => (
+          <div>
+            <span>{l.k}</span>
+            <b class="mono">
+              {l.v}
+              <small>{l.u}</small>
+            </b>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="plant__rows">
+      <div class="plant__group">
+        <span class="plant__label">Pumps</span>
+        {
+          pumps.map((p) => (
+            <div class="plant__bar">
+              <span class="mono">{p.id}</span>
+              <i>
+                <b style={`width:${p.v}%`} />
+              </i>
+              <span class="mono">{p.v ? `${p.v}%` : 'Off'}</span>
+            </div>
+          ))
+        }
+      </div>
+      <div class="plant__group">
+        <span class="plant__label">Tower Fans</span>
+        {
+          towers.map((p) => (
+            <div class="plant__bar">
+              <span class="mono">{p.id}</span>
+              <i>
+                <b style={`width:${p.v}%`} />
+              </i>
+              <span class="mono">{p.v ? `${p.v}%` : 'Off'}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <div class="plant__valve">
+      <span>Bypass valve</span>
+      <i><b style="width:12%"></b></i>
+      <span class="mono">12% open</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .plant__body {
+    padding: 16px;
+    display: grid;
+    gap: 14px;
+  }
+  .plant__chillers {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .plant__ch {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--ink-0);
+    display: grid;
+    gap: 10px;
+    justify-items: center;
+    text-align: center;
+  }
+  .plant__ch-top {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .plant__ch-top strong {
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--head);
+  }
+  .plant__ch-top .dot {
+    margin-right: 5px;
+  }
+  .plant__ring {
+    width: 76px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(closest-side, var(--ink-0) 76%, transparent 78%),
+      conic-gradient(var(--accent-text) calc(var(--p) * 1%), var(--ink-2) 0);
+  }
+  .plant__ring b {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--head);
+  }
+  .plant__ch.off .plant__ring b {
+    color: var(--muted);
+  }
+  .plant__ch small {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .plant__loop {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--ink-1);
+  }
+  .plant__loop > div {
+    padding: 12px 14px;
+    display: grid;
+    gap: 2px;
+  }
+  .plant__loop > div + div {
+    border-left: 1px solid var(--line);
+  }
+  .plant__loop span {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .plant__loop b {
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--head);
+    white-space: nowrap;
+  }
+  .plant__loop small {
+    font-size: 11px;
+    margin-left: 3px;
+    color: var(--muted);
+  }
+  .plant__rows {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .plant__group,
+  .plant__valve {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--ink-0);
+  }
+  .plant__group {
+    display: grid;
+    gap: 8px;
+  }
+  .plant__label {
+    font-family: var(--font-head);
+    font-size: 13px;
+    color: var(--head);
+  }
+  .plant__bar,
+  .plant__valve {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr) 46px;
+    gap: 10px;
+    align-items: center;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .plant__valve {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    font-size: 12px;
+  }
+  .plant__bar > span:last-child {
+    text-align: right;
+  }
+  .plant__bar i,
+  .plant__valve i {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--ink-2);
+    overflow: hidden;
+  }
+  .plant__bar b,
+  .plant__valve b {
+    display: block;
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent-deep), var(--accent-text));
+  }
+  @media (max-width: 480px) {
+    .plant__loop {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .plant__loop > div:nth-child(3) {
+      border-left: 0;
+    }
+    .plant__loop > div:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+    }
+    .plant__rows {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .plant__ring {
+      width: 58px;
+    }
+  }
+</style>

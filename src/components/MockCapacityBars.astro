@@ -1,0 +1,128 @@
+---
+// Four capacity bars (power, cooling, space, ports) with the one that runs out first marked.
+// Illustrative values only.
+interface Item {
+  label: string;
+  pct: number;
+  value: string;
+  first?: boolean;
+}
+interface Props {
+  title?: string;
+  items?: Item[];
+}
+const {
+  title = 'Hall A / Capacity',
+  items = [
+    { label: 'Power', pct: 81, value: '486 of 600 kW', first: true },
+    { label: 'Cooling', pct: 68, value: '510 of 750 kW' },
+    { label: 'Space', pct: 57, value: '1,104 of 1,932 U' },
+    { label: 'Ports', pct: 44, value: '845 of 1,920' },
+  ],
+} = Astro.props;
+---
+
+<div class="mock cap" role="img" aria-label="Illustration of capacity bars for power, cooling, space and ports, with power marked as the first to run out">
+  <div class="mock__bar"><i></i><i></i><i></i>{title}<span>Used of installed</span></div>
+  <ul>
+    {
+      items.map((it) => (
+        <li class:list={{ first: it.first }}>
+          <div class="cap__row">
+            <strong>{it.label}</strong>
+            {it.first && <em>Runs out first</em>}
+            <span class="mono">{it.value}</span>
+          </div>
+          <div class="cap__track">
+            <b class="cap__fill" style={`width:${it.pct}%`} />
+            <i class="cap__limit" />
+          </div>
+          <div class="cap__foot mono">
+            <span>{it.pct}%</span>
+            <span>Planning limit 80%</span>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .cap ul {
+    list-style: none;
+    margin: 0;
+    padding: 18px 18px 20px;
+    display: grid;
+    gap: 18px;
+  }
+  .cap__row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .cap__row strong {
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--head);
+  }
+  .cap__row em {
+    font-style: normal;
+    font-size: 11px;
+    padding: 1px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--warn);
+    color: var(--warn);
+    white-space: nowrap;
+  }
+  .cap__row span {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .cap__track {
+    position: relative;
+    height: 12px;
+    margin-top: 8px;
+    border-radius: 6px;
+    background: var(--ink-2);
+  }
+  .cap__fill {
+    display: block;
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--accent-deep), var(--accent-text));
+    transform-origin: left center;
+    transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s;
+  }
+  .first .cap__fill {
+    background: linear-gradient(90deg, var(--accent-deep), var(--warn));
+  }
+  /* bars grow once the surrounding block has entered the viewport */
+  :global(.js [data-anim]:not(.is-in)) .cap__fill {
+    transform: scaleX(0);
+  }
+  .cap__limit {
+    position: absolute;
+    left: 80%;
+    top: -4px;
+    bottom: -4px;
+    width: 2px;
+    background: var(--head);
+    opacity: 0.55;
+  }
+  .cap__foot {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .cap__foot span:last-child {
+    opacity: 0;
+  }
+  .cap li:first-child .cap__foot span:last-child {
+    opacity: 1;
+  }
+</style>

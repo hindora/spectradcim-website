@@ -1,0 +1,222 @@
+---
+import Logo from './Logo.astro';
+import Btn from './Btn.astro';
+import Icon from './Icon.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const platform = [
+  { href: '/platform', label: 'Platform Overview' },
+  { href: '/platform/power', label: 'Power & Capacity' },
+  { href: '/platform/thermal', label: 'Thermal & Cooling' },
+  { href: '/platform/visualization', label: '3-D Floor & Replay' },
+  { href: '/platform/alarms', label: 'Alarms & Incidents' },
+  { href: '/platform/assets', label: 'Assets & Discovery' },
+];
+const links = [
+  { href: '/solutions', label: 'Solutions' },
+  { href: '/works-with', label: 'Works With' },
+  { href: '/partners', label: 'Partners' },
+  { href: '/resources', label: 'Resources' },
+  { href: '/company', label: 'Company' },
+];
+const inPlatform = path.startsWith('/platform');
+---
+
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <Logo />
+    <button class="hdr__burger" type="button" aria-expanded="false" aria-controls="site-menu" data-menu-btn>
+      <Icon name="menu" />
+      <span class="sr">Menu</span>
+    </button>
+    <nav class="hdr__nav" id="site-menu" aria-label="Main" data-menu>
+      <div class="dd">
+        <a href="/platform" class:list={['dd__top', { 'is-active': inPlatform }]} aria-current={inPlatform ? 'page' : undefined}>
+          Platform
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+          </svg>
+        </a>
+        <ul class="dd__menu">
+          {
+            platform.map((l) => (
+              <li>
+                <a href={l.href} aria-current={path === l.href ? 'page' : undefined}>
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      {
+        links.map((l) => (
+          <a href={l.href} class:list={{ 'is-active': path === l.href }} aria-current={path === l.href ? 'page' : undefined}>
+            {l.label}
+          </a>
+        ))
+      }
+      <span class="hdr__cta"><Btn href="/demo">Request A Demo</Btn></span>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hdr {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    padding-block: 14px;
+    background: #000;
+  }
+  .hdr__in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .hdr__nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hdr__nav > a,
+  .dd__top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 15px;
+    font-family: var(--font-head);
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.4;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .hdr__nav > a:hover,
+  .dd__top:hover,
+  .hdr__nav .is-active {
+    color: var(--accent-text);
+  }
+  .hdr__cta {
+    margin-left: 14px;
+  }
+  .hdr__cta :global(.btn) {
+    min-height: 44px;
+    padding: 9px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0;
+    background: transparent;
+    border-color: #fff;
+  }
+  .hdr__cta :global(.btn:hover) {
+    background: #fff;
+    color: #000;
+  }
+  .hdr__cta :global(.btn svg) {
+    display: none;
+  }
+  .dd {
+    position: relative;
+  }
+  .dd__menu {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    min-width: 250px;
+    margin: 0;
+    padding: 10px;
+    list-style: none;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--ink-1);
+    box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0.2s;
+  }
+  .dd:hover .dd__menu,
+  .dd:focus-within .dd__menu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .dd__menu a {
+    display: block;
+    padding: 11px 14px;
+    border-radius: 8px;
+    color: var(--body);
+    font-family: var(--font-head);
+    font-size: 15px;
+  }
+  .dd__menu a:hover,
+  .dd__menu a[aria-current='page'] {
+    background: var(--ink-2);
+    color: var(--head);
+  }
+  .hdr__burger {
+    display: none;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border-radius: 50%;
+    border: 0;
+    background: var(--accent-tile);
+    color: var(--head);
+    cursor: pointer;
+  }
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  @media (max-width: 1180px) {
+    .hdr {
+      padding-block: 12px;
+    }
+    .hdr__burger {
+      display: grid;
+    }
+    .hdr__nav {
+      display: none;
+      position: absolute;
+      left: var(--gutter);
+      right: var(--gutter);
+      top: calc(100% - 6px);
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--ink-1);
+    }
+    .hdr__nav.is-open {
+      display: flex;
+    }
+    .dd__menu {
+      position: static;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      border: 0;
+      box-shadow: none;
+      background: none;
+      padding: 0 0 6px 14px;
+    }
+    .hdr__cta {
+      margin: 10px 0 0;
+    }
+    .hdr__cta :global(.btn) {
+      width: 100%;
+    }
+  }
+</style>

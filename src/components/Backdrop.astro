@@ -1,0 +1,46 @@
+---
+// A real product view behind a band, in the manner of the reference site: the picture is pinned to
+// the viewport and clipped to the band, a flat dark shade lies over it, the band has hard edges,
+// and the picture drifts slowly as the page scrolls (see motion.js).
+// Put it as the first child of an element with class "pbg".
+interface Props {
+  /** one of the keys of SHADE below */
+  view: string;
+  /** override the shade, 0 to 1 */
+  dim?: number;
+  /** focal point, CSS background-position */
+  focus?: string;
+}
+// Shade per view: light floors need more, dark wireframes less, so text contrast stays the same.
+const SHADE: Record<string, number> = {
+  racks: 0.72,
+  aisle: 0.78,
+  fpv: 0.7,
+  hall: 0.75,
+  heat: 0.8,
+  temp: 0.8,
+  under: 0.8,
+  netroom: 0.72,
+  power: 0.82,
+  plant: 0.8,
+  ups: 0.82,
+  yard: 0.82,
+  roof: 0.8,
+  levels: 0.55,
+  building: 0.6,
+  site: 0.5,
+  world: 0.72,
+  worldpue: 0.35,
+};
+// Where the subject sits in a view, when it is not the centre.
+const FOCUS: Record<string, string> = { fpv: '64% center' };
+const { view } = Astro.props;
+const focus = Astro.props.focus ?? FOCUS[view] ?? 'center';
+const dim = Astro.props.dim ?? SHADE[view] ?? 0.75;
+const style = `--img:url(/bg/${view}-2400.webp);--img-sm:url(/bg/${view}-1200.webp);--dim:${dim};--focus:${focus}`;
+---
+
+<div class="pbg__clip" style={style} aria-hidden="true" data-pbg>
+  <div class="pbg__img"></div>
+  <div class="pbg__shade"></div>
+</div>

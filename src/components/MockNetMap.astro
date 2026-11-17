@@ -1,0 +1,164 @@
+---
+// Network map across five layers with one traced path highlighted. Illustrative only.
+const lanes = [
+  { key: 'prod', name: 'Production', y: 44, nodes: [['Spine', 210], ['Leaf', 320], ['Top Of Rack', 430], ['Server', 550]] },
+  { key: 'mgmt', name: 'Management', y: 110, nodes: [['Mgmt Core', 210], ['Mgmt Switch', 320], ['Controller', 550]] },
+  { key: 'power', name: 'Power', y: 176, nodes: [['UPS A', 210], ['RPP', 320], ['Rack PDU', 430]] },
+  { key: 'cool', name: 'Cooling', y: 242, nodes: [['Chiller', 210], ['CRAH', 320], ['Row 3 Zone', 430]] },
+  { key: 'field', name: 'Fieldbus', y: 308, nodes: [['Gateway', 210], ['Meter', 320], ['Valve', 430]] },
+] as const;
+// links between layers: [x1, y1, x2, y2]
+const cross = [
+  [550, 57, 550, 97],
+  [320, 123, 430, 163],
+  [320, 295, 320, 189],
+  [430, 295, 320, 255],
+  [430, 229, 550, 57],
+];
+const traced = new Set(['UPS A', 'RPP', 'Rack PDU', 'Server']);
+---
+
+<div class="mock nmap" role="img" aria-label="Illustration of a network map with five layers, production, management, power, cooling and fieldbus, and one traced path from a UPS through a panel and rack PDU to a server">
+  <div class="mock__bar"><i></i><i></i><i></i>Site 1 / Network Map<span>Trace: what feeds this server</span></div>
+  <div class="nmap__scroll">
+    <svg viewBox="0 0 640 352" preserveAspectRatio="xMidYMid meet">
+      {
+        lanes.map((l) => (
+          <g class={`nm-lane nm-lane--${l.key}`}>
+            <rect class="nm-band" x="8" y={l.y - 26} width="624" height="52" rx="10" />
+            <text class="nm-label" x="24" y={l.y + 4}>
+              {l.name}
+            </text>
+            {l.nodes.slice(1).map((n, k) => (
+              <line
+                class:list={['nm-link', { 'nm-link--on': traced.has(n[0]) && traced.has(l.nodes[k][0]) }]}
+                x1={l.nodes[k][1] + 44}
+                x2={n[1] - 44}
+                y1={l.y}
+                y2={l.y}
+              />
+            ))}
+          </g>
+        ))
+      }
+      {cross.map((c) => <line class="nm-link nm-link--x" x1={c[0]} y1={c[1]} x2={c[2]} y2={c[3]} />)}
+      {/* traced path leaving the power layer for the server */}
+      <path class="nm-link nm-link--on nm-trace" d="M474 176H490V44H506" />
+      {
+        lanes.map((l) =>
+          l.nodes.map((n) => (
+            <g class:list={['nm-node', `nm-node--${l.key}`, { 'nm-node--on': traced.has(n[0]) }]} transform={`translate(${n[1]} ${l.y})`}>
+              <rect x="-44" y="-13" width="88" height="26" rx="7" />
+              <text y="4" text-anchor="middle">
+                {n[0]}
+              </text>
+            </g>
+          )),
+        )
+      }
+    </svg>
+  </div>
+  <div class="nmap__legend">
+    <span><i class="nm-key nm-key--on"></i>Traced path</span>
+    <span><i class="nm-key"></i>Same layer</span>
+    <span><i class="nm-key nm-key--x"></i>Between layers</span>
+  </div>
+</div>
+
+<style>
+  .nmap__scroll {
+    overflow-x: auto;
+    background: radial-gradient(70% 80% at 50% 40%, #10122a, #06070f);
+  }
+  .nmap svg {
+    width: 100%;
+    min-width: 560px;
+    height: auto;
+  }
+  .nm-band {
+    fill: var(--ink-0);
+    stroke: var(--line);
+  }
+  .nm-lane--mgmt .nm-band,
+  .nm-lane--cool .nm-band {
+    fill: var(--ink-1);
+  }
+  .nm-label {
+    fill: var(--muted);
+    font-family: var(--font-head);
+    font-size: 12px;
+  }
+  .nm-link {
+    fill: none;
+    stroke: var(--accent-deep);
+    stroke-width: 1.5;
+  }
+  .nm-link--x {
+    stroke: var(--muted);
+    stroke-dasharray: 3 4;
+    opacity: 0.55;
+  }
+  .nm-link--on {
+    stroke: var(--head);
+    stroke-width: 2.5;
+    filter: drop-shadow(0 0 5px var(--accent-text));
+  }
+  .nm-trace {
+    stroke-dasharray: 8 6;
+    animation: nmDash 1.6s linear infinite;
+  }
+  @keyframes nmDash {
+    to {
+      stroke-dashoffset: -28;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nm-trace {
+      animation: none;
+    }
+  }
+  .nm-node rect {
+    fill: var(--ink-2);
+    stroke: var(--accent-deep);
+  }
+  .nm-node text {
+    fill: var(--body);
+    font-size: 10.5px;
+  }
+  .nm-node--prod rect {
+    stroke: var(--accent-text);
+  }
+  .nm-node--power rect {
+    stroke: var(--accent);
+  }
+  .nm-node--on rect {
+    fill: var(--accent);
+    stroke: var(--head);
+  }
+  .nm-node--on text {
+    fill: var(--head);
+  }
+  .nmap__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .nm-key {
+    display: inline-block;
+    width: 22px;
+    height: 0;
+    margin-right: 8px;
+    vertical-align: 4px;
+    border-top: 2px solid var(--accent-deep);
+  }
+  .nm-key--on {
+    border-top: 3px solid var(--head);
+  }
+  .nm-key--x {
+    border-top: 2px dashed var(--muted);
+  }
+</style>

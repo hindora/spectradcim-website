@@ -1,0 +1,622 @@
+---
+import Shot from '../../components/Shot.astro';
+import Backdrop from '../../components/Backdrop.astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import MockHall from '../../components/MockHall.astro';
+import MockWorldMap from '../../components/MockWorldMap.astro';
+import MockNetMap from '../../components/MockNetMap.astro';
+
+const ladder = [
+  { id: 'building', name: 'Building', text: 'The site as a whole, with its levels and its plant compound.' },
+  { id: 'level', name: 'Level', text: 'One floor, with every room on it and what each room is for.' },
+  { id: 'room', name: 'Room', text: 'Rows, aisles and room units, in plan or in 3-D.' },
+  { id: 'rack', name: 'Rack', text: 'The elevation, unit by unit, front and rear.' },
+  { id: 'device', name: 'Device', text: 'The device face, with its ports and their state.' },
+];
+
+// 2-D plan mock: four rows of racks in a 520 x 320 room
+const planRows = [0, 1, 2, 3].map((r) => ({
+  y: 62 + r * 62,
+  racks: Array.from({ length: 12 }, (_, c) => 78 + c * 31),
+}));
+const sensors = [
+  { x: 140, y: 108, v: '21.8' },
+  { x: 264, y: 108, v: '23.1' },
+  { x: 388, y: 108, v: '27.6', hot: true },
+  { x: 140, y: 232, v: '20.9' },
+  { x: 264, y: 232, v: '22.4' },
+  { x: 388, y: 232, v: '24.7' },
+];
+
+// replay frames: the same room at three moments, warming from one end
+const frameTimes = ['14:02', '14:06', '14:10'];
+const frames = frameTimes.map((t, f) => ({
+  t,
+  cells: Array.from({ length: 4 * 12 }, (_, k) => {
+    const r = Math.floor(k / 12);
+    const c = k % 12;
+    const d = Math.hypot(c - 8.5, (r - 1.2) * 2);
+    const h = Math.max(0, 1 - d / (2.2 + f * 2.4)) * (0.45 + f * 0.3);
+    return h > 0.62 ? 3 : h > 0.4 ? 2 : h > 0.16 ? 1 : 0;
+  }),
+}));
+const events = [
+  { at: 40, label: 'Chilled water supply lost', sev: 'crit' },
+  { at: 44, label: 'Supply air rising', sev: 'warn' },
+  { at: 48, label: 'Row 3 inlets above band', sev: 'warn' },
+];
+const clock = ['13:50', '14:00', '14:10', '14:20'];
+
+const mapChecks = [
+  { b: 'Pins by worst alarm.', t: 'Each site takes the colour of its most severe open alarm.' },
+  { b: 'Weather overlay.', t: 'Cloud and radar imagery drawn over the same map.' },
+  { b: 'Hazard overlay.', t: 'Published weather warnings and natural-hazard alerts near your sites.' },
+];
+---
+
+<Base
+  title="3-D Floor & Replay"
+  description="A 3-D model of every site from building to device face, with a heat map from live sensors and a timeline you can rewind."
+>
+  <PageHero slot="hero" pill="Platform" title="Walk The Building. Then Rewind It.">
+    A 3-D model of every site, from the building down to the device face, with a heat map drawn from live sensors and a
+    timeline you can scrub back through.
+    <Shot slot="visual" name="viewer-full" alt="The 3-D floor with room information and the replay timeline" />
+  </PageHero>
+
+  <!-- zoom ladder -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Zoom Ladder" title="Five Steps From The Building To The Port" center>
+        Each step down keeps your place, so the rack you open is the rack you were looking at in the room.
+      </SectionHead>
+      <ol class="ladder">
+        {
+          ladder.map((l, k) => (
+            <li class="card card--raised ladder__step" data-anim="up">
+              <div class="ladder__art" aria-hidden="true">
+                <svg viewBox="0 0 120 84">
+                  {l.id === 'building' && (
+                    <g>
+                      <polygon class="lz-face" points="24,34 60,18 96,34 96,66 60,80 24,66" />
+                      <path class="lz-line" d="M24 34l36 14 36-14M60 48v32M24 45l36 14 36-14M24 56l36 14 36-14" />
+                      <polygon class="lz-hot" points="24,45 60,59 96,45 96,56 60,70 24,56" />
+                    </g>
+                  )}
+                  {l.id === 'level' && (
+                    <g>
+                      <polygon class="lz-face" points="60,14 110,42 60,70 10,42" />
+                      <path class="lz-line" d="M35 28l50 28M47.5 49L72.5 35" />
+                      <polygon class="lz-hot" points="60,42 85,56 60,70 35,56" />
+                    </g>
+                  )}
+                  {l.id === 'room' && (
+                    <g>
+                      <rect class="lz-face" x="12" y="10" width="96" height="64" rx="4" />
+                      {[20, 36, 52].map((y) => [0, 1, 2, 3, 4, 5, 6].map((c) => <rect class:list={['lz-rack', { 'lz-hot': y === 36 && c > 3 }]} x={20 + c * 12} y={y} width="9" height="10" rx="1.5" />))}
+                    </g>
+                  )}
+                  {l.id === 'rack' && (
+                    <g>
+                      <rect class="lz-face" x="40" y="6" width="40" height="72" rx="3" />
+                      {[12, 20, 28, 36, 44, 52, 60, 68].map((y, i) => <rect class:list={['lz-rack', { 'lz-hot': i === 3 }]} x="44" y={y} width="32" height="5.5" rx="1" />)}
+                    </g>
+                  )}
+                  {l.id === 'device' && (
+                    <g>
+                      <rect class="lz-face" x="8" y="26" width="104" height="32" rx="4" />
+                      {[0, 1, 2, 3, 4, 5, 6, 7].map((c) => <rect class:list={['lz-rack', { 'lz-hot': c === 5 }]} x={16 + c * 9.5} y="34" width="6.5" height="6.5" rx="1" />)}
+                      {[0, 1, 2, 3, 4, 5, 6, 7].map((c) => <rect class="lz-rack" x={16 + c * 9.5} y="44" width="6.5" height="6.5" rx="1" />)}
+                      <circle class="lz-led" cx="100" cy="36" r="2.5" />
+                      <circle class="lz-led" cx="100" cy="47" r="2.5" />
+                    </g>
+                  )}
+                </svg>
+              </div>
+              <span class="ladder__n mono">{k + 1}</span>
+              <h3>{l.name}</h3>
+              <p>{l.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- plan and heat map -->
+  <section class="section pbg">
+    <Backdrop view="temp" />
+    <div class="wrap split">
+      <Shot name="plan-heat" alt="Hall plan from above with the heat-map plane at mid height" />
+      <div>
+        <SectionHead pill="Plan And 3-D" title="The Same Room, Flat Or Standing Up">
+          Use the 2-D plan to read a whole room at once and the 3-D view to stand in an aisle. Both are drawn from the
+          same model, so a rack is in the same place in each.
+        </SectionHead>
+        <div class="grid heat-notes">
+          <div class="card card--raised" data-anim="up">
+            <h3>Heat-Map Planes From Live Sensors</h3>
+            <p>
+              The heat map is interpolated between the readings of real sensors at the height you choose. It shows what
+              was measured, and it is not an airflow simulation.
+            </p>
+          </div>
+          <div class="card card--raised" data-anim="up">
+            <h3>Empty Positions Are Drawn Too</h3>
+            <p>Unfilled cabinets and blanked positions appear in the row, so the picture matches what you see on the floor.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- replay -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Thermal Replay" title="Scrub The Last Hours Like Video" center>
+        Drag the timeline back and the room redraws as it was. The alarms of that period sit on the same track, so you
+        can watch a fault arrive and spread.
+      </SectionHead>
+      <Shot name="replay-wide" alt="Replay timeline under the 3-D hall: marker scrubbed back, play controls, step, speed and compare" />
+      <div class="grid grid-3 replay-notes">
+        <div data-anim="up">
+          <h3>Play, Step Or Jump</h3>
+          <p>Play it through at speed, step frame by frame, or jump straight to the moment an alarm was raised.</p>
+        </div>
+        <div data-anim="up">
+          <h3>The Room As It Was</h3>
+          <p>Each frame is rebuilt from the sensor readings stored for that moment, not from a recording of the screen.</p>
+        </div>
+        <div data-anim="up">
+          <h3>Evidence For The Review</h3>
+          <p>Use the replay after an incident to show what warmed first and how long it took to reach the racks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- world map -->
+  <section class="section pbg">
+    <Backdrop view="world" />
+    <div class="wrap split">
+      <div>
+        <SectionHead pill="World Map" title="Every Site, And The Weather Above It">
+          The estate opens on a map. A site that needs attention stands out before you read a single number, and the
+          conditions outside are drawn over it.
+        </SectionHead>
+        <ul class="checks" data-anim="up">
+          {
+            mapChecks.map((c) => (
+              <li>
+                <span>
+                  <strong>{c.b}</strong> {c.t}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div data-anim="up-block">
+        <Shot name="world" alt="World map with both sites and their state" />
+      </div>
+    </div>
+  </section>
+
+  <!-- network map -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Network Map" title="Five Layers, One Map Of What Connects To What">
+        Production network, management network, power, cooling and fieldbus are drawn as layers of the same map. A
+        device appears once and keeps its links in every layer it belongs to.
+      </SectionHead>
+      <div class="net">
+        <div data-anim="up-block">
+          <Shot name="connectivity" alt="Connectivity map across rooms" />
+        </div>
+        <div class="grid net__cards">
+          <div class="card card--grid" data-anim="up">
+            <span class="tile"><Icon name="search" /></span>
+            <h3>Trace</h3>
+            <p>Pick a device and follow what feeds it, layer by layer: its power path, its cooling, its uplinks.</p>
+          </div>
+          <div class="card card--grid" data-anim="up">
+            <span class="tile"><Icon name="tree" /></span>
+            <h3>Impact</h3>
+            <p>Pick a device and see everything that depends on it, before you switch it off for maintenance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  /* zoom ladder */
+  .ladder {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .ladder__step {
+    padding: 14px 14px 24px;
+    overflow: visible;
+  }
+  .ladder__step > :not(.ladder__art) {
+    margin-inline: 10px;
+  }
+  .ladder__art {
+    border-radius: 10px;
+    margin-bottom: 18px;
+    background-color: var(--ink-0);
+    background-image: var(--grid-lines);
+    background-size: 22px 22px;
+    padding: 14px;
+  }
+  .ladder__art svg {
+    width: 100%;
+    height: auto;
+    transition: transform 0.35s ease;
+  }
+  .ladder__step:hover .ladder__art svg {
+    transform: scale(1.08);
+  }
+  .ladder__n {
+    display: inline-grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--accent-tile);
+    color: var(--head);
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+  .ladder__step h3 {
+    font-size: 20px;
+  }
+  .ladder__step p {
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  .ladder__step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 70px;
+    width: 21px;
+    height: 2px;
+    background: var(--accent-text);
+  }
+  .lz-face {
+    fill: var(--ink-2);
+    stroke: var(--accent-text);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+  .lz-line {
+    fill: none;
+    stroke: var(--accent-text);
+    stroke-width: 1;
+    opacity: 0.7;
+  }
+  .lz-rack {
+    fill: var(--accent-deep);
+  }
+  .lz-hot {
+    fill: var(--accent);
+    stroke: none;
+  }
+  .lz-led {
+    fill: var(--ok);
+  }
+  @media (max-width: 1100px) {
+    .ladder {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .ladder__step::after {
+      display: none;
+    }
+  }
+  @media (max-width: 700px) {
+    .ladder {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+  }
+  @media (max-width: 420px) {
+    .ladder {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* plan */
+  .plan svg {
+    width: 100%;
+    height: auto;
+    background: #06070f;
+  }
+  .pl-room {
+    fill: var(--ink-0);
+    stroke: var(--line-strong);
+  }
+  .pl-cool {
+    fill: var(--accent-deep);
+    opacity: 0.8;
+  }
+  .pl-warm {
+    fill: var(--warn);
+    opacity: 0.55;
+  }
+  .pl-hot {
+    fill: var(--crit);
+    opacity: 0.8;
+  }
+  .pl-rack {
+    fill: var(--ink-2);
+    stroke: var(--line-strong);
+    opacity: 0.9;
+  }
+  .pl-dot {
+    fill: var(--head);
+    stroke: var(--ink-0);
+    stroke-width: 2;
+  }
+  .pl-dot.hot {
+    fill: var(--crit);
+    stroke: var(--head);
+    stroke-width: 1.5;
+  }
+  .pl-val {
+    fill: var(--head);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .pl-cap {
+    fill: var(--muted);
+    font-size: 10.5px;
+  }
+  .plan__modes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .plan__modes span:not(.gap) {
+    padding: 3px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+  }
+  .plan__modes .gap {
+    flex: 1;
+  }
+  .plan__modes .on {
+    background: var(--accent);
+    border-color: var(--line-strong);
+    color: #fff;
+  }
+  .heat-notes {
+    gap: 16px;
+  }
+  .heat-notes .card {
+    padding: 24px;
+  }
+  .heat-notes h3 {
+    font-size: 20px;
+  }
+
+  /* replay */
+  .replay__frames {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    padding: 18px 18px 6px;
+  }
+  .replay__frame {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--ink-0);
+    display: grid;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+  }
+  .replay__frame.now {
+    border-color: var(--accent-text);
+    box-shadow: 0 0 0 3px rgba(126, 145, 203, 0.18);
+    color: var(--head);
+  }
+  .replay__cells {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 3px;
+  }
+  .replay__cells i {
+    aspect-ratio: 1 / 1.25;
+    border-radius: 2px;
+    background: var(--accent-deep);
+  }
+  .replay__cells .h1 {
+    background: var(--accent-text);
+  }
+  .replay__cells .h2 {
+    background: var(--warn);
+  }
+  .replay__cells .h3 {
+    background: var(--crit);
+  }
+  .replay__bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 18px 6px;
+  }
+  .replay__play {
+    flex: none;
+    position: relative;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--accent-tile);
+  }
+  .replay__play::after {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 10px;
+    border: 7px solid transparent;
+    border-left: 11px solid var(--head);
+  }
+  .replay__track {
+    position: relative;
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--ink-2);
+  }
+  .replay__track b {
+    position: absolute;
+    inset: 0 46% 0 0;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent-deep), var(--accent-text));
+  }
+  .replay__track i {
+    position: absolute;
+    top: -7px;
+    width: 3px;
+    height: 22px;
+    margin-left: -1px;
+    border-radius: 2px;
+    background: var(--warn);
+  }
+  .replay__track i.crit {
+    background: var(--crit);
+  }
+  .replay__track u {
+    position: absolute;
+    left: 54%;
+    top: -5px;
+    width: 18px;
+    height: 18px;
+    margin-left: -9px;
+    border-radius: 50%;
+    background: var(--head);
+    box-shadow: 0 0 14px var(--accent-text);
+    animation: replayNudge 3.6s ease-in-out infinite alternate;
+  }
+  @keyframes replayNudge {
+    to {
+      transform: translateX(26px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .replay__track u {
+      animation: none;
+    }
+  }
+  .replay__speed {
+    display: flex;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .replay__speed span {
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+  }
+  .replay__speed .on {
+    background: var(--accent);
+    border-color: var(--line-strong);
+    color: #fff;
+  }
+  .replay__clock {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 132px 0 68px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .replay__events {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 12px 18px 14px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 24px;
+    font-size: 12px;
+    color: var(--body);
+  }
+  .replay-notes {
+    margin-top: clamp(32px, 4vw, 56px);
+    gap: clamp(24px, 3vw, 48px);
+  }
+  .replay-notes h3 {
+    font-size: 20px;
+  }
+  .replay-notes p {
+    margin-top: 12px;
+    max-width: 38ch;
+  }
+  @media (max-width: 560px) {
+    .replay__frames {
+      gap: 8px;
+      padding-inline: 12px;
+    }
+    .replay__frame {
+      padding: 6px;
+    }
+    .replay__speed span:not(.on) {
+      display: none;
+    }
+    .replay__clock {
+      padding: 4px 62px 0 68px;
+    }
+    .replay__clock span:nth-child(even) {
+      display: none;
+    }
+  }
+
+  /* checks with a bold lead-in */
+  .checks li span {
+    min-width: 0;
+  }
+
+  /* network map */
+  .net {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+  .net__cards {
+    gap: 24px;
+  }
+  @media (max-width: 1000px) {
+    .net {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .net__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .net__cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

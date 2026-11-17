@@ -1,0 +1,49 @@
+---
+// A real screen from SpectraDCIM (captured on the simulated estate), not a drawing.
+// Files live in public/shots; sizes come from _sizes.json so the page does not shift while loading.
+import sizes from '../../public/shots/_sizes.json';
+interface Props {
+  name: string;
+  alt: string;
+  caption?: string;
+}
+const { name, alt, caption } = Astro.props;
+const [w, h] = (sizes as Record<string, number[]>)[name] ?? [1600, 900];
+---
+
+<figure class="shot">
+  <a href={`/shots/${name}.webp`} target="_blank" rel="noopener" aria-label={`${alt} (opens the full-size screen)`}>
+    <img src={`/shots/${name}.webp`} width={w} height={h} alt={alt} loading="lazy" decoding="async" />
+  </a>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .shot {
+    margin: 0;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: #0b0e14;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.9);
+  }
+  .shot a {
+    display: block;
+    cursor: zoom-in;
+  }
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+  }
+  .shot a:hover img {
+    transform: scale(1.03);
+  }
+  .shot figcaption {
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+  }
+</style>

@@ -1,0 +1,180 @@
+---
+// World map with site pins coloured by worst open alarm, a weather layer and one hazard area.
+// Illustrative values only; the land shapes are deliberately rough.
+interface Props {
+  title?: string;
+  list?: boolean;
+}
+const { title = 'Estate / World Map', list = true } = Astro.props;
+const land = [
+  '21,43 71,36 151,32 210,57 226,76 187,98 176,116 148,114 133,124 164,133 178,146 150,132 112,103 100,80 80,57 36,57',
+  '181,142 213,146 258,171 249,199 217,228 199,256 188,240 194,192 176,169',
+  '302,96 304,84 320,71 334,57 364,36 427,36 498,23 569,30 640,39 604,53 572,71 551,85 535,107 512,124 505,156 494,146 484,123 462,146 448,124 427,116 409,137 396,137 382,107 370,96 341,92',
+  '292,133 309,98 338,94 377,105 396,140 411,140 391,187 377,210 356,220 341,190 336,153 306,151',
+  '523,199 553,181 572,180 592,208 580,228 553,217 526,220',
+];
+const sites = [
+  { name: 'Site 1', x: 183, y: 91, sev: 'ok', note: 'No open alarms' },
+  { name: 'Site 2', x: 334, y: 71, sev: 'warn', note: '2 warnings' },
+  { name: 'Site 3', x: 450, y: 126, sev: 'ok', note: 'No open alarms' },
+  { name: 'Site 4', x: 505, y: 156, sev: 'crit', note: '1 critical' },
+];
+const uid = `wm-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="mock wmap" role="img" aria-label="Illustration of a world map with four site pins coloured by their worst open alarm, a weather layer and one hazard area near a site">
+  <div class="mock__bar"><i></i><i></i><i></i>{title}<span>Weather and hazards on</span></div>
+  <svg viewBox="0 0 640 300" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <filter id={`${uid}-b`} x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="9"></feGaussianBlur>
+      </filter>
+    </defs>
+    {[60, 120, 180, 240].map((y) => <line class="wm-grat" x1="0" x2="640" y1={y} y2={y} />)}
+    {[80, 160, 240, 320, 400, 480, 560].map((x) => <line class="wm-grat" y1="0" y2="300" x1={x} x2={x} />)}
+    {land.map((p) => <polygon class="wm-land" points={p} />)}
+    {/* weather layer */}
+    <g filter={`url(#${uid}-b)`}>
+      <ellipse class="wm-rain" cx="300" cy="62" rx="46" ry="16" />
+      <ellipse class="wm-rain" cx="140" cy="84" rx="30" ry="12" />
+      <ellipse class="wm-rain" cx="530" cy="150" rx="34" ry="20" />
+    </g>
+    {/* hazard area */}
+    <circle class="wm-haz" cx="522" cy="152" r="34" />
+    <text class="wm-hazt" x="562" y="140">Storm warning</text>
+    {
+      sites.map((s) => (
+        <g class={`wm-pin wm-pin--${s.sev}`} transform={`translate(${s.x} ${s.y})`}>
+          <circle class="wm-halo" r="11" />
+          <circle class="wm-core" r="5" />
+          <text class="wm-name" x="0" y="-16" text-anchor="middle">
+            {s.name}
+          </text>
+        </g>
+      ))
+    }
+  </svg>
+  {
+    list && (
+      <ul class="wmap__list">
+        {sites.map((s) => (
+          <li>
+            <span class={`dot ${s.sev === 'ok' ? '' : `dot--${s.sev}`}`} />
+            <strong>{s.name}</strong>
+            <small>{s.note}</small>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</div>
+
+<style>
+  .wmap svg {
+    width: 100%;
+    height: auto;
+    background: radial-gradient(70% 80% at 50% 40%, #10122a, #06070f);
+  }
+  .wm-grat {
+    stroke: var(--line);
+  }
+  .wm-land {
+    fill: var(--ink-2);
+    stroke: var(--accent-deep);
+    stroke-linejoin: round;
+  }
+  .wm-rain {
+    fill: var(--accent-text);
+    opacity: 0.5;
+  }
+  .wm-haz {
+    fill: none;
+    stroke: var(--warn);
+    stroke-width: 1.5;
+    stroke-dasharray: 5 5;
+  }
+  .wm-hazt {
+    fill: var(--warn);
+    font-size: 10.5px;
+  }
+  .wm-name {
+    fill: var(--head);
+    font-family: var(--font-head);
+    font-size: 11px;
+  }
+  .wm-pin {
+    color: var(--ok);
+  }
+  .wm-pin--warn {
+    color: var(--warn);
+  }
+  .wm-pin--crit {
+    color: var(--crit);
+  }
+  .wm-core {
+    fill: currentColor;
+    stroke: var(--head);
+    stroke-width: 1.5;
+  }
+  .wm-halo {
+    fill: currentColor;
+    opacity: 0.28;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .wm-pin--crit .wm-halo,
+  .wm-pin--warn .wm-halo {
+    animation: wmPulse 2.2s ease-out infinite;
+  }
+  @keyframes wmPulse {
+    from {
+      transform: scale(0.6);
+      opacity: 0.5;
+    }
+    to {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wm-halo {
+      animation: none !important;
+    }
+  }
+  .wmap__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+  .wmap__list li {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+  .wmap__list li + li {
+    border-left: 1px solid var(--line);
+  }
+  .wmap__list strong {
+    font-weight: 500;
+    color: var(--head);
+  }
+  .wmap__list small {
+    display: block;
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 11px;
+  }
+  @media (max-width: 560px) {
+    .wmap__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .wmap__list li:nth-child(3) {
+      border-left: 0;
+    }
+    .wmap__list li:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>
