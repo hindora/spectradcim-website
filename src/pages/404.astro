@@ -1,0 +1,68 @@
+---
+// Shown for any address that does not exist (the server sends /404.html).
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+
+const places = [
+  { href: '/', label: 'Home', text: 'What SpectraDCIM is, in one page.' },
+  { href: '/platform', label: 'Platform', text: 'Power, cooling, the 3-D floor, alarms and assets.' },
+  { href: '/solutions', label: 'Solutions', text: 'By the kind of site you run and the question you are asked.' },
+  { href: '/resources', label: 'Resources', text: 'The guides we are writing.' },
+  { href: '/demo', label: 'Request a demo', text: 'Thirty minutes on a running estate.' },
+];
+---
+
+<Base title="Page not found" description="This address does not exist on spectradcim.com." bg="hall" noindex>
+  <PageHero slot="hero" pill="Page not found" title="There is no page at this address" center cta={false}>
+    The link may be old, or the address may have been typed wrongly. These pages do exist.
+  </PageHero>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <ul class="places">
+        {
+          places.map((p) => (
+            <li>
+              <a href={p.href}>
+                <strong>{p.label}</strong>
+                <span>{p.text}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .places {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 760px;
+    border-bottom: 1px solid var(--line);
+  }
+  .places a {
+    display: grid;
+    grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+    gap: var(--s-2) var(--s-5);
+    padding: var(--s-4) 0;
+    border-top: 1px solid var(--line);
+    color: var(--text);
+  }
+  .places strong {
+    color: var(--signal);
+  }
+  .places span {
+    color: var(--text-muted);
+  }
+  .places a:hover strong {
+    color: var(--text-head);
+  }
+  @media (max-width: 640px) {
+    .places a {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

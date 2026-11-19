@@ -11,8 +11,10 @@ interface Props {
   heroClass?: string;
   /** Hero background view: racks, aisle, heat, hall, site, net or world. Defaults by page. */
   bg?: string;
+  /** Keep this page out of search results (the page-not-found page). */
+  noindex?: boolean;
 }
-const { title, description, heroClass = '', bg } = Astro.props;
+const { title, description, heroClass = '', bg, noindex = false } = Astro.props;
 
 // Hero background: a real 3-D, first-person or world-map view from the product (simulated estate),
 // chosen to match what the page is about.
@@ -36,6 +38,8 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const view = bg ?? byPath[path] ?? 'hall';
 // The one public address of this page (always with the trailing slash the server serves).
 const canonical = new URL(path === '/' ? '/' : `${path}/`, Astro.site).href;
+// The picture a link preview shows. Source: assets/share/og.html.
+const shareImage = new URL('/og.jpg', Astro.site).href;
 const fullTitle = title === 'Home' ? 'SpectraDCIM | Power, cooling and IT watched as one' : `${title} | SpectraDCIM`;
 ---
 
@@ -48,9 +52,16 @@ const fullTitle = title === 'Home' ? 'SpectraDCIM | Power, cooling and IT watche
     <meta name="description" content={description} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <link rel="canonical" href={canonical} />
-    <meta property="og:url" content={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SpectraDCIM" />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SpectraDCIM: a server hall in 3-D with a heat map and a replay timeline, on a simulated estate" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={shareImage} />
     <meta name="theme-color" content="#000000" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />

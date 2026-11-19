@@ -3,6 +3,7 @@ import type { APIRoute } from 'astro';
 
 const pages = Object.keys(import.meta.glob('./**/*.astro'))
   .map((f) => f.replace(/^\./, '').replace(/\.astro$/, '').replace(/\/index$/, ''))
+  .filter((p) => p !== '/404')
   .map((p) => (p === '' ? '/' : `${p}/`))
   .sort();
 
