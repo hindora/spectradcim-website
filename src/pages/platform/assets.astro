@@ -31,7 +31,7 @@ const queue = [
   { addr: '10.51.4.31', what: 'Server management controller', cls: 'IT', net: 'Hall A management', seen: '2 min ago', act: 'Commission' },
   { addr: '10.50.2.14', what: 'Top-of-rack switch, 48 ports', cls: 'IT', net: 'Production', seen: '9 min ago', act: 'Commission' },
   { addr: '10.52.1.9', what: 'Cooling unit controller', cls: 'Cooling', net: 'Plant', seen: '1 h ago', act: 'Commission' },
-  { addr: '10.51.4.40', what: 'Not recognised yet', cls: 'Unclassified', net: 'Hall A management', seen: '1 h ago', act: 'Review' },
+  { addr: '10.51.4.40', what: 'Not recognized yet', cls: 'Unclassified', net: 'Hall A management', seen: '1 h ago', act: 'Review' },
 ];
 
 const steps = [
@@ -56,11 +56,11 @@ const tree = [
 
 const records = [
   { icon: 'file', title: 'Contracts', text: 'Warranty and support contracts sit on the devices they cover, with their end dates in view.' },
-  { icon: 'wrench', title: 'Spare Parts', text: 'What is on the shelf, at which site, and which equipment it fits.' },
+  { icon: 'wrench', title: 'Spare parts', text: 'What is on the shelf, at which site, and which equipment it fits.' },
   { icon: 'flag', title: 'Reservations', text: 'Hold rack units for equipment that is on order, so the space is still free when it arrives.' },
   { icon: 'tag', title: 'Tags', text: 'Label devices by owner, project or tenant, then filter any list by the label.' },
-  { icon: 'clock', title: 'Maintenance Windows', text: 'Plan the work against the device, and its alarms are suppressed for exactly that period.' },
-  { icon: 'link', title: 'Export To Jira Assets', beta: true, text: 'Send the inventory to Jira Assets so a ticket can point at the real device.' },
+  { icon: 'clock', title: 'Maintenance windows', text: 'Plan the work against the device, and its alarms are suppressed for exactly that period.' },
+  { icon: 'link', title: 'Export to Jira assets', beta: true, text: 'Send the inventory to Jira Assets so a ticket can point at the real device.' },
 ];
 
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -72,10 +72,10 @@ const windows = [
 ---
 
 <Base
-  title="Assets & Discovery"
+  title="Assets & discovery"
   description="SpectraDCIM finds devices on the network, commissions them into racks, and keeps the inventory true from site down to rack unit."
 >
-  <PageHero slot="hero" pill="Platform" title="An Inventory That Matches The Floor.">
+  <PageHero slot="hero" pill="Platform" title="An inventory that matches the floor.">
     Devices are found on the network, placed in a rack position, and monitored from then on. The record and the room
     stay the same thing.
     <Shot slot="visual" name="inventory" alt="Inventory: asset tag, name, type, model, location and lifecycle for every asset" />
@@ -84,7 +84,7 @@ const windows = [
   <!-- discovery queue -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Discovery" title="New Devices Wait In A Queue, Not In A Spreadsheet">
+      <SectionHead pill="Discovery" title="New devices wait in a queue, not in a spreadsheet">
         Anything that appears on the network is listed with what it looks like. Nothing joins the inventory until a
         person commissions it.
       </SectionHead>
@@ -111,7 +111,7 @@ const windows = [
     <div class="wrap split">
       <Shot name="placement" alt="Placement: rooms per site with racks, assets, free rack units and rated power" />
       <div>
-        <SectionHead pill="Estate" title="From The Site Down To The Rack Unit">
+        <SectionHead pill="Estate" title="From the site down to the rack unit">
           Every device has one address in the estate: site, room, row, rack and the units it occupies. Alarms, power
           readings and floor views all use that same address.
         </SectionHead>
@@ -133,7 +133,7 @@ const windows = [
   <!-- records -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Records" title="What Else Is Kept Beside The Device" center>
+      <SectionHead pill="Records" title="What else is kept beside the device" center>
         The paperwork an operations team otherwise tracks in separate files.
       </SectionHead>
       <div class="grid grid-3">
@@ -160,7 +160,7 @@ const windows = [
     <Backdrop view="netroom" />
     <div class="wrap split">
       <div>
-        <SectionHead pill="Maintenance" title="Planned Work Should Not Look Like A Fault">
+        <SectionHead pill="Maintenance" title="Planned work should not look like a fault">
           Put a device, a rack or a whole room into a maintenance window. Its alarms are held back while the work is
           done, and they are still recorded.
         </SectionHead>
@@ -188,20 +188,20 @@ const windows = [
     min-width: 0;
   }
   .more {
-    margin-top: 28px;
+    margin-top: var(--s-6);
   }
 
   /* rack elevation */
   .elev__body {
     display: grid;
     grid-template-columns: minmax(150px, 0.8fr) minmax(0, 1fr);
-    gap: 20px;
-    padding: 18px;
+    gap: var(--s-5);
+    padding: var(--s-4);
   }
   .elev__rack {
     display: grid;
     grid-template-columns: 22px minmax(0, 1fr);
-    gap: 8px;
+    gap: var(--s-2);
   }
   .elev__nums,
   .elev__slots {
@@ -210,16 +210,16 @@ const windows = [
     gap: 2px;
   }
   .elev__nums {
-    padding-block: 7px;
+    padding-block: var(--s-2);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 12px;
     line-height: 8px;
     color: var(--muted);
     text-align: right;
   }
   .elev__slots {
-    padding: 6px;
-    border-radius: 8px;
+    padding: var(--s-2);
+    border-radius: var(--r-card);
     border: 1px solid var(--line-strong);
     background:
       repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0 8px, transparent 8px 10px) content-box,
@@ -264,7 +264,7 @@ const windows = [
       var(--accent-tile);
   }
   .dev--reserved {
-    background: repeating-linear-gradient(135deg, rgba(126, 145, 203, 0.22) 0 6px, transparent 6px 12px);
+    background: repeating-linear-gradient(135deg, rgba(76, 195, 255, 0.22) 0 6px, transparent 6px 12px);
     border: 1px dashed var(--accent-text);
   }
   .dev--reserved::after {
@@ -273,17 +273,17 @@ const windows = [
   .elev__side {
     display: grid;
     align-content: start;
-    gap: 16px;
+    gap: var(--s-4);
     min-width: 0;
   }
   .elev__kpis {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    gap: var(--s-2);
   }
   .elev__kpis div {
-    padding: 10px;
-    border-radius: 10px;
+    padding: var(--s-2);
+    border-radius: var(--r-card);
     background: var(--ink-0);
     border: 1px solid var(--line);
     display: grid;
@@ -295,7 +295,7 @@ const windows = [
     color: var(--head);
   }
   .elev__kpis span {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
   }
   .elev__list {
@@ -303,29 +303,29 @@ const windows = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 10px;
-    font-size: 13px;
+    gap: var(--s-2);
+    font-size: 14px;
     color: var(--head);
     line-height: 1.35;
   }
   .elev__list li {
     display: grid;
     gap: 1px;
-    padding-bottom: 10px;
+    padding-bottom: var(--s-2);
     border-bottom: 1px solid var(--line);
   }
   .elev__list li:last-child {
     border-bottom: 0;
   }
   .elev__list .mono {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--accent-text);
   }
   @media (max-width: 420px) {
     .elev__body {
       grid-template-columns: 118px minmax(0, 1fr);
-      gap: 14px;
-      padding: 14px;
+      gap: var(--s-4);
+      padding: var(--s-4);
     }
     .elev__kpis {
       grid-template-columns: 1fr;
@@ -341,7 +341,7 @@ const windows = [
     font-size: 14px;
   }
   .queue th[scope='col'] {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--muted);
     background: transparent;
     white-space: nowrap;
@@ -355,17 +355,17 @@ const windows = [
     white-space: nowrap;
   }
   .queue td.mono {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--accent-text);
   }
   .queue__act {
     display: inline-block;
-    padding: 6px 16px;
+    padding: var(--s-2) var(--s-4);
     border-radius: var(--radius-sm);
     background: var(--accent);
     border: 1px solid var(--line-strong);
     color: #fff;
-    font-size: 13px;
+    font-size: 14px;
   }
   .queue__act--alt {
     background: var(--ink-2);
@@ -375,7 +375,7 @@ const windows = [
 
   .steps {
     list-style: none;
-    margin: 28px 0 0;
+    margin: var(--s-6) 0 0;
     padding: 0;
   }
   .step__n {
@@ -383,7 +383,7 @@ const windows = [
     place-items: center;
     width: 34px;
     height: 34px;
-    margin-bottom: 18px;
+    margin-bottom: var(--s-4);
     border-radius: 50%;
     background: var(--accent-tile);
     color: var(--head);
@@ -399,16 +399,16 @@ const windows = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 6px;
+    gap: var(--s-2);
     font-size: 14px;
   }
   .tree li {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--s-2);
     min-height: 42px;
-    padding: 8px 12px;
-    border-radius: 10px;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-1);
     position: relative;
@@ -438,7 +438,7 @@ const windows = [
     border-bottom-left-radius: 6px;
   }
   .tree .on {
-    border-color: rgba(126, 145, 203, 0.6);
+    border-color: rgba(76, 195, 255, 0.6);
     background: var(--ink-2);
   }
   .tree .ghost {
@@ -450,7 +450,7 @@ const windows = [
     flex: none;
     width: 26px;
     height: 26px;
-    border-radius: 6px;
+    border-radius: var(--r-small);
     background: var(--accent-tile);
     color: var(--head);
   }
@@ -467,7 +467,7 @@ const windows = [
     white-space: nowrap;
   }
   .tree strong.mono {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--accent-text);
   }
   .tree__item {
@@ -479,7 +479,7 @@ const windows = [
   .tree em {
     margin-left: auto;
     font-style: normal;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
     white-space: nowrap;
   }
@@ -493,11 +493,11 @@ const windows = [
   .win__days {
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .win__days span {
-    padding: 0 0 8px 8px;
+    padding: 0 0 var(--s-2) var(--s-2);
     border-left: 1px solid var(--line);
   }
   .win__rows {
@@ -505,12 +505,12 @@ const windows = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 24px;
+    gap: var(--s-5);
   }
   .win__track {
     position: relative;
     height: 14px;
-    border-radius: 7px;
+    border-radius: var(--r-card);
     background:
       repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px calc(100% / 7)),
       var(--ink-0);
@@ -519,7 +519,7 @@ const windows = [
     position: absolute;
     top: 0;
     bottom: 0;
-    border-radius: 7px;
+    border-radius: var(--r-card);
   }
   .win__bar--done {
     background: var(--ink-2);
@@ -536,10 +536,10 @@ const windows = [
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 6px 14px;
-    margin-top: 10px;
-    padding: 12px 14px;
-    border-radius: 10px;
+    gap: var(--s-2) var(--s-4);
+    margin-top: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-card);
     background: var(--ink-0);
     border: 1px solid var(--line);
   }
@@ -550,14 +550,14 @@ const windows = [
     color: var(--head);
   }
   .win__info small {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .win__state {
     font-style: normal;
-    font-size: 12px;
-    padding: 2px 10px;
-    border-radius: 999px;
+    font-size: 13px;
+    padding: 2px var(--s-2);
+    border-radius: var(--r-round);
     background: var(--ink-2);
     color: var(--body);
   }

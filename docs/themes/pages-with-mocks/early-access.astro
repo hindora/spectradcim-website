@@ -1,0 +1,307 @@
+---
+import Backdrop from '../components/Backdrop.astro';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+
+const glance = [
+  { k: 'Stage', v: 'Early access' },
+  { k: 'Who it is for', v: 'Operators who run plant and IT' },
+  { k: 'Deployment', v: 'Self-hosted, on your network' },
+  { k: 'Starting scope', v: 'One pilot site' },
+  { k: 'Price list', v: 'Not published yet' },
+];
+
+const youGet = [
+  { t: 'Guided deployment', d: 'Our engineers install the platform and its collectors with your team, on your infrastructure.' },
+  { t: 'A direct line to engineering', d: 'You talk to the people who write the code, not to a ticket queue.' },
+  { t: 'A say in the roadmap', d: 'What your site needs next is weighed first when we decide what to build.' },
+];
+
+const weAsk = [
+  { t: 'One pilot site', d: 'A real hall or building, with its plant and electrical chain, that we can connect to.' },
+  { t: 'Honest feedback', d: 'Tell us what is wrong, what is missing and what you would never use.' },
+];
+
+const principles = [
+  { icon: 'building', title: 'Priced By Footprint', text: 'The price follows the size of what you run, so you can work it out before you talk to us.' },
+  { icon: 'chart', title: 'No Charge Per Data Point', text: 'Reading more sensors, or reading them more often, does not raise the bill.' },
+  { icon: 'users', title: 'Unlimited Users', text: 'Operations, facilities and capacity planning all log in. No seat counting.' },
+];
+
+const steps = [
+  { title: 'Start With A Demo', text: 'Thirty minutes on a running estate, so you can judge the product before anything else.' },
+  { title: 'Choose One Site', text: 'We agree which site to connect and which equipment matters most to you.' },
+  { title: 'Deploy It Together', text: 'The platform and collectors go onto your network. Your telemetry stays there.' },
+  { title: 'Tell Us What You Found', text: 'Your team uses it on live equipment, and your feedback goes straight to engineering.' },
+];
+---
+
+<Base
+  title="Early Access And Pricing"
+  description="SpectraDCIM is in early access. Apply to be a design partner, and read the principles our pricing will follow."
+>
+  <PageHero slot="hero" pill="Early Access" title="Early Access, With Engineers On Both Sides" cta={false}>
+    SpectraDCIM is in early access. We are working with a small number of design partners who want a DCIM that covers
+    plant and IT together.
+    <div slot="visual" class="card card--grid glance">
+      <h2 class="h3">The Programme At A Glance</h2>
+      <dl>
+        {
+          glance.map((g) => (
+            <div>
+              <dt>{g.k}</dt>
+              <dd>{g.v}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <a class="link-arrow" href="#apply">
+        Apply for early access
+        <span class="circle"><Icon name="arrow" size={16} /></span>
+      </a>
+    </div>
+  </PageHero>
+
+  <!-- exchange -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Design Partners" title="What You Get, And What We Ask" center>
+        A design partnership works in both directions. Here is each side of it, stated plainly.
+      </SectionHead>
+      <div class="exchange">
+        <div class="card card--raised exchange__col" data-anim="up-block">
+          <span class="tile"><Icon name="handshake" /></span>
+          <h3>What You Get</h3>
+          <ul class="checks">
+            {
+              youGet.map((i) => (
+                <li>
+                  <span>
+                    <strong>{i.t}.</strong> {i.d}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="card card--grid exchange__col" data-anim="up-block">
+          <span class="tile"><Icon name="flag" /></span>
+          <h3>What We Ask</h3>
+          <ul class="checks">
+            {
+              weAsk.map((i) => (
+                <li>
+                  <span>
+                    <strong>{i.t}.</strong> {i.d}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="exchange__note">
+            The product has so far been run against a simulated estate. A pilot is how it meets real equipment, which is
+            why your feedback matters this much.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- pricing principles -->
+  <section class="section pbg">
+    <Backdrop view="levels" />
+    <div class="wrap">
+      <SectionHead pill="Pricing" title="Three Principles, Before Any Numbers" center>
+        The price list is not published yet. When it is, it will follow these three principles.
+      </SectionHead>
+      <div class="grid grid-3">
+        {
+          principles.map((p) => (
+            <div class="card card--raised" data-anim="up">
+              <span class="tile">
+                <Icon name={p.icon} />
+              </span>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="price-note" data-anim="up">
+        <span class="dot dot--info" aria-hidden="true"></span>No prices appear on this page because none have been set.
+        Design partners will see the terms before they commit to anything.
+      </p>
+    </div>
+  </section>
+
+  <!-- pilot -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="The Pilot" title="How A Pilot Runs">
+        Four steps, one site. Nothing is installed on the equipment itself.
+      </SectionHead>
+      <ol class="grid grid-4 steps">
+        {
+          steps.map((s, k) => (
+            <li class="card card--grid step" data-anim="up">
+              <span class="step__n mono" aria-hidden="true">
+                {k + 1}
+              </span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- form -->
+  <section class="section pbg" id="apply">
+    <Backdrop view="aisle" />
+    <div class="wrap split split--top">
+      <div>
+        <SectionHead pill="Apply" title="Apply For Early Access">
+          Tell us what you run. A rough picture is enough: how many sites, about how many racks, and what you most want
+          to see.
+        </SectionHead>
+        <ul class="checks" data-anim="up">
+          <li><span>We are onboarding a small number of partners, so not every application will be taken up at once.</span></li>
+          <li><span>Rack and site counts only help us prepare. They are not a quote.</span></li>
+          <li><span>If you would rather see the product first, <a href="/demo">request a demo</a>.</span></li>
+        </ul>
+      </div>
+      <div class="card card--raised" data-anim="up-block">
+        <form class="form" data-demo-form>
+          <div class="row">
+            <div class="field">
+              <label for="ea-name">Name <span class="req">(required)</span></label>
+              <input id="ea-name" name="name" type="text" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="ea-email">Work email <span class="req">(required)</span></label>
+              <input id="ea-email" name="email" type="email" autocomplete="email" required />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="ea-company">Company <span class="req">(required)</span></label>
+              <input id="ea-company" name="company" type="text" autocomplete="organization" required />
+            </div>
+            <div class="field">
+              <label for="ea-role">Role</label>
+              <input id="ea-role" name="role" type="text" autocomplete="organization-title" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="ea-sites">Number of sites</label>
+              <input id="ea-sites" name="sites" type="number" min="1" step="1" inputmode="numeric" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="ea-racks">Approximate racks</label>
+              <input id="ea-racks" name="racks" type="number" min="1" step="1" inputmode="numeric" autocomplete="off" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="ea-message">Message</label>
+            <textarea id="ea-message" name="message" autocomplete="off"></textarea>
+          </div>
+          <button class="btn" type="submit"><span>Apply For Early Access</span></button>
+          <p class="form__status" data-form-status hidden tabindex="-1" role="status">
+            This form is not connected to a mailbox yet, so nothing was sent. It will be wired up before launch.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand pill="Prefer To See It First?" />
+</Base>
+
+<style>
+  .glance {
+    display: grid;
+    gap: 22px;
+  }
+  .glance dl {
+    margin: 0;
+    display: grid;
+  }
+  .glance dl div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 20px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .glance dl div:first-child {
+    border-top: 1px solid var(--line);
+  }
+  .glance dt {
+    color: var(--muted);
+  }
+  .glance dd {
+    margin: 0;
+    color: var(--head);
+  }
+
+  .exchange {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+  .exchange__col h3 {
+    margin-bottom: 24px;
+  }
+  .exchange__note {
+    margin-top: 26px;
+    padding: 18px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--ink-1);
+    font-size: 15px;
+  }
+  @media (max-width: 900px) {
+    .exchange {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .price-note {
+    margin: 36px auto 0;
+    max-width: 70ch;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .step__n {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--accent-text);
+    color: var(--accent-text);
+    font-size: 15px;
+  }
+
+  .req {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .form .btn {
+    justify-self: start;
+  }
+</style>

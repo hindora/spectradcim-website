@@ -11,19 +11,19 @@ const covers = [
 ---
 
 <Base
-  title="Request A Demo"
+  title="Request a demo"
   description="Request a 30-minute SpectraDCIM demo: live estate, a chiller-loss scenario, the power chain and thermal replay."
 >
   <section slot="hero" class="page-hero">
     <div class="wrap split split--top">
       <div>
-        <span class="pill" data-anim="up">Request A Demo</span>
-        <h1 data-anim="up">See Your Kind Of Site In SpectraDCIM</h1>
+        <span class="pill" data-anim="up">Request a demo</span>
+        <h1 data-anim="up">See your kind of site in SpectraDCIM</h1>
         <p class="lead" data-anim="up">
           Tell us what you run and we will shape the demo around it. It runs on a simulated estate with plant,
           electrical chain and IT, so nothing is needed from your network.
         </p>
-        <h2 class="h3 covers__head" data-anim="up">In 30 Minutes</h2>
+        <h2 class="h3 covers__head" data-anim="up">In 30 minutes</h2>
         <ul class="checks covers">
           {
             covers.map((c) => (
@@ -37,7 +37,7 @@ const covers = [
         </ul>
       </div>
       <div class="card card--raised demo-form" data-anim="up-block">
-        <form class="form" data-demo-form>
+        <form class="form" data-demo-form data-form-name="Demo request">
           <div class="row">
             <div class="field">
               <label for="dm-name">Name <span class="req">(required)</span></label>
@@ -67,10 +67,8 @@ const covers = [
             <textarea id="dm-message" name="message" autocomplete="off" aria-describedby="dm-message-note"></textarea>
             <p class="form__note" id="dm-message-note">What would you most like to see? Power, cooling, alarms or the floor view.</p>
           </div>
-          <button class="btn" type="submit"><span>Request A Demo</span></button>
-          <p class="form__status" data-form-status hidden tabindex="-1" role="status">
-            This form is not connected to a mailbox yet, so nothing was sent. It will be wired up before launch.
-          </p>
+          <button class="btn" type="submit"><span>Request a demo</span></button>
+          <p class="form__status" data-form-status hidden tabindex="-1" role="status"></p>
         </form>
       </div>
     </div>
@@ -80,11 +78,11 @@ const covers = [
     <div class="wrap other">
       <p data-anim="up">Looking for something else?</p>
       <a class="link-arrow" href="/partners" data-anim="up">
-        Become A Partner
+        Become a partner
         <span class="circle"><Icon name="arrow" size={16} /></span>
       </a>
       <a class="link-arrow" href="/company#contact" data-anim="up">
-        General Contact
+        General contact
         <span class="circle"><Icon name="arrow" size={16} /></span>
       </a>
     </div>
@@ -93,18 +91,18 @@ const covers = [
 
 <style>
   .covers__head {
-    margin-top: 44px;
+    margin-top: var(--s-7);
   }
   .covers {
-    margin-top: 22px;
+    margin-top: var(--s-5);
     max-width: 52ch;
   }
   .demo-form .form__note {
-    margin-top: 8px;
+    margin-top: var(--s-2);
   }
   .req {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 14px;
   }
   .form .btn {
     justify-self: start;
@@ -113,8 +111,8 @@ const covers = [
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 18px 44px;
-    padding-top: 28px;
+    gap: var(--s-4) var(--s-7);
+    padding-top: var(--s-6);
     border-top: 1px solid var(--line);
   }
   .other p {

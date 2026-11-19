@@ -1,0 +1,699 @@
+---
+import Backdrop from '../components/Backdrop.astro';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import MockHall from '../components/MockHall.astro';
+import MockChart from '../components/MockChart.astro';
+
+const segments = [
+  {
+    id: 'colo',
+    tab: 'Colocation',
+    title: 'Evidence For Every Room You Sell',
+    lead: 'Tenants ask what happened in their room. Answer with the record, not with a recollection.',
+    rows: [
+      { icon: 'power', title: 'Power Evidence Per Room', text: 'The power each room draws, hour by hour, set against what it was sold.' },
+      { icon: 'thermal', title: 'Thermal Evidence Per Room', text: 'Inlet temperatures against the agreed band, with the history to back them.' },
+      { icon: 'file', title: 'Incident History', text: 'Each incident keeps its cause and its timeline, ready for the review with the tenant.' },
+    ],
+  },
+  {
+    id: 'ent',
+    tab: 'Enterprise',
+    title: 'IT And Facilities In One Console',
+    lead: 'Two teams, two sets of tools and one building. Give both teams the same picture.',
+    rows: [
+      { icon: 'users', title: 'One View For Both Teams', text: 'The server team and the facilities team look at the same alarm, on the same page.' },
+      { icon: 'tree', title: 'Dependencies Written Down', text: 'Which rack hangs off which feed and which cooling unit is in the model, not in one person’s head.' },
+      { icon: 'building', title: 'Your BMS Stays', text: 'The building management system keeps controlling the plant. SpectraDCIM reads the plant alongside the IT equipment.' },
+    ],
+  },
+  {
+    id: 'edge',
+    tab: 'Edge And Multi-Site',
+    title: 'Many Small Sites, One Place To Look',
+    lead: 'A room with six racks deserves the same attention as a hall with six hundred.',
+    rows: [
+      { icon: 'map', title: 'World Map', text: 'Every site on one map with its state, plus weather and hazard overlays.' },
+      { icon: 'search', title: 'A Collector At Each Site', text: 'Devices are read locally. If the link drops, the collector keeps its readings on disk and sends them when it returns.' },
+      { icon: 'layers', title: 'The Same Model Everywhere', text: 'An edge room and a main hall use the same pages, the same rules and the same alarm handling.' },
+    ],
+  },
+];
+
+const rooms = [
+  { name: 'Suite 1', kw: 182, of: 240, inlet: '24.1', inc: 0 },
+  { name: 'Suite 2', kw: 96, of: 120, inlet: '23.4', inc: 1 },
+  { name: 'Suite 3', kw: 221, of: 240, inlet: '26.2', inc: 2, warn: true },
+  { name: 'Suite 4', kw: 64, of: 120, inlet: '22.8', inc: 0 },
+];
+
+const sides = [
+  {
+    title: 'Facilities',
+    rows: [
+      { sev: 'crit', what: 'UPS B on battery', where: 'Plant Room', hit: true },
+      { sev: 'warn', what: 'CRAH 4 fan fault', where: 'Hall A' },
+      { sev: 'ok', what: 'Chiller plant normal', where: 'Plant Room' },
+    ],
+  },
+  {
+    title: 'IT',
+    rows: [
+      { sev: 'warn', what: 'Rack 07 running on feed A only', where: 'Hall A / Row 3', hit: true },
+      { sev: 'warn', what: 'Rack 08 running on feed A only', where: 'Hall A / Row 3', hit: true },
+      { sev: 'ok', what: 'Core switches normal', where: 'Network Room' },
+    ],
+  },
+];
+
+const sites = [
+  { name: 'Site North', kind: '3 collectors', state: 'Reporting', sev: 'ok' },
+  { name: 'Site South', kind: '2 collectors', state: 'Reporting', sev: 'ok' },
+  { name: 'Edge Room 14', kind: '1 collector', state: 'Link down, storing to disk', sev: 'warn' },
+  { name: 'Edge Room 15', kind: '1 collector', state: 'Reporting', sev: 'ok' },
+];
+const pins = [
+  { x: 92, y: 62, sev: 'ok' },
+  { x: 214, y: 48, sev: 'ok' },
+  { x: 246, y: 96, sev: 'warn' },
+  { x: 318, y: 70, sev: 'ok' },
+  { x: 150, y: 112, sev: 'ok' },
+];
+const dots = [];
+for (let r = 0; r < 9; r++) for (let c = 0; c < 26; c++) dots.push({ x: 14 + c * 15, y: 16 + r * 15, on: Math.abs(Math.sin(r * 2.1 + c * 0.9) + Math.cos(c * 0.45 - r)) > 0.55 });
+
+const roles = [
+  { icon: 'power', role: 'Facility Manager', q: 'Which train is carrying the load, and what happens if it trips?', href: '/platform/power', link: 'Power and capacity' },
+  { icon: 'bell', role: 'DC Operations', q: 'Which of these 700 alarms is the cause?', href: '/platform/alarms', link: 'Alarms and incidents' },
+  { icon: 'chart', role: 'Capacity Planner', q: 'What runs out first: power, cooling, space or ports?', href: '/platform/power', link: 'Capacity and headroom' },
+  { icon: 'link', role: 'Network Engineer', q: 'What is on the other end of this port, and what depends on it?', href: '/platform/visualization', link: 'Network map and trace' },
+  { icon: 'drop', role: 'Sustainability Lead', q: 'What is our PUE, site by site, hour by hour?', href: '/platform/thermal', link: 'Thermal and cooling' },
+];
+
+const indicators = [
+  { k: 'PUE', name: 'Power usage effectiveness', state: 'Measured today', on: true },
+  { k: 'WUE', name: 'Water usage effectiveness', state: 'Not available' },
+  { k: 'ERF', name: 'Energy reuse factor', state: 'Not available' },
+  { k: 'REF', name: 'Renewable energy factor', state: 'Not available' },
+];
+
+const shared = [
+  { icon: 'shield', title: 'Self-Hosted', text: 'The platform and its collectors run on your own infrastructure, and your telemetry stays there.' },
+  { icon: 'layers', title: 'One Telemetry Model', text: 'White space and grey space in the same console: IT equipment, the power chain and the cooling plant.' },
+  { icon: 'flag', title: 'Early Access', text: 'We are onboarding a small number of design partners, one site at a time, with our engineers alongside.' },
+];
+---
+
+<Base
+  title="Solutions"
+  description="How colocation providers, enterprise teams and multi-site operators use SpectraDCIM, and the question it answers for each role."
+>
+  <PageHero slot="hero" pill="Solutions" title="Built For The People Who Run The Building.">
+    Different sites and different jobs, one model of the building underneath. Pick the kind of site you run, then the
+    question you are asked most.
+    <MockHall slot="visual" title="Hall A / Live" />
+  </PageHero>
+
+  <!-- segments -->
+  <section class="section">
+    <div class="wrap" data-tabs>
+      <SectionHead pill="By Site Type" title="What Kind Of Site Do You Run?" center />
+      <div class="tabs" role="tablist" aria-label="Site type" data-anim="up">
+        {
+          segments.map((s) => (
+            <button type="button" role="tab" id={`tab-${s.id}`} aria-controls={`panel-${s.id}`} aria-selected="false">
+              {s.tab}
+            </button>
+          ))
+        }
+      </div>
+
+      {
+        segments.map((s) => (
+          <div class="split seg" role="tabpanel" id={`panel-${s.id}`} aria-labelledby={`tab-${s.id}`} tabindex="0">
+            <div>
+              <h3 class="seg__title" data-anim="up">{s.title}</h3>
+              <p class="lead seg__lead" data-anim="up">{s.lead}</p>
+              <ul class="seg__rows">
+                {
+                  s.rows.map((r) => (
+                    <li data-anim="up">
+                      <span class="tile">
+                        <Icon name={r.icon} />
+                      </span>
+                      <div>
+                        <h4>{r.title}</h4>
+                        <p>{r.text}</p>
+                      </div>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+
+            {s.id === 'colo' && (
+              <div class="mock" role="img" aria-label="Illustration of a room list showing power drawn, highest inlet temperature and incident count for each room" data-anim="up-block">
+                <div class="mock__bar"><i></i><i></i><i></i>Rooms / Last 30 Days<span class="mono">4 rooms</span></div>
+                <ul class="rooms">
+                  {rooms.map((r) => (
+                    <li>
+                      <strong>{r.name}</strong>
+                      <div class="rooms__pw">
+                        <span class="mono">{r.kw} of {r.of} kW</span>
+                        <i><b class:list={{ warn: r.warn }} style={`width:${Math.round((r.kw / r.of) * 100)}%`} /></i>
+                      </div>
+                      <div class="rooms__kv">
+                        <span>Highest inlet</span>
+                        <b class:list={['mono', { warn: r.warn }]}>{r.inlet} &deg;C</b>
+                      </div>
+                      <div class="rooms__kv">
+                        <span>Incidents</span>
+                        <b class="mono">{r.inc}</b>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {s.id === 'ent' && (
+              <div class="mock" role="img" aria-label="Illustration of one console with facilities alarms and IT alarms side by side, linked into the same incident" data-anim="up-block">
+                <div class="mock__bar"><i></i><i></i><i></i>Console<span class="mono">1 incident</span></div>
+                <div class="both">
+                  {sides.map((side) => (
+                    <div>
+                      <p class="both__h">{side.title}</p>
+                      <ul>
+                        {side.rows.map((r) => (
+                          <li class:list={{ hit: r.hit }}>
+                            <span class={`dot ${r.sev === 'ok' ? '' : `dot--${r.sev}`}`} />
+                            <div>
+                              <strong>{r.what}</strong>
+                              <small>{r.where}</small>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                <p class="both__foot"><span class="dot dot--info"></span>Highlighted lines belong to one incident: UPS B on battery</p>
+              </div>
+            )}
+
+            {s.id === 'edge' && (
+              <div class="mock" role="img" aria-label="Illustration of a map with site markers above a list of sites and the state of their collectors" data-anim="up-block">
+                <div class="mock__bar"><i></i><i></i><i></i>Estate Map<span class="mono">4 sites</span></div>
+                <svg class="wmap" viewBox="0 0 404 150" aria-hidden="true">
+                  {dots.filter((d) => d.on).map((d) => <circle cx={d.x} cy={d.y} r="2" class="wmap__dot" />)}
+                  {pins.map((p) => (
+                    <g>
+                      <circle cx={p.x} cy={p.y} r="11" class={`wmap__halo wmap__halo--${p.sev}`} />
+                      <circle cx={p.x} cy={p.y} r="4.5" class={`wmap__pin wmap__pin--${p.sev}`} />
+                    </g>
+                  ))}
+                </svg>
+                <ul class="sites">
+                  {sites.map((x) => (
+                    <li>
+                      <span class={`dot ${x.sev === 'ok' ? '' : `dot--${x.sev}`}`} />
+                      <strong>{x.name}</strong>
+                      <small>{x.kind}</small>
+                      <em>{x.state}</em>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- roles -->
+  <section class="section pbg">
+    <Backdrop view="building" />
+    <div class="wrap">
+      <SectionHead pill="By Role" title="The Question You Are Asked Most">
+        Each role comes to the console with a different question. Start from yours.
+      </SectionHead>
+      <div class="grid grid-3">
+        {
+          roles.map((r) => (
+            <a class="card card--raised role" href={r.href} data-anim="up">
+              <div class="role__top">
+                <span class="tile">
+                  <Icon name={r.icon} />
+                </span>
+                <h3>{r.role}</h3>
+              </div>
+              <blockquote>&ldquo;{r.q}&rdquo;</blockquote>
+              <span class="link-arrow">
+                {r.link}
+                <span class="circle"><Icon name="arrow" size={16} /></span>
+              </span>
+            </a>
+          ))
+        }
+        <a class="card silk-card role role--cta" href="/demo" data-anim="up">
+          <h3>Your Question Is Not Here?</h3>
+          <p>Bring it to a demo. We will try to answer it on a running estate.</p>
+          <span class="link-arrow">
+            Request a demo
+            <span class="circle"><Icon name="arrow" size={16} /></span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- reporting -->
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <SectionHead pill="Sustainability Reporting" title="What You Can Report From It Today">
+          Under the EU Energy Efficiency Directive, sites with 500 kW or more of installed IT power report PUE, WUE, ERF
+          and REF every year.
+        </SectionHead>
+        <p data-anim="up">
+          SpectraDCIM measures PUE today, for each site and hour by hour. It does not yet produce the other three
+          indicators, so plan to source those elsewhere for now.
+        </p>
+        <ul class="ind">
+          {
+            indicators.map((i) => (
+              <li class:list={{ on: i.on }} data-anim="up">
+                <strong>{i.k}</strong>
+                <span>{i.name}</span>
+                <em>{i.state}</em>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="src" data-anim="up">Reporting duty: EU Energy Efficiency Directive, data centre reporting scheme.</p>
+      </div>
+      <div class="card card--grid pue" data-anim="up-block">
+        <MockChart label="Site PUE, 7 days" value="1.41" unit="" points={[52, 50, 54, 51, 49, 47, 50, 48, 45, 46, 43, 44, 42, 43, 41, 40]} band={false} mark={12} />
+        <p class="pue__note">Illustrative values.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- shared -->
+  <section class="section pbg">
+    <Backdrop view="worldpue" />
+    <div class="wrap">
+      <SectionHead pill="Common Ground" title="The Same For Every Site" center />
+      <div class="grid grid-3">
+        {
+          shared.map((s) => (
+            <div class="card card--grid" data-anim="up">
+              <span class="tile">
+                <Icon name={s.icon} />
+              </span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  /* tabs */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto clamp(36px, 4vw, 60px);
+    padding: 8px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--ink-0);
+  }
+  .tabs button {
+    min-height: 46px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: none;
+    color: var(--body);
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      background 0.15s ease-in-out,
+      color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out;
+  }
+  .tabs button:hover {
+    color: var(--head);
+    background: var(--ink-2);
+  }
+  .tabs button[aria-selected='true'] {
+    background: var(--accent);
+    border-color: var(--line-strong);
+    color: #fff;
+    box-shadow: 0 5px 23px -6px var(--accent-shadow);
+  }
+  .seg[hidden] {
+    display: none;
+  }
+  .seg__title {
+    font-size: clamp(26px, 2.8vw, 34px);
+  }
+  .seg__lead {
+    margin-top: 16px;
+  }
+  .seg__rows {
+    list-style: none;
+    margin: 34px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .seg__rows li {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--ink-0);
+  }
+  .seg__rows .tile {
+    margin: 0;
+  }
+  .seg__rows p {
+    margin-top: 6px;
+  }
+
+  /* colocation mock */
+  .rooms {
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    display: grid;
+    gap: 6px;
+  }
+  .rooms li {
+    display: grid;
+    grid-template-columns: 70px minmax(0, 1fr) auto auto;
+    gap: 16px;
+    align-items: center;
+    padding: 14px;
+    border-radius: 10px;
+    background: var(--ink-0);
+  }
+  .rooms strong {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--head);
+  }
+  .rooms__pw {
+    display: grid;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .rooms__pw i {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--ink-2);
+    overflow: hidden;
+  }
+  .rooms__pw i b {
+    display: block;
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent-deep), var(--accent-text));
+  }
+  .rooms__pw i b.warn {
+    background: var(--warn);
+  }
+  .rooms__kv {
+    display: grid;
+    gap: 2px;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+  }
+  .rooms__kv b {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--head);
+  }
+  .rooms__kv b.warn {
+    color: var(--warn);
+  }
+  @media (max-width: 480px) {
+    .rooms li {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+    }
+    .rooms li > strong {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* enterprise mock */
+  .both {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 8px;
+  }
+  .both__h {
+    padding: 6px 8px 10px;
+    font-family: var(--font-head);
+    font-size: 13px;
+    color: var(--accent-text);
+  }
+  .both ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .both li {
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    min-height: 68px;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--ink-0);
+    border: 1px solid transparent;
+  }
+  .both li .dot {
+    margin: 6px 0 0;
+  }
+  .both li.hit {
+    border-color: rgba(126, 145, 203, 0.6);
+    background: var(--ink-1);
+  }
+  .both strong {
+    display: block;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--head);
+  }
+  .both small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .both__foot {
+    padding: 12px 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  @media (max-width: 480px) {
+    .both {
+      grid-template-columns: 1fr;
+    }
+    .both li {
+      min-height: 0;
+    }
+  }
+
+  /* edge mock */
+  .wmap {
+    width: 100%;
+    height: auto;
+    background: radial-gradient(60% 80% at 50% 40%, var(--ink-1), #06070f);
+    border-bottom: 1px solid var(--line);
+  }
+  .wmap__dot {
+    fill: rgba(126, 145, 203, 0.28);
+  }
+  .wmap__pin--ok {
+    fill: var(--ok);
+  }
+  .wmap__pin--warn {
+    fill: var(--warn);
+  }
+  .wmap__halo--ok {
+    fill: rgba(79, 191, 139, 0.18);
+  }
+  .wmap__halo--warn {
+    fill: rgba(227, 160, 8, 0.22);
+  }
+  .sites {
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    display: grid;
+    gap: 6px;
+  }
+  .sites li {
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr) auto;
+    gap: 2px 12px;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--ink-0);
+  }
+  .sites .dot {
+    margin: 0;
+    grid-row: 1 / span 2;
+  }
+  .sites strong {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--head);
+  }
+  .sites small {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .sites em {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    font-style: normal;
+    font-size: 12px;
+    text-align: right;
+    max-width: 130px;
+    color: var(--body);
+  }
+
+  /* roles */
+  .role {
+    display: grid;
+    gap: 22px;
+    align-content: space-between;
+    min-height: 290px;
+  }
+  .role__top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .role__top .tile {
+    margin: 0;
+    flex: none;
+  }
+  .role blockquote {
+    margin: 0;
+    font-family: var(--font-head);
+    font-size: 20px;
+    line-height: 1.35;
+    color: var(--head);
+  }
+  .role:hover .circle {
+    transform: rotate(-45deg);
+    background: var(--accent);
+  }
+  .role--cta {
+    border-color: rgba(126, 145, 203, 0.5);
+  }
+  .role--cta p {
+    color: var(--body);
+  }
+
+  /* reporting */
+  .ind {
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .ind li {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px dashed var(--line-strong);
+    color: var(--muted);
+  }
+  .ind strong {
+    font-family: var(--font-head);
+    font-weight: 500;
+    color: var(--body);
+  }
+  .ind em {
+    font-style: normal;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .ind li.on {
+    border: 1px solid rgba(126, 145, 203, 0.6);
+    background: var(--ink-1);
+    color: var(--body);
+  }
+  .ind li.on strong {
+    color: var(--head);
+  }
+  .ind li.on em {
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+  }
+  @media (max-width: 480px) {
+    .ind li {
+      grid-template-columns: 46px minmax(0, 1fr);
+    }
+    .ind em {
+      grid-column: 2;
+    }
+    .ind li.on em {
+      justify-self: start;
+    }
+  }
+  .src {
+    margin-top: 18px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .pue {
+    padding: clamp(18px, 2.2vw, 30px);
+  }
+  .pue__note {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>

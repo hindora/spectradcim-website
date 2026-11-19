@@ -1,0 +1,237 @@
+---
+import Backdrop from '../components/Backdrop.astro';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import MockHall from '../components/MockHall.astro';
+
+const tracks = [
+  {
+    icon: 'tag',
+    title: 'Reseller',
+    text: 'You already sell to and support data centre operators.',
+    checks: ['Deal registration for the accounts you bring', 'A demo environment you can run yourself', 'Sales and technical training'],
+  },
+  {
+    icon: 'wrench',
+    title: 'System Integrator Or MEP Contractor',
+    text: 'You design, build or commission the plant and the electrical chain.',
+    checks: ['Hand over a site that is monitored, not only built', 'Plant, power and IT in one console for your client', 'Deployment training for your engineers'],
+    featured: true,
+  },
+  {
+    icon: 'plug',
+    title: 'Technology Partner',
+    text: 'You make devices or sensors, or you run a service desk product.',
+    checks: ['Check how your equipment reads in the platform', 'A documented REST API to build against', 'Joint material once the integration works'],
+  },
+];
+
+const benefits = [
+  { icon: 'flag', title: 'Deal Registration', text: 'Register an opportunity and it stays yours while you work it.' },
+  { icon: 'cube', title: 'Demo Environment', text: 'A simulated data centre to show and to practise on, with no customer site involved.' },
+  { icon: 'file', title: 'Technical Enablement', text: 'Deployment guides and working sessions with the engineers who build the product.' },
+  { icon: 'users', title: 'Co-Marketing', text: 'Shared guides and case material, written once there is real work to describe.' },
+];
+---
+
+<Base
+  title="Partners"
+  description="Resell, deploy or integrate with SpectraDCIM. Three partner tracks, and a full simulated data centre for demos and training."
+>
+  <PageHero slot="hero" pill="Partners" title="Bring SpectraDCIM To The Sites You Already Serve" cta={false} center>
+    Resell it, deploy it or integrate with it. The partner programme is opening alongside early access, and the first
+    partners will help shape its terms.
+  </PageHero>
+
+  <!-- tracks -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Partner Tracks" title="Three Ways To Work With Us" center />
+      <div class="grid grid-3 tracks">
+        {
+          tracks.map((t) => (
+            <div class:list={['card', 'track', t.featured ? 'silk-card track--featured' : 'card--raised']} data-anim="up-block">
+              <span class="tile">
+                <Icon name={t.icon} />
+              </span>
+              <h3>{t.title}</h3>
+              <p>{t.text}</p>
+              <div class="track__inner">
+                <ul class="checks">
+                  {t.checks.map((c) => <li>{c}</li>)}
+                </ul>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- benefits -->
+  <section class="section pbg">
+    <Backdrop view="building" />
+    <div class="wrap">
+      <SectionHead pill="Benefits" title="What Every Partner Gets">
+        The programme is new. These four things are in it from the start.
+      </SectionHead>
+      <div class="grid grid-4">
+        {
+          benefits.map((b) => (
+            <div class="card card--grid" data-anim="up">
+              <span class="tile">
+                <Icon name={b.icon} />
+              </span>
+              <h3>{b.title}</h3>
+              <p>{b.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- simulator highlight -->
+  <section class="section">
+    <div class="wrap split">
+      <div class="card card--glow sim" data-anim="up-block">
+        <MockHall title="Simulated Site / Hall A" scrubber />
+      </div>
+      <div>
+        <SectionHead pill="Demo Environment" title="A Full Simulated Data Centre For Your Demos And Training">
+          Partners get the same simulated estate we test against: two sites, with chiller plant, electrical chain and IT
+          equipment.
+        </SectionHead>
+        <ul class="checks" data-anim="up">
+          <li>
+            <span
+              ><strong>It behaves like equipment.</strong> Each simulated device answers the collectors over the same
+              management interfaces a real one would.</span
+            >
+          </li>
+          <li>
+            <span
+              ><strong>Faults on demand.</strong> Trip a chiller or fail a UPS and show what the console does, without
+              touching a customer site.</span
+            >
+          </li>
+          <li>
+            <span
+              ><strong>Somewhere to learn.</strong> Your engineers can practise a deployment before they do one for a
+              client.</span
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- form -->
+  <section class="section pbg" id="apply">
+    <Backdrop view="hall" />
+    <div class="wrap split split--top">
+      <div>
+        <SectionHead pill="Apply" title="Become A Partner">
+          Tell us who you are, where you work and which track fits. We will come back with what the programme can offer
+          you today.
+        </SectionHead>
+        <ul class="checks" data-anim="up">
+          <li><span>SpectraDCIM is in early access, so we are starting with a small group of partners.</span></li>
+          <li><span>The product is self-hosted. It runs on the operator's own infrastructure.</span></li>
+        </ul>
+      </div>
+      <div class="card card--raised" data-anim="up-block">
+        <form class="form" data-demo-form>
+          <div class="row">
+            <div class="field">
+              <label for="pt-company">Company <span class="req">(required)</span></label>
+              <input id="pt-company" name="company" type="text" autocomplete="organization" required />
+            </div>
+            <div class="field">
+              <label for="pt-region">Region <span class="req">(required)</span></label>
+              <input id="pt-region" name="region" type="text" autocomplete="off" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="pt-type">Partner type <span class="req">(required)</span></label>
+            <select id="pt-type" name="partner_type" required>
+              <option value="">Choose one</option>
+              <option value="reseller">Reseller</option>
+              <option value="integrator">System integrator or MEP contractor</option>
+              <option value="technology">Technology partner</option>
+              <option value="unsure">Not sure yet</option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="pt-name">Contact name <span class="req">(required)</span></label>
+              <input id="pt-name" name="name" type="text" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="pt-email">Work email <span class="req">(required)</span></label>
+              <input id="pt-email" name="email" type="email" autocomplete="email" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="pt-message">Message</label>
+            <textarea id="pt-message" name="message" autocomplete="off"></textarea>
+          </div>
+          <button class="btn" type="submit"><span>Become A Partner</span></button>
+          <p class="form__status" data-form-status hidden tabindex="-1" role="status">
+            This form is not connected to a mailbox yet, so nothing was sent. It will be wired up before launch.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand pill="Prefer To See It First?" />
+</Base>
+
+<style>
+  .tracks {
+    align-items: center;
+  }
+  .track {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+  .track .tile {
+    margin-bottom: 8px;
+  }
+  .track h3 + p {
+    margin-top: 0;
+  }
+  .track--featured {
+    padding-block: clamp(36px, 3.4vw, 56px);
+    border-color: var(--accent-text);
+  }
+  .track__inner {
+    margin-top: 8px;
+    padding: 22px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--black) 45%, transparent);
+    border: 1px solid var(--line);
+  }
+  @media (max-width: 1000px) {
+    .tracks {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .sim {
+    padding: clamp(18px, 2.2vw, 30px);
+  }
+
+  .req {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .form .btn {
+    justify-self: start;
+  }
+</style>

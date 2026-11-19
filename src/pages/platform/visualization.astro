@@ -52,17 +52,17 @@ const events = [
 const clock = ['13:50', '14:00', '14:10', '14:20'];
 
 const mapChecks = [
-  { b: 'Pins by worst alarm.', t: 'Each site takes the colour of its most severe open alarm.' },
+  { b: 'Pins by worst alarm.', t: 'Each site takes the color of its most severe open alarm.' },
   { b: 'Weather overlay.', t: 'Cloud and radar imagery drawn over the same map.' },
   { b: 'Hazard overlay.', t: 'Published weather warnings and natural-hazard alerts near your sites.' },
 ];
 ---
 
 <Base
-  title="3-D Floor & Replay"
+  title="3-D floor & replay"
   description="A 3-D model of every site from building to device face, with a heat map from live sensors and a timeline you can rewind."
 >
-  <PageHero slot="hero" pill="Platform" title="Walk The Building. Then Rewind It.">
+  <PageHero slot="hero" pill="Platform" title="Walk the building. Then rewind it.">
     A 3-D model of every site, from the building down to the device face, with a heat map drawn from live sensors and a
     timeline you can scrub back through.
     <Shot slot="visual" name="viewer-full" alt="The 3-D floor with room information and the replay timeline" />
@@ -71,7 +71,7 @@ const mapChecks = [
   <!-- zoom ladder -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Zoom Ladder" title="Five Steps From The Building To The Port" center>
+      <SectionHead pill="Zoom ladder" title="Five steps from the building to the port" center>
         Each step down keeps your place, so the rack you open is the rack you were looking at in the room.
       </SectionHead>
       <ol class="ladder">
@@ -133,20 +133,20 @@ const mapChecks = [
     <div class="wrap split">
       <Shot name="plan-heat" alt="Hall plan from above with the heat-map plane at mid height" />
       <div>
-        <SectionHead pill="Plan And 3-D" title="The Same Room, Flat Or Standing Up">
+        <SectionHead pill="Plan and 3-D" title="The same room, flat or standing up">
           Use the 2-D plan to read a whole room at once and the 3-D view to stand in an aisle. Both are drawn from the
           same model, so a rack is in the same place in each.
         </SectionHead>
         <div class="grid heat-notes">
           <div class="card card--raised" data-anim="up">
-            <h3>Heat-Map Planes From Live Sensors</h3>
+            <h3>Heat-map planes from live sensors</h3>
             <p>
               The heat map is interpolated between the readings of real sensors at the height you choose. It shows what
               was measured, and it is not an airflow simulation.
             </p>
           </div>
           <div class="card card--raised" data-anim="up">
-            <h3>Empty Positions Are Drawn Too</h3>
+            <h3>Empty positions are drawn too</h3>
             <p>Unfilled cabinets and blanked positions appear in the row, so the picture matches what you see on the floor.</p>
           </div>
         </div>
@@ -157,22 +157,22 @@ const mapChecks = [
   <!-- replay -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Thermal Replay" title="Scrub The Last Hours Like Video" center>
+      <SectionHead pill="Thermal replay" title="Scrub the last hours like video" center>
         Drag the timeline back and the room redraws as it was. The alarms of that period sit on the same track, so you
         can watch a fault arrive and spread.
       </SectionHead>
       <Shot name="replay-wide" alt="Replay timeline under the 3-D hall: marker scrubbed back, play controls, step, speed and compare" />
       <div class="grid grid-3 replay-notes">
         <div data-anim="up">
-          <h3>Play, Step Or Jump</h3>
+          <h3>Play, step or jump</h3>
           <p>Play it through at speed, step frame by frame, or jump straight to the moment an alarm was raised.</p>
         </div>
         <div data-anim="up">
-          <h3>The Room As It Was</h3>
+          <h3>The room as it was</h3>
           <p>Each frame is rebuilt from the sensor readings stored for that moment, not from a recording of the screen.</p>
         </div>
         <div data-anim="up">
-          <h3>Evidence For The Review</h3>
+          <h3>Evidence for the review</h3>
           <p>Use the replay after an incident to show what warmed first and how long it took to reach the racks.</p>
         </div>
       </div>
@@ -184,7 +184,7 @@ const mapChecks = [
     <Backdrop view="world" />
     <div class="wrap split">
       <div>
-        <SectionHead pill="World Map" title="Every Site, And The Weather Above It">
+        <SectionHead pill="World map" title="Every site, and the weather above it">
           The estate opens on a map. A site that needs attention stands out before you read a single number, and the
           conditions outside are drawn over it.
         </SectionHead>
@@ -209,7 +209,7 @@ const mapChecks = [
   <!-- network map -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Network Map" title="Five Layers, One Map Of What Connects To What">
+      <SectionHead pill="Network map" title="Five layers, one map of what connects to what">
         Production network, management network, power, cooling and fieldbus are drawn as layers of the same map. A
         device appears once and keeps its links in every layer it belongs to.
       </SectionHead>
@@ -244,22 +244,22 @@ const mapChecks = [
     padding: 0;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 20px;
+    gap: var(--s-5);
   }
   .ladder__step {
-    padding: 14px 14px 24px;
+    padding: var(--s-4) var(--s-4) var(--s-5);
     overflow: visible;
   }
   .ladder__step > :not(.ladder__art) {
-    margin-inline: 10px;
+    margin-inline: var(--s-2);
   }
   .ladder__art {
-    border-radius: 10px;
-    margin-bottom: 18px;
+    border-radius: var(--r-card);
+    margin-bottom: var(--s-4);
     background-color: var(--ink-0);
     background-image: var(--grid-lines);
     background-size: 22px 22px;
-    padding: 14px;
+    padding: var(--s-4);
   }
   .ladder__art svg {
     width: 100%;
@@ -277,14 +277,14 @@ const mapChecks = [
     border-radius: 50%;
     background: var(--accent-tile);
     color: var(--head);
-    font-size: 12px;
-    margin-bottom: 12px;
+    font-size: 13px;
+    margin-bottom: var(--s-3);
   }
   .ladder__step h3 {
     font-size: 20px;
   }
   .ladder__step p {
-    margin-top: 10px;
+    margin-top: var(--s-2);
     font-size: 15px;
   }
   .ladder__step:not(:last-child)::after {
@@ -329,7 +329,7 @@ const mapChecks = [
   @media (max-width: 700px) {
     .ladder {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      gap: var(--s-4);
     }
   }
   @media (max-width: 420px) {
@@ -378,7 +378,7 @@ const mapChecks = [
   .pl-val {
     fill: var(--head);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
   }
   .pl-cap {
     fill: var(--muted);
@@ -387,15 +387,15 @@ const mapChecks = [
   .plan__modes {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    padding: 10px 14px;
+    gap: var(--s-2);
+    padding: var(--s-2) var(--s-4);
     border-top: 1px solid var(--line);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .plan__modes span:not(.gap) {
-    padding: 3px 12px;
-    border-radius: 999px;
+    padding: 3px var(--s-3);
+    border-radius: var(--r-round);
     border: 1px solid var(--line);
   }
   .plan__modes .gap {
@@ -407,10 +407,10 @@ const mapChecks = [
     color: #fff;
   }
   .heat-notes {
-    gap: 16px;
+    gap: var(--s-4);
   }
   .heat-notes .card {
-    padding: 24px;
+    padding: var(--s-5);
   }
   .heat-notes h3 {
     font-size: 20px;
@@ -420,23 +420,23 @@ const mapChecks = [
   .replay__frames {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-    padding: 18px 18px 6px;
+    gap: var(--s-4);
+    padding: var(--s-4) var(--s-4) var(--s-2);
   }
   .replay__frame {
-    padding: 10px;
-    border-radius: 10px;
+    padding: var(--s-2);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-0);
     display: grid;
-    gap: 8px;
-    font-size: 12px;
+    gap: var(--s-2);
+    font-size: 13px;
     color: var(--muted);
     text-align: center;
   }
   .replay__frame.now {
     border-color: var(--accent-text);
-    box-shadow: 0 0 0 3px rgba(126, 145, 203, 0.18);
+    box-shadow: 0 0 0 3px rgba(76, 195, 255, 0.18);
     color: var(--head);
   }
   .replay__cells {
@@ -461,8 +461,8 @@ const mapChecks = [
   .replay__bar {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 18px 18px 6px;
+    gap: var(--s-4);
+    padding: var(--s-4) var(--s-4) var(--s-2);
   }
   .replay__play {
     flex: none;
@@ -484,13 +484,13 @@ const mapChecks = [
     position: relative;
     flex: 1;
     height: 8px;
-    border-radius: 4px;
+    border-radius: var(--r-input);
     background: var(--ink-2);
   }
   .replay__track b {
     position: absolute;
     inset: 0 46% 0 0;
-    border-radius: 4px;
+    border-radius: var(--r-input);
     background: linear-gradient(90deg, var(--accent-deep), var(--accent-text));
   }
   .replay__track i {
@@ -511,10 +511,9 @@ const mapChecks = [
     top: -5px;
     width: 18px;
     height: 18px;
-    margin-left: -9px;
+    margin-left: calc(-1 * var(--s-2));
     border-radius: 50%;
     background: var(--head);
-    box-shadow: 0 0 14px var(--accent-text);
     animation: replayNudge 3.6s ease-in-out infinite alternate;
   }
   @keyframes replayNudge {
@@ -529,13 +528,13 @@ const mapChecks = [
   }
   .replay__speed {
     display: flex;
-    gap: 6px;
-    font-size: 12px;
+    gap: var(--s-2);
+    font-size: 13px;
     color: var(--muted);
   }
   .replay__speed span {
-    padding: 3px 10px;
-    border-radius: 999px;
+    padding: 3px var(--s-2);
+    border-radius: var(--r-round);
     border: 1px solid var(--line);
   }
   .replay__speed .on {
@@ -546,19 +545,19 @@ const mapChecks = [
   .replay__clock {
     display: flex;
     justify-content: space-between;
-    padding: 4px 132px 0 68px;
-    font-size: 11px;
+    padding: var(--s-1) 132px 0 var(--s-8);
+    font-size: 12px;
     color: var(--muted);
   }
   .replay__events {
     list-style: none;
-    margin: 14px 0 0;
-    padding: 12px 18px 14px;
+    margin: var(--s-4) 0 0;
+    padding: var(--s-3) var(--s-4) var(--s-4);
     border-top: 1px solid var(--line);
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 24px;
-    font-size: 12px;
+    gap: var(--s-2) var(--s-5);
+    font-size: 13px;
     color: var(--body);
   }
   .replay-notes {
@@ -569,22 +568,22 @@ const mapChecks = [
     font-size: 20px;
   }
   .replay-notes p {
-    margin-top: 12px;
+    margin-top: var(--s-3);
     max-width: 38ch;
   }
   @media (max-width: 560px) {
     .replay__frames {
-      gap: 8px;
-      padding-inline: 12px;
+      gap: var(--s-2);
+      padding-inline: var(--s-3);
     }
     .replay__frame {
-      padding: 6px;
+      padding: var(--s-2);
     }
     .replay__speed span:not(.on) {
       display: none;
     }
     .replay__clock {
-      padding: 4px 62px 0 68px;
+      padding: var(--s-1) var(--s-8) 0 var(--s-8);
     }
     .replay__clock span:nth-child(even) {
       display: none;
@@ -600,11 +599,11 @@ const mapChecks = [
   .net {
     display: grid;
     grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
-    gap: 24px;
+    gap: var(--s-5);
     align-items: stretch;
   }
   .net__cards {
-    gap: 24px;
+    gap: var(--s-5);
   }
   @media (max-width: 1000px) {
     .net {

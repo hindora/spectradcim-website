@@ -15,13 +15,13 @@ const tour = [
   {
     id: 'home',
     name: 'Home',
-    title: 'The Estate At A Glance',
-    lines: ['Every site on one map, coloured by its worst open alarm.', 'Load, PUE and open incidents for the whole estate sit beside it.'],
+    title: 'The estate at a glance',
+    lines: ['Every site on one map, colored by its worst open alarm.', 'Load, PUE and open incidents for the whole estate sit beside it.'],
   },
   {
     id: 'thermal',
     name: 'Thermal',
-    title: 'Heat, From Plant To Inlet',
+    title: 'Heat, from plant to inlet',
     lines: ['Rack inlets against their allowed envelope, with the cooling plant and room units on the same page.', 'A warm row can be followed back to what caused it.'],
     href: '/platform/thermal',
     link: 'Thermal and cooling',
@@ -29,7 +29,7 @@ const tour = [
   {
     id: 'power',
     name: 'Power',
-    title: 'The Chain And Its Redundancy',
+    title: 'The chain and its redundancy',
     lines: ['The path from the utility feed to the outlet as one line, with the load at each stage.', 'It shows which redundancy is still intact right now.'],
     href: '/platform/power',
     link: 'Power and capacity',
@@ -37,7 +37,7 @@ const tour = [
   {
     id: 'capacity',
     name: 'Capacity',
-    title: 'What Runs Out First',
+    title: 'What runs out first',
     lines: ['Power, cooling, space and ports measured against what is installed.', 'The one that runs out first is named, room by room.'],
     href: '/platform/power',
     link: 'Power and capacity',
@@ -45,7 +45,7 @@ const tour = [
   {
     id: 'visualization',
     name: 'Visualization',
-    title: 'Walk It, Then Rewind It',
+    title: 'Walk it, then rewind it',
     lines: ['Building, level, room, rack and device in 3-D, with a heat map drawn from live sensors.', 'A timeline replays the last hours like video.'],
     href: '/platform/visualization',
     link: '3-D floor and replay',
@@ -53,15 +53,15 @@ const tour = [
   {
     id: 'assets',
     name: 'Assets',
-    title: 'An Inventory That Matches The Floor',
+    title: 'An inventory that matches the floor',
     lines: ['Every device placed from the site down to the rack unit.', 'What discovery finds on the network is compared with what is recorded.'],
     href: '/platform/assets',
     link: 'Assets and discovery',
   },
   {
     id: 'status',
-    name: 'System Status',
-    title: 'The Monitor, Monitored',
+    name: 'System status',
+    title: 'The monitor, monitored',
     lines: ['Collectors, ingest and rule evaluation report their own health.', 'If data is late or a collector goes quiet, the console says so.'],
   },
 ];
@@ -71,16 +71,16 @@ const flow = [
   { name: 'Collectors', icon: 'tree', text: 'A collector fleet inside your network, sharded by site and network plane, polls and listens.' },
   { name: 'Stream', icon: 'layers', text: 'Readings and events travel to the platform as one ordered stream.' },
   { name: 'Platform', icon: 'cube', text: 'One telemetry model stores readings, evaluates alarm rules and folds symptoms under their cause.' },
-  { name: 'Console And API', icon: 'chart', text: 'Operators use the web console. Other systems use the REST API, WebSocket feed, Prometheus metrics or email.' },
+  { name: 'Console and API', icon: 'chart', text: 'Operators use the web console. Other systems use the REST API, WebSocket feed, Prometheus metrics or email.' },
 ];
 
 const modules = [
-  { href: '/platform/power', icon: 'power', title: 'Power & Capacity', text: 'The whole power chain, its redundancy, and how much headroom is left.' },
-  { href: '/platform/thermal', icon: 'thermal', title: 'Thermal & Cooling', text: 'One cooling picture from the chiller plant to the server inlet.' },
-  { href: '/platform/visualization', icon: 'cube', title: '3-D Floor & Replay', text: 'Walk the building, read the heat map, then rewind the last hours.' },
-  { href: '/platform/alarms', icon: 'bell', title: 'Alarms & Incidents', text: 'One condition, one alarm, and one incident with its evidence.' },
-  { href: '/platform/assets', icon: 'rack', title: 'Assets & Discovery', text: 'An inventory that matches the floor, from site down to rack unit.' },
-  { href: '/works-with', icon: 'plug', title: 'Works With', text: 'The equipment classes it reads and the systems it shares data with.' },
+  { href: '/platform/power', icon: 'power', title: 'Power & capacity', text: 'The whole power chain, its redundancy, and how much headroom is left.' },
+  { href: '/platform/thermal', icon: 'thermal', title: 'Thermal & cooling', text: 'One cooling picture from the chiller plant to the server inlet.' },
+  { href: '/platform/visualization', icon: 'cube', title: '3-D floor & replay', text: 'Walk the building, read the heat map, then rewind the last hours.' },
+  { href: '/platform/alarms', icon: 'bell', title: 'Alarms & incidents', text: 'One condition, one alarm, and one incident with its evidence.' },
+  { href: '/platform/assets', icon: 'rack', title: 'Assets & discovery', text: 'An inventory that matches the floor, from site down to rack unit.' },
+  { href: '/works-with', icon: 'plug', title: 'Works with', text: 'The equipment classes it reads and the systems it shares data with.' },
 ];
 
 const estate = [
@@ -110,7 +110,7 @@ const health = [
   title="Platform"
   description="One telemetry model for IT, power and cooling equipment, with the same alarm console and the same floor map for all of it."
 >
-  <PageHero slot="hero" pill="Platform" title="One Telemetry Model For White Space And Grey Space">
+  <PageHero slot="hero" pill="Platform" title="One telemetry model for white space and gray space">
     Servers, switches, PDUs, UPS, switchgear, generators, CRAHs, chillers, pumps, CDUs and fire panels in the same model,
     the same alarm console and the same floor map.
     <Shot slot="visual" name="connectivity" alt="Connectivity map: network room, server halls, UPS room, central plant and roof in one model" />
@@ -119,7 +119,7 @@ const health = [
   <!-- tour -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Tour" title="Seven Menus, One Model Behind Them" center>
+      <SectionHead pill="Tour" title="Seven menus, one model behind them" center>
         Each menu is a different question asked of the same data, so a reading means the same thing wherever you meet
         it.
       </SectionHead>
@@ -176,7 +176,7 @@ const health = [
   <section class="section pbg">
     <Backdrop view="hall" />
     <div class="wrap">
-      <SectionHead pill="How Data Flows" title="From The Device To The Console In Five Steps">
+      <SectionHead pill="How data flows" title="From the device to the console in five steps">
         The platform and its collectors run on your own infrastructure, so telemetry stays inside your network.
       </SectionHead>
       <ol class="flow">
@@ -196,7 +196,7 @@ const health = [
         }
       </ol>
       <p class="flow__note" data-anim="up">
-        Collectors enrol with mutual TLS, hold their device credentials encrypted, and run signed releases.
+        Collectors enroll with mutual TLS, hold their device credentials encrypted, and run signed releases.
       </p>
     </div>
   </section>
@@ -205,15 +205,15 @@ const health = [
   <section class="section">
     <div class="wrap split split--top">
       <div>
-        <SectionHead pill="Built To Standards" title="The Same Yardsticks Your Engineers Already Use">
-          Thresholds and alarm behaviour follow published practice, so the console does not invent its own definition
+        <SectionHead pill="Built to standards" title="The same yardsticks your engineers already use">
+          Thresholds and alarm behavior follow published practice, so the console does not invent its own definition
           of too warm or of acknowledged.
         </SectionHead>
       </div>
       <div class="grid std">
         <div class="card card--grid std__card" data-anim="up">
           <span class="tile"><Icon name="thermal" /></span>
-          <h3>ASHRAE TC 9.9 Thermal Envelopes</h3>
+          <h3>ASHRAE TC 9.9 thermal envelopes</h3>
           <p>
             Rack inlet temperatures are judged against ASHRAE TC 9.9 thermal envelopes, so too warm means the same thing
             in every hall.
@@ -221,7 +221,7 @@ const health = [
         </div>
         <div class="card card--grid std__card" data-anim="up">
           <span class="tile"><Icon name="bell" /></span>
-          <h3>Alarm Handling Aligned With ISA-18.2</h3>
+          <h3>Alarm handling aligned with ISA-18.2</h3>
           <p>
             The alarm lifecycle, priorities and operator actions are aligned with ISA-18.2. The alignment is partial
             today, and we will show you where it stops.
@@ -234,7 +234,7 @@ const health = [
   <!-- modules -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Modules" title="Go Deeper Into Each Part" center />
+      <SectionHead pill="Modules" title="Go deeper into each part" center />
       <div class="grid grid-3">
         {
           modules.map((m) => (
@@ -265,15 +265,15 @@ const health = [
     border-bottom: 1px solid var(--line);
   }
   .estate__kpis > div {
-    padding: 14px 16px;
+    padding: var(--s-4) var(--s-4);
     display: grid;
-    gap: 4px;
+    gap: var(--s-1);
   }
   .estate__kpis > div + div {
     border-left: 1px solid var(--line);
   }
   .estate__kpis span {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
   }
   .estate__kpis b {
@@ -283,30 +283,30 @@ const health = [
     white-space: nowrap;
   }
   .estate__kpis small {
-    font-size: 12px;
+    font-size: 13px;
     margin-left: 3px;
     color: var(--muted);
   }
   .estate__sites {
     list-style: none;
     margin: 0;
-    padding: 12px;
+    padding: var(--s-3);
     display: grid;
-    gap: 10px;
+    gap: var(--s-2);
   }
   .estate__sites li {
-    padding: 14px;
-    border-radius: 10px;
+    padding: var(--s-4);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-0);
     display: grid;
-    gap: 12px;
+    gap: var(--s-3);
   }
   .estate__top {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    gap: 10px;
+    gap: var(--s-2);
   }
   .estate__top strong {
     font-family: var(--font-head);
@@ -315,36 +315,36 @@ const health = [
     color: var(--head);
   }
   .estate__top small {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .estate__meter {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
-    gap: 14px;
+    gap: var(--s-4);
     align-items: center;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--body);
   }
   .estate__meter i {
     height: 8px;
-    border-radius: 4px;
+    border-radius: var(--r-input);
     background: var(--ink-2);
     overflow: hidden;
   }
   .estate__meter b {
     display: block;
     height: 100%;
-    border-radius: 4px;
+    border-radius: var(--r-input);
     background: linear-gradient(90deg, var(--accent-deep), var(--accent-text));
   }
   .estate__foot {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 18px;
-    padding: 10px 16px 12px;
+    gap: var(--s-2) var(--s-4);
+    padding: var(--s-2) var(--s-4) var(--s-3);
     border-top: 1px solid var(--line);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   @media (max-width: 480px) {
@@ -364,13 +364,13 @@ const health = [
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 28px;
+    gap: var(--s-2);
+    margin-bottom: var(--s-6);
   }
   .tour__tabs button {
     min-height: 44px;
-    padding: 9px 20px;
-    border-radius: 999px;
+    padding: var(--s-2) var(--s-5);
+    border-radius: var(--r-round);
     border: 1px solid var(--line);
     background: var(--ink-1);
     color: var(--body);
@@ -427,18 +427,18 @@ const health = [
   }
   /* without JavaScript every panel is shown, so space them */
   :global(html:not(.js)) .tour__panel + .tour__panel {
-    margin-top: 48px;
+    margin-top: var(--s-7);
   }
   .tour__text {
     display: grid;
-    gap: 16px;
+    gap: var(--s-4);
     justify-items: start;
   }
   .tour__text h3 {
     font-size: clamp(24px, 2.4vw, 32px);
   }
   .tour__text .link-arrow {
-    margin-top: 8px;
+    margin-top: var(--s-2);
   }
   @media (max-width: 900px) {
     .tour__panel {
@@ -453,17 +453,17 @@ const health = [
   .units ul {
     list-style: none;
     margin: 0;
-    padding: 8px;
+    padding: var(--s-2);
     display: grid;
-    gap: 6px;
+    gap: var(--s-2);
   }
   .units li {
     display: grid;
     grid-template-columns: 34px minmax(0, 1fr) auto;
-    gap: 12px;
+    gap: var(--s-3);
     align-items: center;
-    padding: 12px 14px;
-    border-radius: 10px;
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-card);
     background: var(--ink-0);
     border: 1px solid transparent;
   }
@@ -471,7 +471,7 @@ const health = [
     border-color: var(--warn);
   }
   .units li > .mono:first-child {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--accent-text);
   }
   .units li > .dot {
@@ -485,9 +485,9 @@ const health = [
   }
   .units em {
     font-style: normal;
-    font-size: 12px;
-    padding: 2px 10px;
-    border-radius: 999px;
+    font-size: 13px;
+    padding: 2px var(--s-2);
+    border-radius: var(--r-round);
     background: var(--ink-2);
     color: var(--body);
     white-space: nowrap;
@@ -500,10 +500,10 @@ const health = [
     padding: 0;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 20px;
+    gap: var(--s-5);
   }
   .flow__step {
-    padding: 24px;
+    padding: var(--s-5);
     overflow: visible;
   }
   .flow__head {
@@ -519,7 +519,7 @@ const health = [
     font-size: 20px;
   }
   .flow__step p {
-    margin-top: 12px;
+    margin-top: var(--s-3);
     font-size: 15px;
   }
   /* connector between steps on one row */
@@ -533,7 +533,7 @@ const health = [
     background: var(--accent-text);
   }
   .flow__note {
-    margin-top: 32px;
+    margin-top: var(--s-6);
     max-width: 70ch;
     color: var(--muted);
   }
@@ -553,7 +553,7 @@ const health = [
 
   /* standards */
   .std {
-    gap: 20px;
+    gap: var(--s-5);
   }
   .std__card p {
     max-width: 52ch;
@@ -580,10 +580,9 @@ const health = [
   }
   .mod:hover .mod__go {
     background: var(--accent);
-    transform: rotate(-45deg);
   }
   .mod p {
     max-width: 30ch;
-    padding-bottom: 40px;
+    padding-bottom: var(--s-7);
   }
 </style>

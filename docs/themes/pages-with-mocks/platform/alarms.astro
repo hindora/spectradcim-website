@@ -1,0 +1,627 @@
+---
+import Backdrop from '../../components/Backdrop.astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import MockAlarms from '../../components/MockAlarms.astro';
+
+const evidence = [
+  { t: '14:02:11', sev: 'crit', what: 'Chiller 2 reports a trip', src: 'Device event' },
+  { t: '14:02:30', sev: 'crit', what: 'Chilled water supply reads 14.8 °C, limit 10.0 °C', src: 'Polled reading' },
+  { t: '14:02:40', sev: 'warn', what: 'Supply air rising at CRAH 1 to 6', src: '6 alarms folded' },
+  { t: '14:03:25', sev: 'warn', what: 'Row 3 rack inlets leave the allowed band', src: '48 alarms folded' },
+  { t: '14:03:58', sev: 'info', what: 'Server fans speed up across Hall A', src: '212 alarms folded' },
+  { t: '14:09:02', sev: 'ok', what: 'Acknowledged by the operator on shift', src: 'Operator action' },
+];
+
+const proof = [
+  { label: 'Raw alarms', n: 727, w: 100 },
+  { label: 'Console lines', n: 9, w: 7 },
+  { label: 'Summary alarm', n: 1, w: 3 },
+];
+
+const tools = [
+  { icon: 'clock', title: 'Rules With Dwell And Hysteresis', text: 'A reading must stay past its limit for a set time before the alarm is raised, and come back by a margin before it clears. Brief spikes do not page anyone.' },
+  { icon: 'wrench', title: 'Per-Device Overrides', text: 'One warm rack by the door can carry its own limit. The override sits on the device, and the rule for the rest of the estate stays as it was.' },
+  { icon: 'flag', title: 'Maintenance Windows', text: 'Put a device, a rack or a room into a window. Alarms from it are suppressed until the window ends, and recorded so nothing is lost.' },
+  { icon: 'mail', title: 'Email Notifications', text: 'Send the alarms that matter to the people on call, filtered by severity and by site.' },
+  { icon: 'link', title: 'Jira / JSM', beta: true, text: 'Open a ticket from an incident and keep the two in step as it is worked and closed.' },
+  { icon: 'file', title: 'Audit Trail On Alarm Actions', text: 'Every acknowledgement and clear is recorded with who did it and when.' },
+];
+---
+
+<Base
+  title="Alarms & Incidents"
+  description="SpectraDCIM turns an alarm flood into one alarm per condition and one incident page with the cause and its evidence."
+>
+  <PageHero slot="hero" pill="Platform" title="One Condition. One Alarm. One Incident With Its Evidence.">
+    A plant fault can raise hundreds of alarms in a minute. SpectraDCIM folds the symptoms under the cause, shown here
+    for a simulated chiller-plant loss.
+    <MockAlarms slot="visual" />
+  </PageHero>
+
+  <!-- trap + poll -->
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <SectionHead pill="Two Sources, One Row" title="The Trap Makes It Fast. The Poll Makes It True.">
+          A device can announce a fault the moment it happens, but that message can be lost on the way. A polled reading
+          always arrives, a little later.
+        </SectionHead>
+        <ul class="checks">
+          <li data-anim="up"><span><strong>Raised by whichever arrives first.</strong> The event usually wins by seconds.</span></li>
+          <li data-anim="up"><span><strong>Confirmed by the poll.</strong> The next reading agrees with the event or corrects it.</span></li>
+          <li data-anim="up"><span><strong>Cleared by the poll.</strong> An alarm ends when the reading is back in band, even if the clearing event never arrives.</span></li>
+        </ul>
+      </div>
+
+      <div
+        class="card card--grid merge"
+        role="img"
+        aria-label="Illustration of a device event and a polled reading merging into one alarm row"
+        data-anim="up-block"
+      >
+        <div class="merge__inputs">
+          <div class="merge__in">
+            <span class="merge__k">Device event</span>
+            <strong>Chilled water supply lost</strong>
+            <small class="mono">14:02:11</small>
+          </div>
+          <div class="merge__in">
+            <span class="merge__k">Polled reading</span>
+            <strong>Supply 14.8 &deg;C, limit 10.0</strong>
+            <small class="mono">14:02:30</small>
+          </div>
+        </div>
+        <svg class="merge__join" viewBox="0 0 400 64" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M100 0 C100 40 200 24 200 64" />
+          <path d="M300 0 C300 40 200 24 200 64" />
+        </svg>
+        <div class="merge__row">
+          <span class="dot dot--crit"></span>
+          <div>
+            <strong>Chiller plant: chilled water supply lost</strong>
+            <small>Plant / CHW loop</small>
+          </div>
+          <em>1 alarm</em>
+        </div>
+        <ol class="merge__life">
+          <li><b>Raised</b><span class="mono">14:02:11</span></li>
+          <li><b>Confirmed</b><span class="mono">14:02:30</span></li>
+          <li><b>Clears</b><span>When the reading is back in band</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- correlation layers -->
+  <section class="section pbg">
+    <Backdrop view="temp" />
+    <div class="wrap">
+      <SectionHead pill="Correlation" title="Three Layers That Find The Cause" center>
+        Each layer follows a dependency that exists in the building, so a symptom is filed under the thing that produced
+        it.
+      </SectionHead>
+      <div class="grid grid-3">
+        <div class="card card--raised layer" data-anim="up-block">
+          <svg class="layer__art" viewBox="0 0 300 150" aria-hidden="true">
+            <path class="ln ln--dead" d="M70 50 V84 H150 V104" />
+            <path class="ln ln--live" d="M230 50 V84 H150" />
+            <rect class="bx bx--dead" x="30" y="14" width="80" height="36" rx="8" />
+            <text x="70" y="37" text-anchor="middle">Feed A</text>
+            <rect class="bx bx--live" x="190" y="14" width="80" height="36" rx="8" />
+            <text x="230" y="37" text-anchor="middle">Feed B</text>
+            <rect class="bx" x="100" y="104" width="100" height="36" rx="8" />
+            <text x="150" y="127" text-anchor="middle">Rack</text>
+            <path class="x" d="M62 62 l16 16 M78 62 l-16 16" />
+          </svg>
+          <h3>Power Dependency, Redundancy Aware</h3>
+          <p>
+            When an upstream unit fails, everything fed only by it is folded under that failure. If a second path still
+            carries the load, the redundancy veto holds back the outage and reports lost redundancy instead.
+          </p>
+        </div>
+        <div class="card card--raised layer" data-anim="up-block">
+          <svg class="layer__art" viewBox="0 0 300 150" aria-hidden="true">
+            <path class="ln ln--dead" d="M110 75 H190" stroke-dasharray="6 7" />
+            <rect class="bx" x="20" y="52" width="90" height="46" rx="8" />
+            <text x="65" y="80" text-anchor="middle">Switch 1</text>
+            <rect class="bx" x="190" y="52" width="90" height="46" rx="8" />
+            <text x="235" y="80" text-anchor="middle">Switch 2</text>
+            <circle class="pt" cx="110" cy="75" r="6" />
+            <circle class="pt" cx="190" cy="75" r="6" />
+            <text class="cap" x="150" y="128" text-anchor="middle">2 reports, 1 link alarm</text>
+          </svg>
+          <h3>Both Ends Of A Link</h3>
+          <p>
+            A failed link is reported by the device at each end. Both reports become one alarm on the link, not two
+            alarms on two ports.
+          </p>
+        </div>
+        <div class="card card--raised layer" data-anim="up-block">
+          <svg class="layer__art" viewBox="0 0 300 150" aria-hidden="true">
+            <path class="ln" d="M52 75 H248" />
+            <circle class="nd nd--cause" cx="40" cy="75" r="14" />
+            <circle class="nd nd--sym" cx="113" cy="75" r="11" />
+            <circle class="nd nd--sym" cx="186" cy="75" r="11" />
+            <circle class="nd nd--sym" cx="259" cy="75" r="11" />
+            <text class="cap" x="40" y="116" text-anchor="middle">Chiller</text>
+            <text class="cap" x="113" y="116" text-anchor="middle">CRAH</text>
+            <text class="cap" x="186" y="116" text-anchor="middle">Rack inlet</text>
+            <text class="cap" x="259" y="116" text-anchor="middle">Server</text>
+            <text class="cap cap--hi" x="40" y="44" text-anchor="middle">Cause</text>
+          </svg>
+          <h3>Cooling Chain</h3>
+          <p>
+            A plant fault warms the supply air, then the rack inlets, then the servers. Those symptoms are grouped under
+            the plant fault that started them.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- proof -->
+  <section class="section">
+    <div class="wrap split">
+      <div class="card card--glow proof" data-anim="up-block">
+        <div class="proof__num">
+          <span data-count="727">727</span><em aria-hidden="true">&rarr;</em><span class="sr-only"> to </span><span
+            data-count="10"
+            data-from="727">10</span
+          >
+        </div>
+        <p class="proof__sub">Raw alarms to console lines, simulated chiller-plant loss</p>
+        <ul class="proof__bars">
+          {
+            proof.map((p) => (
+              <li>
+                <span>{p.label}</span>
+                <i>
+                  <b style={`width:${p.w}%`} />
+                </i>
+                <strong class="mono">{p.n}</strong>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <SectionHead pill="Simulated Result" title="What The Operator Actually Sees">
+          In a simulated chiller-plant loss, 727 raw alarms reached the operator as 9 console lines and 1 summary alarm.
+        </SectionHead>
+        <p data-anim="up">
+          Nothing is thrown away. Every raw alarm is still there, folded under the line it belongs to, and one click
+          opens the full list.
+        </p>
+        <p class="proof__link" data-anim="up">
+          <a class="link-arrow" href="/demo">
+            Watch the scenario in a demo
+            <span class="circle"><Icon name="arrow" size={16} /></span>
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- incident page -->
+  <section class="section pbg">
+    <Backdrop view="racks" />
+    <div class="wrap split split--top">
+      <div class="inc-copy">
+        <SectionHead pill="Incidents" title="One Page For The Whole Event">
+          When alarms share a cause, they become one incident. Its page states the cause, lists what was affected, and
+          keeps the evidence in the order it happened.
+        </SectionHead>
+        <ul class="checks">
+          <li data-anim="up"><span><strong>Cause first.</strong> The alarm at the top of the dependency chain leads the page.</span></li>
+          <li data-anim="up"><span><strong>Evidence trail.</strong> Device events, polled readings and operator actions on one timeline.</span></li>
+          <li data-anim="up"><span><strong>History kept.</strong> Closed incidents stay searchable for the review afterwards.</span></li>
+        </ul>
+      </div>
+
+      <div class="mock inc" role="img" aria-label="Illustration of an incident page with its cause and an evidence timeline" data-anim="up-block">
+        <div class="mock__bar"><i></i><i></i><i></i>Incident<span class="mono">Open 00:21:40</span></div>
+        <div class="mock__body">
+          <p class="inc__title">Chilled water supply lost, Hall A warming</p>
+          <div class="inc__cause">
+            <span>Cause</span>
+            <strong>Chiller 2 tripped on low evaporator flow</strong>
+          </div>
+          <div class="inc__scope">
+            <div><strong class="mono">6</strong><span>Cooling units</span></div>
+            <div><strong class="mono">48</strong><span>Racks</span></div>
+            <div><strong class="mono">212</strong><span>Servers</span></div>
+          </div>
+          <ol class="inc__trail">
+            {
+              evidence.map((e) => (
+                <li>
+                  <time class="mono">{e.t}</time>
+                  <span class={`dot ${e.sev === 'ok' ? '' : `dot--${e.sev}`}`} />
+                  <div>
+                    <strong>{e.what}</strong>
+                    <small>{e.src}</small>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- tools -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Rules And Routing" title="Tune It Once, Then Trust It">
+        The controls an operations team needs to keep the console quiet and the right people informed.
+      </SectionHead>
+      <div class="grid grid-3">
+        {
+          tools.map((t) => (
+            <div class="card card--grid tool" data-anim="up">
+              <span class="tile">
+                <Icon name={t.icon} />
+              </span>
+              <h3>
+                {t.title}
+                {t.beta && <span class="tag">Beta</span>}
+              </h3>
+              <p>{t.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .checks li > span {
+    min-width: 0;
+  }
+
+  /* trap + poll merge */
+  .merge {
+    padding: clamp(18px, 2.4vw, 34px);
+  }
+  .merge__inputs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .merge__in {
+    display: grid;
+    gap: 6px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--ink-1);
+    font-size: 14px;
+  }
+  .merge__k {
+    font-family: var(--font-head);
+    font-size: 13px;
+    color: var(--accent-text);
+  }
+  .merge__in strong {
+    font-weight: 500;
+    color: var(--head);
+    line-height: 1.35;
+  }
+  .merge__in small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .merge__join {
+    width: 100%;
+    height: 64px;
+  }
+  .merge__join path {
+    fill: none;
+    stroke: var(--accent-text);
+    stroke-width: 2;
+    stroke-dasharray: 5 6;
+    vector-effect: non-scaling-stroke;
+    animation: flow 1.6s linear infinite;
+  }
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -22;
+    }
+  }
+  .merge__row {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(229, 72, 77, 0.45);
+    background: linear-gradient(90deg, rgba(229, 72, 77, 0.14), var(--ink-0) 60%);
+  }
+  .merge__row strong {
+    display: block;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--head);
+  }
+  .merge__row small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .merge__row em {
+    font-style: normal;
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--ink-2);
+    white-space: nowrap;
+  }
+  .merge__life {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    gap: 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .merge__life li {
+    display: grid;
+    gap: 4px;
+    padding-top: 12px;
+    border-top: 2px solid var(--accent-deep);
+  }
+  .merge__life b {
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--head);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .merge__join path {
+      animation: none;
+    }
+  }
+
+  /* correlation layers */
+  .layer__art {
+    width: 100%;
+    height: auto;
+    margin-bottom: 22px;
+    border-radius: 12px;
+    background-color: var(--ink-0);
+    background-image: var(--grid-lines);
+    background-size: 28px 28px;
+    border: 1px solid var(--line);
+  }
+  .layer__art text {
+    font-family: var(--font-body);
+    font-size: 12px;
+    fill: var(--head);
+  }
+  .layer__art .cap {
+    fill: var(--muted);
+    font-size: 11.5px;
+  }
+  .layer__art .cap--hi {
+    fill: var(--accent-text);
+  }
+  .layer__art .bx {
+    fill: var(--ink-2);
+    stroke: var(--line-strong);
+  }
+  .layer__art .bx--live {
+    stroke: var(--accent-text);
+  }
+  .layer__art .bx--dead {
+    stroke-dasharray: 4 4;
+    opacity: 0.7;
+  }
+  .layer__art .ln {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-width: 2;
+  }
+  .layer__art .ln--live {
+    stroke: var(--accent-text);
+  }
+  .layer__art .ln--dead {
+    stroke: var(--muted);
+    opacity: 0.6;
+  }
+  .layer__art .x {
+    fill: none;
+    stroke: var(--head);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+  .layer__art .pt {
+    fill: var(--accent-text);
+  }
+  .layer__art .nd {
+    stroke-width: 2;
+  }
+  .layer__art .nd--cause {
+    fill: var(--accent);
+    stroke: var(--head);
+  }
+  .layer__art .nd--sym {
+    fill: var(--ink-2);
+    stroke: var(--accent-text);
+  }
+
+  /* proof */
+  .proof {
+    padding: clamp(28px, 3.4vw, 52px);
+  }
+  .proof__num {
+    display: flex;
+    align-items: baseline;
+    gap: 0.22em;
+    white-space: nowrap;
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: clamp(54px, 8vw, 104px);
+    line-height: 1;
+    color: var(--head);
+    font-variant-numeric: tabular-nums;
+  }
+  .proof__num em {
+    font-style: normal;
+    color: var(--accent-text);
+    font-size: 0.7em;
+  }
+  .proof__sub {
+    margin-top: 14px;
+    color: var(--body);
+  }
+  .proof__bars {
+    list-style: none;
+    margin: 34px 0 0;
+    padding: 22px;
+    display: grid;
+    gap: 16px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .proof__bars li {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr) 36px;
+    gap: 14px;
+    align-items: center;
+  }
+  .proof__bars i {
+    height: 10px;
+    border-radius: 5px;
+    background: var(--ink-2);
+    overflow: hidden;
+  }
+  .proof__bars b {
+    display: block;
+    height: 100%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--accent-deep), var(--accent-text));
+  }
+  .proof__bars strong {
+    text-align: right;
+    font-weight: 500;
+    color: var(--head);
+  }
+  .proof__link {
+    margin-top: 28px;
+  }
+
+  /* incident */
+  .inc__title {
+    font-family: var(--font-head);
+    font-size: 18px;
+    line-height: 1.3;
+    color: var(--head);
+  }
+  .inc__cause {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(229, 72, 77, 0.45);
+    background: linear-gradient(90deg, rgba(229, 72, 77, 0.14), var(--ink-0) 70%);
+    display: grid;
+    gap: 4px;
+  }
+  .inc__cause span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .inc__cause strong {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--head);
+  }
+  .inc__scope {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .inc__scope div {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--ink-0);
+    border: 1px solid var(--line);
+    display: grid;
+    gap: 2px;
+  }
+  .inc__scope strong {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--head);
+  }
+  .inc__scope span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .inc__trail {
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+    position: relative;
+  }
+  .inc__trail::before {
+    content: '';
+    position: absolute;
+    left: 81px;
+    top: 10px;
+    bottom: 22px;
+    width: 1px;
+    background: var(--line-strong);
+  }
+  .inc__trail li {
+    display: grid;
+    grid-template-columns: 62px 8px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    padding: 9px 0;
+  }
+  .inc__trail time {
+    font-size: 12px;
+    color: var(--muted);
+    padding-top: 1px;
+  }
+  .inc__trail .dot {
+    margin: 6px 0 0;
+    position: relative;
+    box-shadow: 0 0 0 4px #06070f;
+  }
+  .inc__trail strong {
+    display: block;
+    font-weight: 500;
+    color: var(--head);
+    line-height: 1.35;
+  }
+  .inc__trail small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* tools */
+  .tool h3 {
+    line-height: 1.25;
+  }
+</style>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SpectraDCIM theme options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet" />
+<style>
+/* Six color themes that keep to the logo's three blues. Preview only. */
+.t-a { --page: #0f1626; --bar: #000000; --card: #0b111e; --raised: #182236; --tile: rgba(76, 195, 255, 0.12);
+       --text: #eef2f7; --muted: #b4bbc7; --btn: #2563eb; --btn-text: #ffffff; --link: #4cc3ff; --line: rgba(255, 255, 255, 0.12); }
+.t-b { --page: #16181d; --bar: #0c0d10; --card: #101216; --raised: #22252c; --tile: rgba(76, 195, 255, 0.12);
+       --text: #eef0f3; --muted: #b3b7bf; --btn: #2563eb; --btn-text: #ffffff; --link: #4cc3ff; --line: rgba(255, 255, 255, 0.12); }
+.t-c { --page: #000000; --bar: #000000; --card: #0b0d11; --raised: #14171d; --tile: rgba(93, 230, 255, 0.12);
+       --text: #f2f5f8; --muted: #aeb5bf; --btn: #2563eb; --btn-text: #ffffff; --link: #5de6ff; --line: rgba(255, 255, 255, 0.16); }
+.t-d { --page: #0b1a1f; --bar: #050d10; --card: #081317; --raised: #12272e; --tile: rgba(122, 243, 255, 0.12);
+       --text: #ecf5f6; --muted: #a9bcc0; --btn: #1fb6d9; --btn-text: #04161b; --link: #7af3ff; --line: rgba(255, 255, 255, 0.12); }
+.t-e { --page: #101820; --bar: #070b0f; --card: #0b1117; --raised: #19242f; --tile: rgba(76, 195, 255, 0.12);
+       --text: #eef3f7; --muted: #aebac5; --btn: #4cc3ff; --btn-text: #06202e; --link: #ffffff; --line: rgba(255, 255, 255, 0.12); }
+.t-f { --page: #17181a; --bar: #0d0e0f; --card: #111213; --raised: #232527; --tile: rgba(76, 195, 255, 0.12);
+       --text: #f4efe6; --muted: #bdb6aa; --btn: #2563eb; --btn-text: #ffffff; --link: #4cc3ff; --line: rgba(244, 239, 230, 0.14); }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: #2a2a2a; font: 400 16px/1.5 'Lato', 'Segoe UI', sans-serif; }
+.sheet { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 16px; }
+@media (max-width: 900px) { .sheet { grid-template-columns: 1fr; } }
+
+.theme { background: var(--page); color: var(--text); overflow: hidden; }
+.name { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 10px 28px; background: #fff; color: #111; }
+.name b { font-size: 18px; }
+.name span { font-size: 13px; color: #555; }
+.bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; background: var(--bar); }
+.bar img { height: 34px; width: auto; display: block; }
+.bar nav { display: flex; gap: 22px; font-size: 13px; color: var(--text); }
+.body { padding: 34px 28px 30px; }
+.eyebrow { font-weight: 700; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--link); }
+.theme h2 { margin: 14px 0 0; font-weight: 700; font-size: 36px; line-height: 1.15; color: #fff; max-width: 16ch; }
+.t-f h2 { color: var(--text); }
+.lead { margin: 14px 0 0; max-width: 46ch; font-size: 16px; color: var(--text); }
+.acts { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 24px; border: 2px solid transparent; border-radius: 30px;
+       background: var(--btn); color: var(--btn-text); font-size: 13px; letter-spacing: 0.02em; text-transform: uppercase; }
+.btn--o { background: transparent; border-color: #fff; color: #fff; }
+.row { display: grid; grid-template-columns: 1.15fr 1fr; gap: 14px; margin-top: 30px; }
+.card { padding: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+.card--r { background: var(--raised); }
+.tile { display: grid; place-items: center; width: 40px; height: 40px; margin-bottom: 14px; border-radius: 8px; background: var(--tile); color: var(--link); }
+.tile svg { width: 20px; height: 20px; }
+.card h3 { margin: 0; font-size: 17px; font-weight: 700; color: #fff; }
+.t-f .card h3 { color: var(--text); }
+.card p { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+.link { display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; font-weight: 700; font-size: 14px; color: var(--link); text-decoration: none; }
+.t-e .link { text-decoration: underline; text-underline-offset: 4px; }
+.link i { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--btn); color: var(--btn-text); }
+.num { font-weight: 700; font-size: 38px; line-height: 1; color: #fff; }
+.num em { font-style: normal; color: var(--link); }
+.sev { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 16px; font-size: 13px; color: var(--muted); }
+.sev span::before { content: ''; display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 50%; background: var(--c); }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- one panel per theme; the script below copies the first panel's content into the others -->
+  <section class="theme t-a" data-name="A. Navy (current)" data-note="navy page, royal blue buttons, sky links"></section>
+  <section class="theme t-b" data-name="B. Graphite" data-note="neutral gray page, royal blue buttons, sky links"></section>
+  <section class="theme t-c" data-name="C. Black" data-note="black page, royal blue buttons, cyan links"></section>
+  <section class="theme t-d" data-name="D. Cyan-led" data-note="deep teal page, cyan buttons with dark text"></section>
+  <section class="theme t-e" data-name="E. Sky-led" data-note="sky buttons with dark text, white links"></section>
+  <section class="theme t-f" data-name="F. Warm neutral" data-note="warm gray page, warm white text, blue accents"></section>
+
+</div>
+
+<template id="panel">
+  <div class="name"><b></b><span></span></div>
+  <div class="bar">
+    <img src="../public/brand/spectradcim-logo.png" alt="SpectraDCIM" />
+    <nav><span>Platform</span><span>Solutions</span><span>Partners</span><span>Company</span></nav>
+  </div>
+  <div class="body">
+    <span class="eyebrow">Data center infrastructure management</span>
+    <h2>Power, cooling and IT. One system, watched as one.</h2>
+    <p class="lead">SpectraDCIM monitors every site from the utility feed to the server outlet, and turns alarm floods into the one problem that caused them.</p>
+    <div class="acts"><span class="btn">Request a demo</span><span class="btn btn--o">Tour the platform</span></div>
+    <div class="row">
+      <div class="card">
+        <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3L5 14h6l-1 7 8-11h-6z" /></svg></span>
+        <h3>Power &amp; capacity</h3>
+        <p>The whole power chain, its redundancy, and how much headroom is left.</p>
+        <span class="link">See the same racks in 3-D <i><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></i></span>
+      </div>
+      <div class="card card--r">
+        <div class="num">727 <em>to</em> 10</div>
+        <p>Alarms to console lines, in a simulated chiller-plant loss.</p>
+        <div class="sev">
+          <span style="--c:#4fbf8b">Normal</span><span style="--c:#e3a008">Warning</span><span style="--c:#e5484d">Critical</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  const tpl = document.getElementById('panel');
+  document.querySelectorAll('.theme').forEach((el) => {
+    el.append(tpl.content.cloneNode(true));
+    el.querySelector('.name b').textContent = el.dataset.name;
+    el.querySelector('.name span').textContent = el.dataset.note;
+  });
+</script>
+</body>
+</html>

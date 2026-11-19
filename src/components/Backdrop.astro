@@ -32,7 +32,7 @@ const SHADE: Record<string, number> = {
   world: 0.72,
   worldpue: 0.35,
 };
-// Where the subject sits in a view, when it is not the centre.
+// Where the subject sits in a view, when it is not the center.
 const FOCUS: Record<string, string> = { fpv: '64% center' };
 const { view } = Astro.props;
 const focus = Astro.props.focus ?? FOCUS[view] ?? 'center';

@@ -28,7 +28,7 @@ const plantChecks = [
 const units = [
   {
     icon: 'fan',
-    title: 'CRAH Monitoring',
+    title: 'CRAH monitoring',
     text: 'For air-cooled halls: supply and return air, fan speed and chilled water valve position for every unit, read against the room it serves.',
     label: 'CRAH 4, Hall A',
     aria: 'Illustration of readings for one CRAH unit: supply air, return air, fan speed and valve position',
@@ -41,7 +41,7 @@ const units = [
   },
   {
     icon: 'drop',
-    title: 'CDU Monitoring',
+    title: 'CDU monitoring',
     text: 'For liquid-cooled halls: secondary loop supply and return, flow and pump speed for every coolant distribution unit, beside the racks on its loop.',
     label: 'CDU 2, Hall C',
     aria: 'Illustration of readings for one coolant distribution unit: secondary supply, secondary return, flow and pump speed',
@@ -70,20 +70,20 @@ const anomalyChecks = [
 ---
 
 <Base
-  title="Thermal & Cooling"
+  title="Thermal & cooling"
   description="Chillers, pumps, room units and rack inlets in one model, so a warm row can be followed back to the plant behind it."
 >
-  <PageHero slot="hero" pill="Platform" title="From Chiller Plant To Server Inlet, One Cooling Picture">
+  <PageHero slot="hero" pill="Platform" title="From chiller plant to server inlet, one cooling picture">
     Chillers, pumps, towers, CRAHs, CDUs and rack inlets in one model, so a warm row can be followed back to the plant
     that caused it.
-    <Shot slot="visual" name="hallb-inlet" alt="Server hall in 3-D with rack faces coloured by inlet and outlet temperature" />
+    <Shot slot="visual" name="hallb-inlet" alt="Server hall in 3-D with rack faces colored by inlet and outlet temperature" />
   </PageHero>
 
   <!-- envelope -->
   <section class="section">
     <div class="wrap split">
       <div>
-        <SectionHead pill="Thermal View" title="Every Rack Inlet Against Its ASHRAE Envelope">
+        <SectionHead pill="Thermal view" title="Every rack inlet against its ASHRAE envelope">
           Rack inlets across the estate are read against ASHRAE TC 9.9 thermal envelopes. You see how many sit in the
           recommended range, how many are only allowable, and where the exceptions are.
         </SectionHead>
@@ -101,7 +101,7 @@ const anomalyChecks = [
         <Shot name="plant" alt="Central plant in 3-D: chillers and pumps" />
       </div>
       <div>
-        <SectionHead pill="Cooling Plant" title="The Plant Room, Read Like The White Space">
+        <SectionHead pill="Cooling plant" title="The plant room, read like the white space">
           Chillers, pumps, cooling towers and valves on one panel, with the trend behind every reading. The building
           management system keeps control of the plant. SpectraDCIM reads it.
         </SectionHead>
@@ -123,7 +123,7 @@ const anomalyChecks = [
   <!-- air and liquid -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Air And Liquid" title="Room Units For Both Kinds Of Hall" center>
+      <SectionHead pill="Air and liquid" title="Room units for both kinds of hall" center>
         Air-cooled and liquid-cooled halls sit in the same model, each with the unit that serves it.
       </SectionHead>
       <div class="grid grid-2">
@@ -163,7 +163,7 @@ const anomalyChecks = [
   <section class="section pbg">
     <Backdrop view="under" />
     <div class="wrap">
-      <SectionHead pill="Correlation" title="Correlation That Follows The Cooling Chain">
+      <SectionHead pill="Correlation" title="Correlation that follows the cooling chain">
         When the plant fails, the units, the zones and the servers downstream all raise alarms. SpectraDCIM knows which
         unit serves which zone, so the symptoms fold under the cause.
       </SectionHead>
@@ -206,7 +206,7 @@ const anomalyChecks = [
   <section class="section">
     <div class="wrap split">
       <div>
-        <SectionHead pill="Anomaly Findings" title="Findings On Learned Baselines, When You Want Them">
+        <SectionHead pill="Anomaly findings" title="Findings on learned baselines, when you want them">
           A threshold catches a reading that is too high. A baseline catches one that is unusual for that point at that
           time, such as a return temperature drifting while still inside its limits.
         </SectionHead>
@@ -223,7 +223,7 @@ const anomalyChecks = [
         </ul>
       </div>
       <div class="card card--raised finding" data-anim="up-block">
-        <Shot name="rack-unusual" alt="Rack page: open conditions and unusual behaviour for one rack" />
+        <Shot name="rack-unusual" alt="Rack page: open conditions and unusual behavior for one rack" />
         <div class="finding__row" role="img" aria-label="Illustration of one anomaly finding awaiting an operator's decision">
           <span class="dot dot--info"></span>
           <div>
@@ -247,9 +247,9 @@ const anomalyChecks = [
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .census__grid > div {
-    padding: 18px 16px;
+    padding: var(--s-4) var(--s-4);
     display: grid;
-    gap: 8px;
+    gap: var(--s-2);
     align-content: start;
   }
   .census__grid > div + div {
@@ -262,7 +262,7 @@ const anomalyChecks = [
     color: var(--head);
   }
   .census__grid span {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .census__grid b span {
@@ -270,17 +270,17 @@ const anomalyChecks = [
     color: inherit;
   }
   .env__body {
-    padding: 20px 20px 16px;
+    padding: var(--s-5) var(--s-5) var(--s-4);
     display: grid;
-    gap: 22px;
+    gap: var(--s-5);
   }
   .env__cap {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
-    gap: 2px 12px;
-    font-size: 12px;
+    gap: 2px var(--s-3);
+    font-size: 13px;
     color: var(--muted);
   }
   .env__cap strong {
@@ -292,8 +292,8 @@ const anomalyChecks = [
   .env__track {
     position: relative;
     height: 26px;
-    margin-top: 10px;
-    border-radius: 6px;
+    margin-top: var(--s-2);
+    border-radius: var(--r-small);
     background: var(--ink-0);
   }
   .env__track > * {
@@ -302,7 +302,7 @@ const anomalyChecks = [
     bottom: 0;
   }
   .env__allow {
-    border-radius: 6px;
+    border-radius: var(--r-small);
     background: var(--ink-2);
   }
   .env__rec {
@@ -312,7 +312,7 @@ const anomalyChecks = [
   .env__range {
     top: 8px;
     bottom: 8px;
-    border-radius: 5px;
+    border-radius: var(--r-input);
     background: var(--head);
   }
   .env__range.warn {
@@ -325,22 +325,21 @@ const anomalyChecks = [
     bottom: 3px;
     border-radius: 2px;
     background: var(--accent-text);
-    box-shadow: 0 0 8px var(--accent-text);
   }
   .env__vals {
     display: flex;
     justify-content: space-between;
-    gap: 8px;
-    margin-top: 8px;
-    font-size: 11px;
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+    font-size: 12px;
     color: var(--muted);
   }
   .env__axis {
     position: relative;
     height: 16px;
-    margin-top: -8px;
+    margin-top: calc(-1 * var(--s-2));
     border-top: 1px solid var(--line);
-    font-size: 10px;
+    font-size: 12px;
     color: var(--muted);
   }
   .env__axis span {
@@ -357,8 +356,8 @@ const anomalyChecks = [
   .env__legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 18px;
-    font-size: 12px;
+    gap: var(--s-2) var(--s-4);
+    font-size: 13px;
     color: var(--muted);
   }
   .env__legend i {
@@ -366,7 +365,7 @@ const anomalyChecks = [
     width: 12px;
     height: 10px;
     border-radius: 2px;
-    margin-right: 6px;
+    margin-right: var(--s-2);
     vertical-align: -1px;
   }
   .env__legend .env__key {
@@ -390,32 +389,32 @@ const anomalyChecks = [
     max-width: 52ch;
   }
   .unit__read {
-    margin-top: 26px;
-    border-radius: 12px;
+    margin-top: var(--s-5);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: #06070f;
-    font-size: 13px;
+    font-size: 14px;
   }
   .unit__label {
-    padding: 10px 14px;
+    padding: var(--s-2) var(--s-4);
     border-bottom: 1px solid var(--line);
     color: var(--muted);
-    font-size: 12px;
+    font-size: 13px;
   }
   .unit__grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .unit__grid > div {
-    padding: 14px;
+    padding: var(--s-4);
     display: grid;
-    gap: 4px;
+    gap: var(--s-1);
   }
   .unit__grid > div + div {
     border-left: 1px solid var(--line);
   }
   .unit__grid span {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
   }
   .unit__grid b {
@@ -425,7 +424,7 @@ const anomalyChecks = [
     white-space: nowrap;
   }
   .unit__grid small {
-    font-size: 11px;
+    font-size: 12px;
     margin-left: 3px;
     color: var(--muted);
   }
@@ -448,10 +447,10 @@ const anomalyChecks = [
     padding: 0;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px;
+    gap: var(--s-5);
   }
   .cchain__step {
-    padding: 24px;
+    padding: var(--s-5);
     overflow: visible;
   }
   .cchain__step.crit {
@@ -467,18 +466,18 @@ const anomalyChecks = [
     color: var(--accent-text);
   }
   .cchain__event {
-    margin-top: 14px;
+    margin-top: var(--s-4);
     color: var(--head);
     font-size: 15px;
   }
   .cchain__meta {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-    margin-top: 16px;
-    padding-top: 14px;
+    gap: var(--s-2);
+    margin-top: var(--s-4);
+    padding-top: var(--s-4);
     border-top: 1px solid var(--line);
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .cchain__step:not(:last-child)::after {
@@ -495,8 +494,8 @@ const anomalyChecks = [
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 20px 40px;
-    margin-top: 36px;
+    gap: var(--s-5) var(--s-7);
+    margin-top: var(--s-6);
   }
   .cchain__foot p {
     max-width: 60ch;
@@ -520,19 +519,19 @@ const anomalyChecks = [
   /* anomaly finding */
   .finding {
     display: grid;
-    gap: 16px;
+    gap: var(--s-4);
     padding: clamp(18px, 2.2vw, 30px);
   }
   .finding__row {
     display: grid;
     grid-template-columns: 10px minmax(0, 1fr) auto auto;
-    gap: 12px;
+    gap: var(--s-3);
     align-items: center;
-    padding: 14px;
-    border-radius: 12px;
+    padding: var(--s-4);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-0);
-    font-size: 13px;
+    font-size: 14px;
   }
   .finding__row .dot {
     margin: 0;
@@ -545,13 +544,13 @@ const anomalyChecks = [
   }
   .finding__row small {
     color: var(--muted);
-    font-size: 12px;
+    font-size: 13px;
   }
   .finding__row em {
     font-style: normal;
-    font-size: 12px;
-    padding: 4px 12px;
-    border-radius: 999px;
+    font-size: 13px;
+    padding: var(--s-1) var(--s-3);
+    border-radius: var(--r-round);
     border: 1px solid var(--line-strong);
     color: var(--body);
     white-space: nowrap;

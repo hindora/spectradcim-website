@@ -26,28 +26,28 @@ const weAsk = [
 ];
 
 const principles = [
-  { icon: 'building', title: 'Priced By Footprint', text: 'The price follows the size of what you run, so you can work it out before you talk to us.' },
-  { icon: 'chart', title: 'No Charge Per Data Point', text: 'Reading more sensors, or reading them more often, does not raise the bill.' },
-  { icon: 'users', title: 'Unlimited Users', text: 'Operations, facilities and capacity planning all log in. No seat counting.' },
+  { icon: 'building', title: 'Priced by footprint', text: 'The price follows the size of what you run, so you can work it out before you talk to us.' },
+  { icon: 'chart', title: 'No charge per data point', text: 'Reading more sensors, or reading them more often, does not raise the bill.' },
+  { icon: 'users', title: 'Unlimited users', text: 'Operations, facilities and capacity planning all log in. No seat counting.' },
 ];
 
 const steps = [
-  { title: 'Start With A Demo', text: 'Thirty minutes on a running estate, so you can judge the product before anything else.' },
-  { title: 'Choose One Site', text: 'We agree which site to connect and which equipment matters most to you.' },
-  { title: 'Deploy It Together', text: 'The platform and collectors go onto your network. Your telemetry stays there.' },
-  { title: 'Tell Us What You Found', text: 'Your team uses it on live equipment, and your feedback goes straight to engineering.' },
+  { title: 'Start with a demo', text: 'Thirty minutes on a running estate, so you can judge the product before anything else.' },
+  { title: 'Choose one site', text: 'We agree which site to connect and which equipment matters most to you.' },
+  { title: 'Deploy it together', text: 'The platform and collectors go onto your network. Your telemetry stays there.' },
+  { title: 'Tell us what you found', text: 'Your team uses it on live equipment, and your feedback goes straight to engineering.' },
 ];
 ---
 
 <Base
-  title="Early Access And Pricing"
+  title="Early access and pricing"
   description="SpectraDCIM is in early access. Apply to be a design partner, and read the principles our pricing will follow."
 >
-  <PageHero slot="hero" pill="Early Access" title="Early Access, With Engineers On Both Sides" cta={false}>
+  <PageHero slot="hero" pill="Early access" title="Early access, with engineers on both sides" cta={false}>
     SpectraDCIM is in early access. We are working with a small number of design partners who want a DCIM that covers
     plant and IT together.
     <div slot="visual" class="card card--grid glance">
-      <h2 class="h3">The Programme At A Glance</h2>
+      <h2 class="h3">The program at a glance</h2>
       <dl>
         {
           glance.map((g) => (
@@ -68,13 +68,13 @@ const steps = [
   <!-- exchange -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Design Partners" title="What You Get, And What We Ask" center>
+      <SectionHead pill="Design partners" title="What you get, and what we ask" center>
         A design partnership works in both directions. Here is each side of it, stated plainly.
       </SectionHead>
       <div class="exchange">
         <div class="card card--raised exchange__col" data-anim="up-block">
           <span class="tile"><Icon name="handshake" /></span>
-          <h3>What You Get</h3>
+          <h3>What you get</h3>
           <ul class="checks">
             {
               youGet.map((i) => (
@@ -89,7 +89,7 @@ const steps = [
         </div>
         <div class="card card--grid exchange__col" data-anim="up-block">
           <span class="tile"><Icon name="flag" /></span>
-          <h3>What We Ask</h3>
+          <h3>What we ask</h3>
           <ul class="checks">
             {
               weAsk.map((i) => (
@@ -114,7 +114,7 @@ const steps = [
   <section class="section pbg">
     <Backdrop view="levels" />
     <div class="wrap">
-      <SectionHead pill="Pricing" title="Three Principles, Before Any Numbers" center>
+      <SectionHead pill="Pricing" title="Three principles, before any numbers" center>
         The price list is not published yet. When it is, it will follow these three principles.
       </SectionHead>
       <div class="grid grid-3">
@@ -140,7 +140,7 @@ const steps = [
   <!-- pilot -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="The Pilot" title="How A Pilot Runs">
+      <SectionHead pill="The pilot" title="How a pilot runs">
         Four steps, one site. Nothing is installed on the equipment itself.
       </SectionHead>
       <ol class="grid grid-4 steps">
@@ -164,7 +164,7 @@ const steps = [
     <Backdrop view="aisle" />
     <div class="wrap split split--top">
       <div>
-        <SectionHead pill="Apply" title="Apply For Early Access">
+        <SectionHead pill="Apply" title="Apply for early access">
           Tell us what you run. A rough picture is enough: how many sites, about how many racks, and what you most want
           to see.
         </SectionHead>
@@ -175,7 +175,7 @@ const steps = [
         </ul>
       </div>
       <div class="card card--raised" data-anim="up-block">
-        <form class="form" data-demo-form>
+        <form class="form" data-demo-form data-form-name="Early access application">
           <div class="row">
             <div class="field">
               <label for="ea-name">Name <span class="req">(required)</span></label>
@@ -210,22 +210,20 @@ const steps = [
             <label for="ea-message">Message</label>
             <textarea id="ea-message" name="message" autocomplete="off"></textarea>
           </div>
-          <button class="btn" type="submit"><span>Apply For Early Access</span></button>
-          <p class="form__status" data-form-status hidden tabindex="-1" role="status">
-            This form is not connected to a mailbox yet, so nothing was sent. It will be wired up before launch.
-          </p>
+          <button class="btn" type="submit"><span>Apply for early access</span></button>
+          <p class="form__status" data-form-status hidden tabindex="-1" role="status"></p>
         </form>
       </div>
     </div>
   </section>
 
-  <CtaBand pill="Prefer To See It First?" />
+  <CtaBand pill="Prefer to see it first?" />
 </Base>
 
 <style>
   .glance {
     display: grid;
-    gap: 22px;
+    gap: var(--s-5);
   }
   .glance dl {
     margin: 0;
@@ -235,8 +233,8 @@ const steps = [
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 4px 20px;
-    padding: 13px 0;
+    gap: var(--s-1) var(--s-5);
+    padding: var(--s-3) 0;
     border-bottom: 1px solid var(--line);
   }
   .glance dl div:first-child {
@@ -253,16 +251,16 @@ const steps = [
   .exchange {
     display: grid;
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    gap: 24px;
+    gap: var(--s-5);
     align-items: stretch;
   }
   .exchange__col h3 {
-    margin-bottom: 24px;
+    margin-bottom: var(--s-5);
   }
   .exchange__note {
-    margin-top: 26px;
-    padding: 18px 20px;
-    border-radius: 12px;
+    margin-top: var(--s-5);
+    padding: var(--s-4) var(--s-5);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-1);
     font-size: 15px;
@@ -274,7 +272,7 @@ const steps = [
   }
 
   .price-note {
-    margin: 36px auto 0;
+    margin: var(--s-6) auto 0;
     max-width: 70ch;
     text-align: center;
     color: var(--muted);
@@ -290,7 +288,7 @@ const steps = [
     place-items: center;
     width: 40px;
     height: 40px;
-    margin-bottom: 22px;
+    margin-bottom: var(--s-5);
     border-radius: 50%;
     border: 1px solid var(--accent-text);
     color: var(--accent-text);
@@ -299,7 +297,7 @@ const steps = [
 
   .req {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 14px;
   }
   .form .btn {
     justify-self: start;

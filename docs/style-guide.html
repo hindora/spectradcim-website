@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SpectraDCIM style guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet" />
+<style>
+/* =====================================================================================
+   SpectraDCIM design tokens. Single source of truth.
+   The name in brackets is the variable the site uses today (src/styles/global.css).
+   ===================================================================================== */
+:root {
+  /* color: surfaces */
+  --page: #16181d;            /* [--black]  page background */
+  --surface-sunk: #101216;    /* [--ink-0]  cards, inputs, bands */
+  --surface: #22252c;         /* [--ink-1]  raised cards, table heads */
+  --surface-2: #2c3038;       /* [--ink-2]  icon tiles, chips */
+  --picture: #000000;         /* behind picture bands and the header */
+
+  /* color: lines */
+  --line: rgba(255, 255, 255, 0.12);
+  --line-input: rgba(255, 255, 255, 0.25);
+  --line-strong: rgba(255, 255, 255, 0.9);   /* outline button */
+
+  /* color: text */
+  --text-head: #ffffff;       /* [--head] */
+  --text: #eef0f3;            /* [--body] */
+  --text-muted: #b3b7bf;      /* [--muted] same tone as body at 74%, now a solid value */
+
+  /* color: brand. Taken from the logo. */
+  --action: #2563eb;          /* [--accent]       lower bars: button fill */
+  --action-hover: #1d4fd8;    /* [--accent-hover] */
+  --signal: #4cc3ff;          /* [--accent-text]  the word "DCIM": links, eyebrows, icons, focus */
+  --signal-soft: rgba(76, 195, 255, 0.12);
+  --signal-line: rgba(76, 195, 255, 0.55);
+
+  /* color: status. Alarms and form feedback only, never decoration. */
+  --ok: #4fbf8b;
+  --warn: #e3a008;
+  --crit: #e5484d;
+
+  /* type */
+  --font-head: 'Lato', 'Segoe UI', sans-serif;
+  --font-body: 'Lato', 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace;
+
+  --h1: clamp(38px, 5vw, 64px);
+  --h2: clamp(28px, 3vw, 38px);
+  --h3: 20px;
+  --h4: 18px;
+  --h5: 16px;
+  --h6: 14px;
+  --lead: 20px;
+  --body: 18px;
+  --small: 16px;
+  --caption: 14px;
+  --micro: 12px;              /* floor; inside product illustrations only */
+
+  --lh-head: 1.2;
+  --lh-sub: 1.2;              /* h3 to h6 */
+  --lh-body: 1.5;
+  --lh-caption: 1.45;
+  --ls: 0;                    /* tracking only on eyebrows (0.3em) and buttons (0.02em) */
+
+  /* spacing: 4px base */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --section: clamp(72px, 9vw, 128px);
+  --gutter: clamp(20px, 4vw, 64px);
+  --wrap: 1300px;
+
+  /* radius */
+  --r-input: 4px;             /* inputs, notes */
+  --r-small: 6px;             /* small chips inside illustrations */
+  --r-button: 30px;           /* pill buttons */
+  --r-card: 8px;              /* cards, screenshots, illustrations */
+  --r-round: 999px;           /* tags, dots, icon circles */
+
+  /* controls */
+  --btn-h: 56px;
+  --btn-h-sm: 44px;
+  --input-h: 50px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
+  font: 400 var(--body) / var(--lh-body) var(--font-body);
+  font-variant-numeric: tabular-nums;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--text-head);
+  letter-spacing: var(--ls);
+  text-wrap: balance;
+}
+h1 { font-size: var(--h1); line-height: var(--lh-head); }
+h2 { font-size: var(--h2); line-height: var(--lh-head); }
+h3 { font-size: var(--h3); line-height: var(--lh-sub); }
+h4 { font-size: var(--h4); line-height: var(--lh-sub); }
+h5 { font-size: var(--h5); line-height: var(--lh-sub); }
+h6 { font-size: var(--h6); line-height: var(--lh-sub); }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--signal); }
+a:hover { color: var(--text-head); }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+/* ---------- components ---------- */
+.lead { font-size: var(--lead); }
+.small { font-size: var(--small); }
+.caption { font-size: var(--caption); line-height: var(--lh-caption); color: var(--text-muted); }
+.eyebrow { display: block; font: 700 17px/1.4 var(--font-head); letter-spacing: 0.3em; text-transform: uppercase; color: var(--signal); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-3);
+  min-height: var(--btn-h); padding: 0 30px;
+  border: 2px solid transparent; border-radius: var(--r-button);
+  background: var(--action); color: #fff;
+  font: 400 16px/1.4 var(--font-body); letter-spacing: 0.02em; text-transform: uppercase; text-decoration: none; cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn:hover { background: var(--action-hover); color: #fff; }
+.btn--outline { background: transparent; border-color: var(--line-strong); }
+.btn--outline:hover { background: #fff; color: #000; }
+.btn--sm { min-height: var(--btn-h-sm); padding: 0 22px; font-size: 14px; font-weight: 700; text-transform: none; letter-spacing: 0; }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.btn svg { width: 16px; height: 16px; }
+
+.link-arrow { display: inline-flex; align-items: center; gap: var(--s-3); font-weight: 600; text-decoration: none; }
+.link-arrow i { display: grid; place-items: center; width: 38px; height: 38px; border-radius: var(--r-round); background: var(--action); color: #fff; }
+
+.card { padding: clamp(24px, 2.4vw, 36px); border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface-sunk); }
+.card--raised { background: var(--surface); }
+.card--featured { border-top: 3px solid var(--signal); }
+a.card { display: block; color: inherit; text-decoration: none; transition: border-color 0.2s ease; }
+a.card:hover { border-color: var(--signal); color: inherit; }
+.card h3 + p { margin-top: var(--s-3); }
+.tile { display: grid; place-items: center; width: 54px; height: 54px; margin-bottom: var(--s-5); border-radius: var(--r-card); background: var(--signal-soft); color: var(--signal); }
+.tile svg { width: 26px; height: 26px; }
+
+.tag { display: inline-block; padding: 2px 10px; border: 1px solid var(--signal-line); border-radius: var(--r-round); color: var(--signal); font-size: 13px; }
+
+.stat b { display: block; font: 600 clamp(40px, 4.4vw, 58px)/1 var(--font-head); color: var(--text-head); }
+.stat b em { font-style: normal; color: var(--signal); }
+.stat strong { display: block; margin-top: var(--s-3); font: 600 18px/1.25 var(--font-head); color: var(--text-head); }
+
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); }
+.checks li { display: grid; grid-template-columns: 24px 1fr; gap: var(--s-3); }
+.checks li::before { content: ''; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; background: var(--action) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 12px no-repeat; }
+
+.field label { display: block; margin-bottom: var(--s-2); font-size: var(--caption); color: var(--text-head); }
+.field input, .field select, .field textarea {
+  width: 100%; min-height: var(--input-h); padding: 12px 16px;
+  border: 1px solid var(--line-input); border-radius: var(--r-input);
+  background: var(--surface-sunk); color: #fff; font: inherit;
+}
+.field textarea { min-height: 128px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--signal); outline-offset: 0; border-color: var(--signal); }
+.field .caption { margin-top: var(--s-2); }
+.note { padding: 14px 16px; border-radius: var(--r-input); border: 1px solid rgba(79, 191, 139, 0.5); background: rgba(79, 191, 139, 0.08); color: var(--text-head); }
+.note--error { border-color: rgba(227, 160, 8, 0.55); background: rgba(227, 160, 8, 0.08); }
+
+.sev { display: inline-flex; align-items: center; gap: var(--s-2); font-size: var(--caption); }
+.sev::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+
+/* ---------- this page's own layout ---------- */
+.wrap { width: min(var(--wrap), 100% - 2 * var(--gutter)); margin-inline: auto; }
+.doc-head { background: var(--picture); border-bottom: 1px solid var(--line); padding: var(--s-5) 0; }
+.doc-head .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-4); }
+.doc-head img { height: 44px; width: auto; display: block; }
+section { padding: var(--s-8) 0; border-bottom: 1px solid var(--line); }
+section > .wrap > h2 { margin-bottom: var(--s-3); }
+section > .wrap > p { color: var(--text-muted); margin-bottom: var(--s-6); }
+.grid { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.grid-3 { display: grid; gap: var(--s-5); grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-2 { display: grid; gap: var(--s-6); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sw { border: 1px solid var(--line); border-radius: var(--r-card); overflow: hidden; background: var(--surface-sunk); }
+.sw i { display: block; height: 76px; background: var(--c); border-bottom: 1px solid var(--line); }
+.sw div { padding: var(--s-3) var(--s-4); }
+.sw b { display: block; font-weight: 600; font-size: var(--small); color: var(--text-head); }
+.sw code, td code { font: 13px var(--font-mono); color: var(--text-muted); }
+.sw span { display: block; margin-top: var(--s-1); font-size: var(--caption); color: var(--text-muted); }
+h3.sub { margin: var(--s-7) 0 var(--s-4); }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--line); text-align: left; vertical-align: baseline; font-size: var(--small); }
+th { background: var(--surface); font-weight: 600; color: var(--text-head); font-size: var(--caption); }
+.type-row td:first-child { width: 150px; color: var(--text-muted); font-size: var(--caption); }
+.type-row td:last-child { width: 240px; color: var(--text-muted); font-size: var(--caption); }
+.bar { height: 16px; background: var(--action); border-radius: 2px; }
+.radii { display: flex; flex-wrap: wrap; gap: var(--s-5); }
+.radii div { width: 150px; }
+.radii i { display: block; height: 80px; margin-bottom: var(--s-2); border: 1px solid var(--signal-line); background: var(--signal-soft); }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-5); }
+.rules { display: grid; gap: var(--s-3); padding-left: 1.2em; margin: 0; max-width: 75ch; }
+.hero { background: var(--picture); padding: var(--s-9) 0; border-bottom: 1px solid var(--line); }
+.hero h1 { margin-top: var(--s-5); max-width: 16ch; }
+.hero .lead { margin-top: var(--s-5); max-width: 46ch; font-weight: 600; color: #fff; font-size: clamp(20px, 2vw, 26px); line-height: 1.3; }
+.hero .row { margin-top: var(--s-7); }
+@media (max-width: 800px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } .type-row td:last-child { display: none; } }
+/* layout examples */
+.ex { display: grid; gap: var(--s-5); grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: var(--s-5); }
+.ex > div { padding: var(--s-5); border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface-sunk); }
+.ex .verdict { display: inline-flex; align-items: center; gap: var(--s-2); margin-bottom: var(--s-4); font-size: var(--caption); font-weight: 700; }
+.ex .verdict::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.ex .do { --c: var(--ok); }
+.ex .dont { --c: var(--crit); }
+.ex h3 { font-size: 20px; }
+.ex p { font-size: var(--small); color: var(--text-muted); }
+.ex .side { display: flex; align-items: baseline; gap: var(--s-5); }
+.ex .side p { max-width: 24ch; }
+.ex .sidecol { display: grid; grid-template-columns: 96px 1fr; gap: var(--s-4); }
+.ex .fig { position: relative; height: 90px; border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface); }
+.ex .float { position: absolute; left: 16px; bottom: -12px; padding: 2px 10px; background: var(--action); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+.ex .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); }
+.ex .trio i { display: block; border: 1px solid var(--line); border-radius: var(--r-input); background: var(--surface); }
+.ex .trio.level { align-items: stretch; }
+.ex .trio.level i { height: 72px; }
+.ex .trio.level i:nth-child(2) { border-top: 3px solid var(--signal); }
+.ex .trio.uneven { align-items: center; }
+.ex .trio.uneven i:nth-child(1) { height: 60px; }
+.ex .trio.uneven i:nth-child(2) { height: 88px; border-top: 3px solid var(--signal); }
+.ex .trio.uneven i:nth-child(3) { height: 70px; }
+@media (max-width: 800px) { .ex { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="doc-head">
+  <div class="wrap">
+    <img src="../public/brand/spectradcim-logo.png" alt="SpectraDCIM" />
+    <span class="caption">Style guide. Preview only, the live site is not changed by this file.</span>
+  </div>
+</header>
+
+<!-- sample hero, real copy from the home page -->
+<div class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Data center infrastructure management</span>
+    <h1>Power, cooling and IT. One system, watched as one.</h1>
+    <p class="lead">SpectraDCIM monitors every site from the utility feed to the server outlet, and turns alarm floods into the one problem that caused them.</p>
+    <div class="row">
+      <a class="btn" href="#">Request a demo
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+      </a>
+      <a class="btn btn--outline" href="#">Tour the platform
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Who this is for, and how it should feel</h2>
+    <p>The decisions the tokens below follow.</p>
+    <ul class="rules">
+      <li><strong>Voice: a plain-spoken engineer.</strong> Calm, exact, no hype. Say what the product does and what it does not do yet.</li>
+      <li><strong>Reader: the operations or facility lead first.</strong> It must still look credible when forwarded to the person who signs the budget.</li>
+      <li><strong>Dark only.</strong> The product is a dark console; the site matches it. There is no light version.</li>
+      <li><strong>One brand color family, from the logo.</strong> Blue fills actions, sky blue marks links and labels.</li>
+      <li><strong>Red, amber and green mean status.</strong> They appear only for alarms and form feedback, never as decoration.</li>
+      <li><strong>Flat.</strong> No gradients, no glow, no lift on hover. A border changing color is the hover signal.</li>
+      <li><strong>Sentence case</strong> for every heading and label. Eyebrows and main buttons are set in capitals by the style sheet, so the source text stays in sentence case.</li>
+      <li><strong>Real product screens</strong> carry the page. Simulated data is always labeled as simulated.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Writing</h2>
+    <p>How the words are spelled, cased and labeled. These apply to every page, button, alt text and form message.</p>
+    <table>
+      <tr><th style="width:44px">#</th><th>Rule</th><th>Write</th><th>Not</th></tr>
+      <tr><td>1</td><td>US spelling throughout.</td><td>data center, color, gray, program, behavior, utilization, labeled, practice, enroll</td><td>data centre, colour, grey, programme, behaviour, utilisation, labelled, practise, enrol</td></tr>
+      <tr><td>2</td><td>Sentence case for headings, buttons, labels and menu items. The style sheet sets eyebrows and main buttons in capitals; the source text stays in sentence case.</td><td>Request a demo</td><td>Request A Demo</td></tr>
+      <tr><td>3</td><td>The brand is one word, with this capitalization.</td><td>SpectraDCIM</td><td>Spectra DCIM, Spectradcim, SPECTRADCIM</td></tr>
+      <tr><td>4</td><td>Proper names keep their capitals.</td><td>ASHRAE TC 9.9, ISA-18.2, Uptime Institute, EU Energy Efficiency Directive</td><td>ashrae, isa 18.2</td></tr>
+      <tr><td>5</td><td>Protocol names appear only inside sentences. They are never headings, badges, tiles or list titles.</td><td>"UPS and rack PDUs are read over SNMP."</td><td>A row of protocol logos or a heading "SNMP"</td></tr>
+      <tr><td>6</td><td>Simulated data is labeled as simulated every time it appears.</td><td>"In a simulated chiller-plant loss, 727 raw alarms were presented as 9 console lines."</td><td>"727 alarms reduced to 10."</td></tr>
+      <tr><td>7</td><td>No invented proof: no customer logos, testimonials or return-on-investment figures until real ones exist. Every outside figure names its source beside it.</td><td>"Uptime Institute Global Data Center Survey, 2025"</td><td>"Trusted by leading operators"</td></tr>
+      <tr><td>8</td><td>Say what is not built yet.</td><td>"Not available", "Beta", "On the roadmap"</td><td>Leaving the gap unmentioned</td></tr>
+      <tr><td>9</td><td>A button says what happens when it is pressed, and keeps that name through the whole flow.</td><td>Request a demo</td><td>Submit, Learn more</td></tr>
+      <tr><td>10</td><td>Units stay metric and technical, as operators write them.</td><td>23.0 &deg;C, 267.6 kW, 310 l/min</td><td>73 &deg;F, 0.27 MW</td></tr>
+    </table>
+    <p class="caption" style="margin-top:var(--s-4)">One exception to rule 1: HTML and CSS keywords are fixed by the language, for example <code>aria-labelledby</code>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Color</h2>
+    <p>Fourteen values. Anything else on a page is a mistake.</p>
+
+    <h3 class="sub">Surfaces</h3>
+    <div class="grid">
+      <div class="sw"><i style="--c:var(--page)"></i><div><b>Page</b><code>#16181D</code><span>Page background</span></div></div>
+      <div class="sw"><i style="--c:var(--surface-sunk)"></i><div><b>Surface sunk</b><code>#101216</code><span>Cards, inputs</span></div></div>
+      <div class="sw"><i style="--c:var(--surface)"></i><div><b>Surface</b><code>#22252c</code><span>Raised cards, table heads</span></div></div>
+      <div class="sw"><i style="--c:var(--surface-2)"></i><div><b>Surface 2</b><code>#2C3038</code><span>Icon tiles, chips</span></div></div>
+      <div class="sw"><i style="--c:var(--picture)"></i><div><b>Picture</b><code>#000000</code><span>Header, picture bands</span></div></div>
+    </div>
+
+    <h3 class="sub">Text</h3>
+    <div class="grid">
+      <div class="sw"><i style="--c:var(--text-head)"></i><div><b>Heading</b><code>#FFFFFF</code><span>17.8 : 1 on page</span></div></div>
+      <div class="sw"><i style="--c:var(--text)"></i><div><b>Body</b><code>#EEF0F3</code><span>15.6 : 1 on page</span></div></div>
+      <div class="sw"><i style="--c:var(--text-muted)"></i><div><b>Muted</b><code>#B3B7BF</code><span>8.8 : 1 on page</span></div></div>
+    </div>
+
+    <h3 class="sub">Brand</h3>
+    <div class="grid">
+      <div class="sw"><i style="--c:var(--action)"></i><div><b>Action</b><code>#2563EB</code><span>Button fill. White text 5.2 : 1</span></div></div>
+      <div class="sw"><i style="--c:var(--action-hover)"></i><div><b>Action hover</b><code>#1D4FD8</code><span>Button hover</span></div></div>
+      <div class="sw"><i style="--c:var(--signal)"></i><div><b>Signal</b><code>#4CC3FF</code><span>Links, eyebrows, icons, focus. 8.9 : 1</span></div></div>
+    </div>
+
+    <h3 class="sub">Status</h3>
+    <div class="grid">
+      <div class="sw"><i style="--c:var(--ok)"></i><div><b>OK</b><code>#4FBF8B</code><span>Normal, sent</span></div></div>
+      <div class="sw"><i style="--c:var(--warn)"></i><div><b>Warning</b><code>#E3A008</code><span>Warning, not sent</span></div></div>
+      <div class="sw"><i style="--c:var(--crit)"></i><div><b>Critical</b><code>#E5484D</code><span>Critical alarm</span></div></div>
+    </div>
+    <div class="row" style="margin-top:var(--s-5)">
+      <span class="sev" style="--c:var(--ok)">Chiller plant normal</span>
+      <span class="sev" style="--c:var(--warn)">Collector late by 40 s</span>
+      <span class="sev" style="--c:var(--crit)">UPS B on battery</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Typography</h2>
+    <p>Lato throughout: 700 for headings, 400 for text. Letter spacing is 0 except eyebrows (0.3em) and buttons (0.02em). Figures are tabular.</p>
+    <table>
+      <tr><th>Role</th><th>Sample</th><th>Size / line height</th></tr>
+      <tr class="type-row"><td>H1</td><td><h1>Know the whole power chain</h1></td><td>38 to 64px / 1.2</td></tr>
+      <tr class="type-row"><td>H2</td><td><h2>Most outages start in the plant, not the rack</h2></td><td>28 to 38px / 1.2</td></tr>
+      <tr class="type-row"><td>H3</td><td><h3>One alarm per problem</h3></td><td>20px / 1.2</td></tr>
+      <tr class="type-row"><td>H4</td><td><h4>Rules with dwell and hysteresis</h4></td><td>18px / 1.2</td></tr>
+      <tr class="type-row"><td>H5</td><td><h5>Per-device overrides</h5></td><td>16px / 1.2</td></tr>
+      <tr class="type-row"><td>H6</td><td><h6>Audit trail on alarm actions</h6></td><td>14px / 1.2</td></tr>
+      <tr class="type-row"><td>Eyebrow</td><td><span class="eyebrow">Why SpectraDCIM</span></td><td>17px / 1.4, bold, capitals, 0.3em tracking, signal</td></tr>
+      <tr class="type-row"><td>Lead</td><td><p class="lead">Power is the leading cause of impactful outages, and cooling is next. Watching IT alone finds the problem last.</p></td><td>20px / 1.5</td></tr>
+      <tr class="type-row"><td>Body</td><td><p>Most tools watch the IT room or the plant. An outage does not respect that line: a pump trips, a hall warms, servers throttle.</p></td><td>18px / 1.5, max 68 characters wide</td></tr>
+      <tr class="type-row"><td>Small</td><td><p class="small">Collectors enroll with mutual TLS, hold their device credentials encrypted, and run signed releases.</p></td><td>16px / 1.5</td></tr>
+      <tr class="type-row"><td>Caption</td><td><p class="caption">In a simulated chiller-plant loss: 9 lines and 1 summary alarm</p></td><td>14px / 1.45, muted</td></tr>
+      <tr class="type-row"><td>Micro</td><td><span style="font-size:var(--micro);color:var(--text-muted)">Replay · Nov 17, 2026, 8:55 AM</span></td><td>12px. Floor. Inside product illustrations only</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Spacing</h2>
+    <p>Nine steps on a 4px base. Today the site uses 24 different gaps (10, 14, 18, 22, 26 and more); each moves to the nearest step.</p>
+    <table>
+      <tr><th style="width:110px">Token</th><th style="width:90px">Value</th><th>Size</th><th>Use</th></tr>
+      <tr><td><code>--s-1</code></td><td>4px</td><td><div class="bar" style="width:4px"></div></td><td>Icon to label, hairline gaps</td></tr>
+      <tr><td><code>--s-2</code></td><td>8px</td><td><div class="bar" style="width:8px"></div></td><td>Label to input, caption under text</td></tr>
+      <tr><td><code>--s-3</code></td><td>12px</td><td><div class="bar" style="width:12px"></div></td><td>Heading to paragraph inside a card, list rows</td></tr>
+      <tr><td><code>--s-4</code></td><td>16px</td><td><div class="bar" style="width:16px"></div></td><td>Form rows, tight groups</td></tr>
+      <tr><td><code>--s-5</code></td><td>24px</td><td><div class="bar" style="width:24px"></div></td><td>Grid gap, card padding (small screens), buttons side by side</td></tr>
+      <tr><td><code>--s-6</code></td><td>32px</td><td><div class="bar" style="width:32px"></div></td><td>Card padding (large screens), heading block to content</td></tr>
+      <tr><td><code>--s-7</code></td><td>48px</td><td><div class="bar" style="width:48px"></div></td><td>Section heading to its grid</td></tr>
+      <tr><td><code>--s-8</code></td><td>64px</td><td><div class="bar" style="width:64px"></div></td><td>Tight section padding, two-column gap</td></tr>
+      <tr><td><code>--s-9</code></td><td>96px</td><td><div class="bar" style="width:96px"></div></td><td>Hero padding</td></tr>
+      <tr><td><code>--section</code></td><td>72 to 128px</td><td><div class="bar" style="width:128px"></div></td><td>Standard section padding, top and bottom</td></tr>
+    </table>
+    <p class="caption" style="margin-top:var(--s-4)">Content width 1300px. Side gutter 20 to 64px.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Border radius</h2>
+    <p>Four values, plus 6px for small chips inside illustrations.</p>
+    <div class="radii">
+      <div><i style="border-radius:var(--r-input)"></i><b>4px</b><p class="caption">Inputs, notes</p></div>
+      <div><i style="border-radius:var(--r-button)"></i><b>30px</b><p class="caption">Buttons (pill)</p></div>
+      <div><i style="border-radius:var(--r-card)"></i><b>8px</b><p class="caption">Cards, screenshots, illustrations, icon tiles</p></div>
+      <div><i style="border-radius:var(--r-round);width:80px"></i><b>Round</b><p class="caption">Tags, dots, icon circles</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Buttons and links</h2>
+    <p>One filled button per screen area. The outline button is the second choice. Labels say what happens.</p>
+    <div class="row">
+      <a class="btn" href="#">Request a demo</a>
+      <a class="btn btn--outline" href="#">Tour the platform</a>
+      <a class="btn btn--outline btn--sm" href="#">Request a demo</a>
+      <button class="btn" disabled>Sending</button>
+      <a class="link-arrow" href="#">See the same racks in 3-D
+        <i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></i>
+      </a>
+    </div>
+    <table style="margin-top:var(--s-6)">
+      <tr><th>Part</th><th>Value</th></tr>
+      <tr><td>Height</td><td>56px. Compact 44px (header only)</td></tr>
+      <tr><td>Padding</td><td>0 30px. Compact 0 20px</td></tr>
+      <tr><td>Text</td><td>Lato 400, 16px, capitals, 0.02em tracking. Compact: 14px bold, sentence case</td></tr>
+      <tr><td>Shape</td><td>Pill (30px corners), 2px border (transparent on filled)</td></tr>
+      <tr><td>Hover</td><td>Filled: darker blue. Outline: turns white with black text</td></tr>
+      <tr><td>Focus</td><td>2px signal outline, 3px away</td></tr>
+      <tr><td>Disabled</td><td>45% opacity, no pointer</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Inputs</h2>
+    <p>Label always visible above the field. Help text below. The result of sending appears under the button.</p>
+    <div class="grid-2">
+      <form onsubmit="return false" style="display:grid;gap:var(--s-4)">
+        <div class="field"><label for="sg-email">Work email</label><input id="sg-email" type="email" value="name@yourcompany.com" /></div>
+        <div class="field"><label for="sg-type">Partner type</label><select id="sg-type"><option>System integrator or MEP contractor</option><option>Reseller</option><option>Technology partner</option></select></div>
+        <div class="field"><label for="sg-msg">Message</label><textarea id="sg-msg"></textarea><p class="caption">What would you most like to see? Power, cooling, alarms or the floor view.</p></div>
+        <div><button class="btn">Request a demo</button></div>
+      </form>
+      <div style="display:grid;gap:var(--s-4);align-content:start">
+        <p class="note">Thank you. Your message has been sent, and we will reply by email.</p>
+        <p class="note note--error">Your message could not be sent. Nothing was lost on this page, so please try again in a moment.</p>
+        <table>
+          <tr><th>Part</th><th>Value</th></tr>
+          <tr><td>Height</td><td>50px. Text area 128px</td></tr>
+          <tr><td>Padding</td><td>12px 16px</td></tr>
+          <tr><td>Shape</td><td>4px corners, 1px border at 25% white</td></tr>
+          <tr><td>Fill</td><td>Surface sunk</td></tr>
+          <tr><td>Label</td><td>14px, white, 8px above the field</td></tr>
+          <tr><td>Focus</td><td>Signal border and 2px signal outline</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Cards</h2>
+    <p>Three kinds. A linked card shows a signal border on hover and does not move.</p>
+    <div class="grid-3">
+      <a class="card" href="#">
+        <span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3L5 14h6l-1 7 8-11h-6z" /></svg></span>
+        <h3>Power &amp; capacity</h3>
+        <p>The whole power chain, its redundancy, and how much headroom is left.</p>
+      </a>
+      <div class="card card--raised">
+        <h3>Live demo <span class="tag">30 minutes</span></h3>
+        <p>Thirty minutes on a running estate.</p>
+        <ul class="checks" style="margin-top:var(--s-5)">
+          <li>Live estate overview</li>
+          <li>Chiller-loss scenario, first alarm to incident</li>
+          <li>Power chain and thermal replay</li>
+        </ul>
+      </div>
+      <div class="card card--featured">
+        <h3>Design partner pilot</h3>
+        <p>One site, deployed with our engineers.</p>
+        <p style="margin-top:var(--s-5)"><a class="link-arrow" href="#">Apply for early access
+          <i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></i></a></p>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:var(--s-5)">
+      <div class="card stat"><b>45<em>%</em></b><strong>Outages caused by power</strong><p class="caption" style="margin-top:var(--s-2)">Uptime Institute Global Data Center Survey, 2025</p></div>
+      <div class="card stat"><b>727 <em>to</em> 10</b><strong>Alarms to console lines</strong><p class="caption" style="margin-top:var(--s-2)">In a simulated chiller-plant loss: 9 lines and 1 summary alarm</p></div>
+      <table style="align-self:start">
+        <tr><th>Part</th><th>Value</th></tr>
+        <tr><td>Padding</td><td>24 to 36px</td></tr>
+        <tr><td>Shape</td><td>8px corners, 1px line</td></tr>
+        <tr><td>Fill</td><td>Sunk, or Surface when raised</td></tr>
+        <tr><td>Featured</td><td>3px signal top border</td></tr>
+        <tr><td>Icon tile</td><td>54px, 8px corners, signal at 12%</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Layout and alignment</h2>
+    <p>Eight rules. Each one exists because the mistake it prevents was found on a real page and fixed.</p>
+    <table>
+      <tr><th style="width:44px">#</th><th>Rule</th><th>Why</th></tr>
+      <tr><td>1</td><td>A heading and its sentence stack vertically. Never side by side.</td><td>Side by side, a large heading and small wrapped text never share a line.</td></tr>
+      <tr><td>2</td><td>The eyebrow sits directly above its heading, on the same left edge. Never in a side column.</td><td>In a narrow column, spaced capitals wrap and float away from the text they label.</td></tr>
+      <tr><td>3</td><td>Captions and labels sit below a picture, aligned to its left edge. Nothing overlaps a screenshot.</td><td>A label laid over a product screen hides part of the product.</td></tr>
+      <tr><td>4</td><td>Eyebrows have no background box.</td><td>A box turns a label into something that looks like a button.</td></tr>
+      <tr><td>5</td><td>Heading block to the text that continues it: 24px inside a two-column section. To a full-width grid below it: 48px.</td><td>A large gap after the intro makes the following paragraph look like a separate topic.</td></tr>
+      <tr><td>6</td><td>Cards in one row share top and bottom edges, and their contents start from the top. A featured card differs by its border only.</td><td>Cards of different heights put titles and links on different lines.</td></tr>
+      <tr><td>7</td><td>Left-align by default. Center only a short section intro: eyebrow, heading, one sentence.</td><td>Centered paragraphs and lists are hard to scan.</td></tr>
+      <tr><td>8</td><td>Text lines run to 68 characters at most.</td><td>Longer lines lose the reader on the way back to the left edge.</td></tr>
+    </table>
+
+    <h3 class="sub">Rule 1: heading and sentence</h3>
+    <div class="ex">
+      <div>
+        <span class="verdict do">Do</span>
+        <h3>See the room, then replay it</h3>
+        <p style="margin-top:var(--s-2)">A heat map drawn from live sensors, and a timeline you can scrub back through like video.</p>
+      </div>
+      <div>
+        <span class="verdict dont">Do not</span>
+        <div class="side">
+          <h3>See the room, then replay it</h3>
+          <p>A heat map drawn from live sensors, and a timeline you can scrub back through like video.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">Rule 2: eyebrow above its heading</h3>
+    <div class="ex">
+      <div>
+        <span class="verdict do">Do</span>
+        <span class="eyebrow" style="font-size:13px">About SpectraDCIM</span>
+        <h3 style="margin-top:var(--s-3)">One telemetry model for white space and gray space.</h3>
+      </div>
+      <div>
+        <span class="verdict dont">Do not</span>
+        <div class="sidecol">
+          <span class="eyebrow" style="font-size:13px">About SpectraDCIM</span>
+          <h3>One telemetry model for white space and gray space.</h3>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">Rule 3: labels under pictures</h3>
+    <div class="ex">
+      <div>
+        <span class="verdict do">Do</span>
+        <div class="fig"></div>
+        <p class="caption" style="margin-top:var(--s-3)">One condition, one alarm.</p>
+      </div>
+      <div>
+        <span class="verdict dont">Do not</span>
+        <div class="fig"><span class="float">One condition, one alarm</span></div>
+      </div>
+    </div>
+
+    <h3 class="sub">Rule 6: cards in a row</h3>
+    <div class="ex">
+      <div>
+        <span class="verdict do">Do</span>
+        <div class="trio level"><i></i><i></i><i></i></div>
+        <p class="caption" style="margin-top:var(--s-3)">Same top and bottom edge. The featured card has a colored top border.</p>
+      </div>
+      <div>
+        <span class="verdict dont">Do not</span>
+        <div class="trio uneven"><i></i><i></i><i></i></div>
+        <p class="caption" style="margin-top:var(--s-3)">Different heights, centered: titles and links end up on different lines.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What changed when this guide was applied</h2>
+    <p>For the record. These refinements are already on the site.</p>
+    <table>
+      <tr><th>Item</th><th>Before</th><th>Now</th></tr>
+            <tr><td>Muted text</td><td>Body color at 74% opacity</td><td>Solid <code>#B3B7BF</code>; same look, predictable on any surface</td></tr>
+      <tr><td>Spacing</td><td>24 different gap values</td><td>9 steps</td></tr>
+      <tr><td>Radius</td><td>11 different values</td><td>4 values; screenshots and illustrations go from 10 to 14px down to 8px</td></tr>
+      <tr><td>Input focus</td><td>Border color only</td><td>Border plus 2px outline, easier to see</td></tr>
+      <tr><td>Tag border</td><td>Old indigo</td><td>Signal blue</td></tr>
+      <tr><td>Button height in header</td><td>Unspecified</td><td>44px compact size</td></tr>
+    </table>
+  </div>
+</section>
+
+</body>
+</html>

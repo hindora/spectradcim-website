@@ -24,20 +24,20 @@ const proof = [
 ];
 
 const tools = [
-  { icon: 'clock', title: 'Rules With Dwell And Hysteresis', text: 'A reading must stay past its limit for a set time before the alarm is raised, and come back by a margin before it clears. Brief spikes do not page anyone.' },
-  { icon: 'wrench', title: 'Per-Device Overrides', text: 'One warm rack by the door can carry its own limit. The override sits on the device, and the rule for the rest of the estate stays as it was.' },
-  { icon: 'flag', title: 'Maintenance Windows', text: 'Put a device, a rack or a room into a window. Alarms from it are suppressed until the window ends, and recorded so nothing is lost.' },
-  { icon: 'mail', title: 'Email Notifications', text: 'Send the alarms that matter to the people on call, filtered by severity and by site.' },
+  { icon: 'clock', title: 'Rules with dwell and hysteresis', text: 'A reading must stay past its limit for a set time before the alarm is raised, and come back by a margin before it clears. Brief spikes do not page anyone.' },
+  { icon: 'wrench', title: 'Per-device overrides', text: 'One warm rack by the door can carry its own limit. The override sits on the device, and the rule for the rest of the estate stays as it was.' },
+  { icon: 'flag', title: 'Maintenance windows', text: 'Put a device, a rack or a room into a window. Alarms from it are suppressed until the window ends, and recorded so nothing is lost.' },
+  { icon: 'mail', title: 'Email notifications', text: 'Send the alarms that matter to the people on call, filtered by severity and by site.' },
   { icon: 'link', title: 'Jira / JSM', beta: true, text: 'Open a ticket from an incident and keep the two in step as it is worked and closed.' },
-  { icon: 'file', title: 'Audit Trail On Alarm Actions', text: 'Every acknowledgement and clear is recorded with who did it and when.' },
+  { icon: 'file', title: 'Audit trail on alarm actions', text: 'Every acknowledgment and clear is recorded with who did it and when.' },
 ];
 ---
 
 <Base
-  title="Alarms & Incidents"
+  title="Alarms & incidents"
   description="SpectraDCIM turns an alarm flood into one alarm per condition and one incident page with the cause and its evidence."
 >
-  <PageHero slot="hero" pill="Platform" title="One Condition. One Alarm. One Incident With Its Evidence.">
+  <PageHero slot="hero" pill="Platform" title="One condition. One alarm. One incident with its evidence.">
     A plant fault can raise hundreds of alarms in a minute. SpectraDCIM folds the symptoms under the cause, shown here
     for a simulated chiller-plant loss.
     <Shot slot="visual" name="incidents" alt="Incident list: each cause with its state, severity and the number of alarms and rooms behind it" />
@@ -47,7 +47,7 @@ const tools = [
   <section class="section">
     <div class="wrap split">
       <div>
-        <SectionHead pill="Two Sources, One Row" title="The Trap Makes It Fast. The Poll Makes It True.">
+        <SectionHead pill="Two sources, one row" title="The trap makes it fast. The poll makes it true.">
           A device can announce a fault the moment it happens, but that message can be lost on the way. A polled reading
           always arrives, a little later.
         </SectionHead>
@@ -101,7 +101,7 @@ const tools = [
   <section class="section pbg">
     <Backdrop view="temp" />
     <div class="wrap">
-      <SectionHead pill="Correlation" title="Three Layers That Find The Cause" center>
+      <SectionHead pill="Correlation" title="Three layers that find the cause" center>
         Each layer follows a dependency that exists in the building, so a symptom is filed under the thing that produced
         it.
       </SectionHead>
@@ -118,7 +118,7 @@ const tools = [
             <text x="150" y="127" text-anchor="middle">Rack</text>
             <path class="x" d="M62 62 l16 16 M78 62 l-16 16" />
           </svg>
-          <h3>Power Dependency, Redundancy Aware</h3>
+          <h3>Power dependency, redundancy aware</h3>
           <p>
             When an upstream unit fails, everything fed only by it is folded under that failure. If a second path still
             carries the load, the redundancy veto holds back the outage and reports lost redundancy instead.
@@ -135,7 +135,7 @@ const tools = [
             <circle class="pt" cx="190" cy="75" r="6" />
             <text class="cap" x="150" y="128" text-anchor="middle">2 reports, 1 link alarm</text>
           </svg>
-          <h3>Both Ends Of A Link</h3>
+          <h3>Both ends of a link</h3>
           <p>
             A failed link is reported by the device at each end. Both reports become one alarm on the link, not two
             alarms on two ports.
@@ -154,7 +154,7 @@ const tools = [
             <text class="cap" x="259" y="116" text-anchor="middle">Server</text>
             <text class="cap cap--hi" x="40" y="44" text-anchor="middle">Cause</text>
           </svg>
-          <h3>Cooling Chain</h3>
+          <h3>Cooling chain</h3>
           <p>
             A plant fault warms the supply air, then the rack inlets, then the servers. Those symptoms are grouped under
             the plant fault that started them.
@@ -169,9 +169,7 @@ const tools = [
     <div class="wrap split">
       <div class="card card--glow proof" data-anim="up-block">
         <div class="proof__num">
-          <span data-count="727">727</span><em aria-hidden="true">&rarr;</em><span class="sr-only"> to </span><span
-            data-count="10"
-            data-from="727">10</span
+          <span>727</span><em aria-hidden="true">&rarr;</em><span class="sr-only"> to </span><span>10</span
           >
         </div>
         <p class="proof__sub">Raw alarms to console lines, simulated chiller-plant loss</p>
@@ -190,7 +188,7 @@ const tools = [
         </ul>
       </div>
       <div>
-        <SectionHead pill="Simulated Result" title="What The Operator Actually Sees">
+        <SectionHead pill="Simulated result" title="What the operator actually sees">
           In a simulated chiller-plant loss, 727 raw alarms reached the operator as 9 console lines and 1 summary alarm.
         </SectionHead>
         <p data-anim="up">
@@ -212,14 +210,14 @@ const tools = [
     <Backdrop view="racks" />
     <div class="wrap split split--top split--wide-right">
       <div class="inc-copy">
-        <SectionHead pill="Incidents" title="One Page For The Whole Event">
+        <SectionHead pill="Incidents" title="One page for the whole event">
           When alarms share a cause, they become one incident. Its page states the cause, lists what was affected, and
           keeps the evidence in the order it happened.
         </SectionHead>
         <ul class="checks">
           <li data-anim="up"><span><strong>Cause first.</strong> The alarm at the top of the dependency chain leads the page.</span></li>
           <li data-anim="up"><span><strong>Evidence trail.</strong> Device events, polled readings and operator actions on one timeline.</span></li>
-          <li data-anim="up"><span><strong>History kept.</strong> Closed incidents stay searchable for the review afterwards.</span></li>
+          <li data-anim="up"><span><strong>History kept.</strong> Closed incidents stay searchable for the review afterward.</span></li>
         </ul>
       </div>
 
@@ -230,7 +228,7 @@ const tools = [
   <!-- tools -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Rules And Routing" title="Tune It Once, Then Trust It">
+      <SectionHead pill="Rules and routing" title="Tune it once, then trust it">
         The controls an operations team needs to keep the console quiet and the right people informed.
       </SectionHead>
       <div class="grid grid-3">
@@ -274,20 +272,20 @@ const tools = [
   .merge__inputs {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: var(--s-4);
   }
   .merge__in {
     display: grid;
-    gap: 6px;
-    padding: 16px;
-    border-radius: 12px;
+    gap: var(--s-2);
+    padding: var(--s-4);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-1);
     font-size: 14px;
   }
   .merge__k {
     font-family: var(--font-head);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--accent-text);
   }
   .merge__in strong {
@@ -296,7 +294,7 @@ const tools = [
     line-height: 1.35;
   }
   .merge__in small {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .merge__join {
@@ -319,10 +317,10 @@ const tools = [
   .merge__row {
     display: grid;
     grid-template-columns: 16px minmax(0, 1fr) auto;
-    gap: 12px;
+    gap: var(--s-3);
     align-items: center;
-    padding: 16px;
-    border-radius: 12px;
+    padding: var(--s-4);
+    border-radius: var(--r-card);
     border: 1px solid rgba(229, 72, 77, 0.45);
     background: linear-gradient(90deg, rgba(229, 72, 77, 0.14), var(--ink-0) 60%);
   }
@@ -333,37 +331,37 @@ const tools = [
     color: var(--head);
   }
   .merge__row small {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .merge__row em {
     font-style: normal;
-    font-size: 12px;
-    padding: 2px 10px;
-    border-radius: 999px;
+    font-size: 13px;
+    padding: 2px var(--s-2);
+    border-radius: var(--r-round);
     background: var(--ink-2);
     white-space: nowrap;
   }
   .merge__life {
     list-style: none;
-    margin: 18px 0 0;
+    margin: var(--s-4) 0 0;
     padding: 0;
     display: grid;
     grid-template-columns: auto auto minmax(0, 1fr);
-    gap: 12px;
-    font-size: 12px;
+    gap: var(--s-3);
+    font-size: 13px;
     color: var(--muted);
   }
   .merge__life li {
     display: grid;
-    gap: 4px;
-    padding-top: 12px;
+    gap: var(--s-1);
+    padding-top: var(--s-3);
     border-top: 2px solid var(--accent-deep);
   }
   .merge__life b {
     font-family: var(--font-head);
     font-weight: 500;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--head);
   }
   @media (prefers-reduced-motion: reduce) {
@@ -376,8 +374,8 @@ const tools = [
   .layer__art {
     width: 100%;
     height: auto;
-    margin-bottom: 22px;
-    border-radius: 12px;
+    margin-bottom: var(--s-5);
+    border-radius: var(--r-card);
     background-color: var(--ink-0);
     background-image: var(--grid-lines);
     background-size: 28px 28px;
@@ -385,7 +383,7 @@ const tools = [
   }
   .layer__art text {
     font-family: var(--font-body);
-    font-size: 12px;
+    font-size: 13px;
     fill: var(--head);
   }
   .layer__art .cap {
@@ -461,16 +459,16 @@ const tools = [
     font-size: 0.7em;
   }
   .proof__sub {
-    margin-top: 14px;
+    margin-top: var(--s-4);
     color: var(--body);
   }
   .proof__bars {
     list-style: none;
-    margin: 34px 0 0;
-    padding: 22px;
+    margin: var(--s-6) 0 0;
+    padding: var(--s-5);
     display: grid;
-    gap: 16px;
-    border-radius: 12px;
+    gap: var(--s-4);
+    border-radius: var(--r-card);
     background: rgba(0, 0, 0, 0.45);
     border: 1px solid var(--line);
     font-size: 14px;
@@ -478,19 +476,19 @@ const tools = [
   .proof__bars li {
     display: grid;
     grid-template-columns: 110px minmax(0, 1fr) 36px;
-    gap: 14px;
+    gap: var(--s-4);
     align-items: center;
   }
   .proof__bars i {
     height: 10px;
-    border-radius: 5px;
+    border-radius: var(--r-input);
     background: var(--ink-2);
     overflow: hidden;
   }
   .proof__bars b {
     display: block;
     height: 100%;
-    border-radius: 5px;
+    border-radius: var(--r-input);
     background: linear-gradient(90deg, var(--accent-deep), var(--accent-text));
   }
   .proof__bars strong {
@@ -499,7 +497,7 @@ const tools = [
     color: var(--head);
   }
   .proof__link {
-    margin-top: 28px;
+    margin-top: var(--s-6);
   }
 
   /* incident */
@@ -510,16 +508,16 @@ const tools = [
     color: var(--head);
   }
   .inc__cause {
-    margin-top: 14px;
-    padding: 14px 16px;
-    border-radius: 10px;
+    margin-top: var(--s-4);
+    padding: var(--s-4) var(--s-4);
+    border-radius: var(--r-card);
     border: 1px solid rgba(229, 72, 77, 0.45);
     background: linear-gradient(90deg, rgba(229, 72, 77, 0.14), var(--ink-0) 70%);
     display: grid;
-    gap: 4px;
+    gap: var(--s-1);
   }
   .inc__cause span {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .inc__cause strong {
@@ -528,14 +526,14 @@ const tools = [
     color: var(--head);
   }
   .inc__scope {
-    margin-top: 12px;
+    margin-top: var(--s-3);
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    gap: var(--s-2);
   }
   .inc__scope div {
-    padding: 12px 14px;
-    border-radius: 10px;
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-card);
     background: var(--ink-0);
     border: 1px solid var(--line);
     display: grid;
@@ -547,12 +545,12 @@ const tools = [
     color: var(--head);
   }
   .inc__scope span {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .inc__trail {
     list-style: none;
-    margin: 18px 0 0;
+    margin: var(--s-4) 0 0;
     padding: 0;
     position: relative;
   }
@@ -568,17 +566,17 @@ const tools = [
   .inc__trail li {
     display: grid;
     grid-template-columns: 62px 8px minmax(0, 1fr);
-    gap: 16px;
+    gap: var(--s-4);
     align-items: start;
-    padding: 9px 0;
+    padding: var(--s-2) 0;
   }
   .inc__trail time {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
     padding-top: 1px;
   }
   .inc__trail .dot {
-    margin: 6px 0 0;
+    margin: var(--s-2) 0 0;
     position: relative;
     box-shadow: 0 0 0 4px #06070f;
   }
@@ -589,7 +587,7 @@ const tools = [
     line-height: 1.35;
   }
   .inc__trail small {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
 

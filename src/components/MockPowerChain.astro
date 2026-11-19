@@ -38,7 +38,7 @@ const steps = [
 <style>
   .chain__scroll {
     overflow-x: auto;
-    padding: 26px 18px 22px;
+    padding: var(--s-5) var(--s-4) var(--s-5);
     background-image: var(--grid-lines);
     background-size: 34px 34px;
   }
@@ -48,23 +48,23 @@ const steps = [
     padding: 0;
     display: grid;
     grid-template-columns: repeat(8, minmax(128px, 1fr));
-    gap: 22px;
+    gap: var(--s-5);
     min-width: 1180px;
   }
   .chain li {
     position: relative;
     display: grid;
-    gap: 4px;
+    gap: var(--s-1);
     align-content: start;
-    padding: 14px 14px 12px;
-    border-radius: 12px;
+    padding: var(--s-4) var(--s-4) var(--s-3);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-1);
   }
   .chain li.warn {
     border-color: var(--warn);
   }
-  /* connector to the next stage, with a slow pulse travelling downstream */
+  /* connector to the next stage, with a slow pulse traveling downstream */
   .chain li:not(:last-child)::after {
     content: '';
     position: absolute;
@@ -98,8 +98,8 @@ const steps = [
     border-radius: 50%;
     background: var(--accent-tile);
     color: var(--head);
-    font-size: 12px;
-    margin-bottom: 6px;
+    font-size: 13px;
+    margin-bottom: var(--s-2);
   }
   .chain strong {
     font-family: var(--font-head);
@@ -111,26 +111,26 @@ const steps = [
   .chain__val {
     font-size: 18px;
     color: var(--head);
-    margin-top: 6px;
+    margin-top: var(--s-2);
     white-space: nowrap;
   }
   .chain__val--b {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--accent-text);
     margin-top: 0;
   }
   .chain small {
     display: flex;
     align-items: center;
-    margin-top: 10px;
-    padding-top: 10px;
+    margin-top: var(--s-2);
+    padding-top: var(--s-2);
     border-top: 1px solid var(--line);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
     white-space: nowrap;
   }
   .chain small .dot {
     flex: none;
-    margin-right: 6px;
+    margin-right: var(--s-2);
   }
 </style>

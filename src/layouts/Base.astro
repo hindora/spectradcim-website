@@ -20,7 +20,7 @@ const byPath: Record<string, string> = {
   '/': 'fpv', // first-person view down a server-room aisle
   '/platform': 'building', // the whole building, every level
   '/platform/power': 'ups', // UPS room
-  '/platform/thermal': 'heat', // hall coloured by temperature
+  '/platform/thermal': 'heat', // hall colored by temperature
   '/platform/visualization': 'fpv', // first-person walk down the aisle
   '/platform/alarms': 'plant', // chiller plant, where the worked example starts
   '/platform/assets': 'racks',
@@ -34,7 +34,9 @@ const byPath: Record<string, string> = {
 };
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const view = bg ?? byPath[path] ?? 'hall';
-const fullTitle = title === 'Home' ? 'SpectraDCIM | Power, Cooling And IT Watched As One' : `${title} | SpectraDCIM`;
+// The one public address of this page (always with the trailing slash the server serves).
+const canonical = new URL(path === '/' ? '/' : `${path}/`, Astro.site).href;
+const fullTitle = title === 'Home' ? 'SpectraDCIM | Power, cooling and IT watched as one' : `${title} | SpectraDCIM`;
 ---
 
 <!doctype html>
@@ -46,6 +48,8 @@ const fullTitle = title === 'Home' ? 'SpectraDCIM | Power, Cooling And IT Watche
     <meta name="description" content={description} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#000000" />
     <link rel="icon" type="image/png" href="/favicon.png" />

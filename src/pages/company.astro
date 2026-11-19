@@ -10,22 +10,22 @@ import Icon from '../components/Icon.astro';
 const principles = [
   {
     icon: 'search',
-    title: 'Say Exactly What It Does',
+    title: 'Say exactly what it does',
     text: 'We describe the product by what it reads, shows and records. If we cannot show a claim in a demo, it does not go on this site.',
   },
   {
     icon: 'bell',
-    title: 'One Alarm Per Problem',
+    title: 'One alarm per problem',
     text: 'A lost chiller plant should be one line on the console with its symptoms folded under it, not hundreds of alarms competing for attention.',
   },
   {
     icon: 'chart',
-    title: 'No LLM In The Detection Path',
+    title: 'No LLM in the detection path',
     text: 'Anomaly detection uses statistical baselines and data-quality checks that an operator can inspect and correct. No language model decides what is an alarm.',
   },
   {
     icon: 'flag',
-    title: 'Say What Is Not Built Yet',
+    title: 'Say what is not built yet',
     text: 'The product has so far run against a simulated estate, not a customer site. The Jira integration is in beta. We label both that way.',
   },
 ];
@@ -52,17 +52,17 @@ const contact = [
 
 <Base
   title="Company"
-  description="Why SpectraDCIM was built, the four principles behind it, and how it is tested against a full simulated data centre."
+  description="Why SpectraDCIM was built, the four principles behind it, and how it is tested against a full simulated data center."
 >
-  <PageHero slot="hero" pill="Company" title="Built By People Who Think The Plant Matters As Much As The Rack" center>
-    SpectraDCIM is data centre infrastructure management software that watches power, cooling and IT as one system.
+  <PageHero slot="hero" pill="Company" title="Built by people who think the plant matters as much as the rack" center>
+    SpectraDCIM is data center infrastructure management software that watches power, cooling and IT as one system.
   </PageHero>
 
   <!-- why -->
   <section class="section">
     <div class="wrap split">
       <div>
-        <SectionHead pill="Why We Built It" title="An Outage Does Not Stop At The Hall Door" />
+        <SectionHead pill="Why we built it" title="An outage does not stop at the hall door" />
         <div class="stack why__text">
           <p data-anim="up">
             Most monitoring tools watch either the IT room or the plant. The building management system knows a pump has
@@ -78,13 +78,13 @@ const contact = [
       </div>
       <div class="grid why__stats">
         <div class="stat" data-anim="up">
-          <div class="stat__num"><span data-count="45">45</span><em>%</em></div>
-          <div class="stat__label">Impactful Outages Caused By Power</div>
+          <div class="stat__num"><span>45</span><em>%</em></div>
+          <div class="stat__label">Impactful outages caused by power</div>
           <p class="stat__cap">Uptime Institute Global Data Center Survey, 2025</p>
         </div>
         <div class="stat" data-anim="up">
-          <div class="stat__num"><span data-count="14">14</span><em>%</em></div>
-          <div class="stat__label">Caused By Cooling</div>
+          <div class="stat__num"><span>14</span><em>%</em></div>
+          <div class="stat__label">Caused by cooling</div>
           <p class="stat__cap">Uptime Institute Global Data Center Survey, 2025</p>
         </div>
       </div>
@@ -95,7 +95,7 @@ const contact = [
   <section class="section pbg">
     <Backdrop view="fpv" />
     <div class="wrap">
-      <SectionHead pill="Principles" title="Four Things We Hold To" center>
+      <SectionHead pill="Principles" title="Four things we hold to" center>
         They carry equal weight. Each one is a rule about the product and about how we describe it.
       </SectionHead>
       <ul class="grid grid-2 principles">
@@ -123,8 +123,8 @@ const contact = [
         <Shot name="site-view" alt="The simulated site in 3-D: building, substation, generator yard and compound" />
       </div>
       <div>
-        <SectionHead pill="How We Test" title="Against A Whole Data Centre, Simulated">
-          SpectraDCIM is tested against a full simulated data centre: two sites, each with its chiller plant, its
+        <SectionHead pill="How we test" title="Against a whole data center, simulated">
+          SpectraDCIM is tested against a full simulated data center: two sites, each with its chiller plant, its
           electrical chain and its IT equipment.
         </SectionHead>
         <div class="stack">
@@ -150,7 +150,7 @@ const contact = [
     <Backdrop view="world" />
     <div class="wrap split split--top">
       <div>
-        <SectionHead pill="Contact" title="How To Reach Us">
+        <SectionHead pill="Contact" title="How to reach us">
           Contact details will be published here before launch. Until then, each of these routes leads to the right
           form.
         </SectionHead>
@@ -183,7 +183,7 @@ const contact = [
     --gap: 20px;
   }
   .why__stats {
-    gap: 24px;
+    gap: var(--s-5);
   }
 
   /* principles */
@@ -196,7 +196,7 @@ const contact = [
   .principle {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    gap: 22px;
+    gap: var(--s-5);
     align-items: start;
   }
   .principle .tile {
@@ -215,16 +215,16 @@ const contact = [
   .topo {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: var(--s-4);
   }
   .topo__lane {
     display: grid;
-    gap: 18px;
+    gap: var(--s-4);
     grid-template-rows: auto repeat(4, minmax(0, 1fr));
   }
   .topo__head {
     color: var(--muted);
-    font-size: 12px;
+    font-size: 13px;
   }
   .topo__node,
   .topo__racks {
@@ -233,9 +233,9 @@ const contact = [
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 4px 10px;
-    padding: 10px 12px;
-    border-radius: 8px;
+    gap: var(--s-1) var(--s-2);
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-1);
     color: var(--head);
@@ -265,25 +265,25 @@ const contact = [
   }
   .topo__racks {
     grid-column: 1 / -1;
-    margin-top: 10px;
+    margin-top: var(--s-2);
     z-index: 1;
     border-color: var(--warn);
     background: var(--ink-2);
   }
   @media (max-width: 420px) {
     .topo {
-      gap: 10px;
+      gap: var(--s-2);
     }
     .topo__node,
     .topo__racks {
-      padding: 8px 10px;
-      font-size: 12px;
+      padding: var(--s-2) var(--s-2);
+      font-size: 13px;
     }
   }
 
   .test__limit {
-    padding: 16px 18px;
-    border-radius: 12px;
+    padding: var(--s-4) var(--s-4);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-0);
     font-size: 15px;
@@ -292,13 +292,13 @@ const contact = [
   /* contact */
   .contact {
     display: grid;
-    gap: 14px;
+    gap: var(--s-4);
   }
   .contact__item {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 16px 20px;
+    gap: var(--s-4);
+    padding: var(--s-4) var(--s-5);
     color: var(--head);
     font-family: var(--font-head);
   }
@@ -328,7 +328,6 @@ const contact = [
       background 0.15s ease-in-out;
   }
   .contact__item:hover .contact__go {
-    transform: rotate(-45deg);
     background: var(--accent);
   }
 </style>

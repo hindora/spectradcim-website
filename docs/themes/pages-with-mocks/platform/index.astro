@@ -1,0 +1,656 @@
+---
+import Backdrop from '../../components/Backdrop.astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import MockHall from '../../components/MockHall.astro';
+import MockOneLine from '../../components/MockOneLine.astro';
+import MockCapacityBars from '../../components/MockCapacityBars.astro';
+import MockWorldMap from '../../components/MockWorldMap.astro';
+
+const tour = [
+  {
+    id: 'home',
+    name: 'Home',
+    title: 'The Estate At A Glance',
+    lines: ['Every site on one map, coloured by its worst open alarm.', 'Load, PUE and open incidents for the whole estate sit beside it.'],
+  },
+  {
+    id: 'thermal',
+    name: 'Thermal',
+    title: 'Heat, From Plant To Inlet',
+    lines: ['Rack inlets against their allowed envelope, with the cooling plant and room units on the same page.', 'A warm row can be followed back to what caused it.'],
+    href: '/platform/thermal',
+    link: 'Thermal and cooling',
+  },
+  {
+    id: 'power',
+    name: 'Power',
+    title: 'The Chain And Its Redundancy',
+    lines: ['The path from the utility feed to the outlet as one line, with the load at each stage.', 'It shows which redundancy is still intact right now.'],
+    href: '/platform/power',
+    link: 'Power and capacity',
+  },
+  {
+    id: 'capacity',
+    name: 'Capacity',
+    title: 'What Runs Out First',
+    lines: ['Power, cooling, space and ports measured against what is installed.', 'The one that runs out first is named, room by room.'],
+    href: '/platform/power',
+    link: 'Power and capacity',
+  },
+  {
+    id: 'visualization',
+    name: 'Visualization',
+    title: 'Walk It, Then Rewind It',
+    lines: ['Building, level, room, rack and device in 3-D, with a heat map drawn from live sensors.', 'A timeline replays the last hours like video.'],
+    href: '/platform/visualization',
+    link: '3-D floor and replay',
+  },
+  {
+    id: 'assets',
+    name: 'Assets',
+    title: 'An Inventory That Matches The Floor',
+    lines: ['Every device placed from the site down to the rack unit.', 'What discovery finds on the network is compared with what is recorded.'],
+    href: '/platform/assets',
+    link: 'Assets and discovery',
+  },
+  {
+    id: 'status',
+    name: 'System Status',
+    title: 'The Monitor, Monitored',
+    lines: ['Collectors, ingest and rule evaluation report their own health.', 'If data is late or a collector goes quiet, the console says so.'],
+  },
+];
+
+const flow = [
+  { name: 'Devices', icon: 'rack', text: 'IT, power and cooling equipment keep the interfaces they already expose. Nothing is installed on them.' },
+  { name: 'Collectors', icon: 'tree', text: 'A collector fleet inside your network, sharded by site and network plane, polls and listens.' },
+  { name: 'Stream', icon: 'layers', text: 'Readings and events travel to the platform as one ordered stream.' },
+  { name: 'Platform', icon: 'cube', text: 'One telemetry model stores readings, evaluates alarm rules and folds symptoms under their cause.' },
+  { name: 'Console And API', icon: 'chart', text: 'Operators use the web console. Other systems use the REST API, WebSocket feed, Prometheus metrics or email.' },
+];
+
+const modules = [
+  { href: '/platform/power', icon: 'power', title: 'Power & Capacity', text: 'The whole power chain, its redundancy, and how much headroom is left.' },
+  { href: '/platform/thermal', icon: 'thermal', title: 'Thermal & Cooling', text: 'One cooling picture from the chiller plant to the server inlet.' },
+  { href: '/platform/visualization', icon: 'cube', title: '3-D Floor & Replay', text: 'Walk the building, read the heat map, then rewind the last hours.' },
+  { href: '/platform/alarms', icon: 'bell', title: 'Alarms & Incidents', text: 'One condition, one alarm, and one incident with its evidence.' },
+  { href: '/platform/assets', icon: 'rack', title: 'Assets & Discovery', text: 'An inventory that matches the floor, from site down to rack unit.' },
+  { href: '/works-with', icon: 'plug', title: 'Works With', text: 'The equipment classes it reads and the systems it shares data with.' },
+];
+
+const estate = [
+  { name: 'Site 1', load: '1.12 MW', pue: '1.38', pct: 64, sev: '', note: 'No open alarms' },
+  { name: 'Site 2', load: '0.70 MW', pue: '1.46', pct: 48, sev: 'warn', note: '2 warnings' },
+];
+
+const rackUnits = [
+  { u: 'U42', name: 'Top-of-rack switch', kind: 'Network' },
+  { u: 'U40', name: 'Management switch', kind: 'Network' },
+  { u: 'U30', name: 'Server, 2U', kind: 'Compute' },
+  { u: 'U28', name: 'Server, 2U', kind: 'Compute' },
+  { u: 'U26', name: 'Found on network, not recorded', kind: 'Review', flag: true },
+  { u: 'U01', name: 'Rack PDU A and B', kind: 'Power' },
+];
+
+const health = [
+  { name: 'Collector fleet', value: 'All reporting', sev: '' },
+  { name: 'Newest reading', value: '4 s ago', sev: '' },
+  { name: 'Alarm rules', value: 'Evaluated 12 s ago', sev: '' },
+  { name: 'Collector, Site 2 plant', value: 'Late by 40 s', sev: 'warn' },
+  { name: 'History storage', value: '71% free', sev: '' },
+];
+---
+
+<Base
+  title="Platform"
+  description="One telemetry model for IT, power and cooling equipment, with the same alarm console and the same floor map for all of it."
+>
+  <PageHero slot="hero" pill="Platform" title="One Telemetry Model For White Space And Grey Space">
+    Servers, switches, PDUs, UPS, switchgear, generators, CRAHs, chillers, pumps, CDUs and fire panels in the same model,
+    the same alarm console and the same floor map.
+    <div slot="visual" class="mock estate" role="img" aria-label="Illustration of an estate overview with two sites, their IT load, PUE and open alarms">
+      <div class="mock__bar"><i></i><i></i><i></i>Estate / Overview<span class="mono">Updated 4 s ago</span></div>
+      <div class="estate__kpis">
+        <div><span>Sites</span><b class="mono">2</b></div>
+        <div><span>IT Load</span><b class="mono">1.82<small>MW</small></b></div>
+        <div><span>PUE</span><b class="mono">1.41</b></div>
+        <div><span>Open Incidents</span><b class="mono">1</b></div>
+      </div>
+      <ul class="estate__sites">
+        {
+          estate.map((s) => (
+            <li>
+              <div class="estate__top">
+                <strong>
+                  <span class:list={['dot', s.sev && `dot--${s.sev}`]} />
+                  {s.name}
+                </strong>
+                <small>{s.note}</small>
+              </div>
+              <div class="estate__meter">
+                <i>
+                  <b style={`width:${s.pct}%`} />
+                </i>
+                <span class="mono">{s.load}</span>
+                <span class="mono">PUE {s.pue}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="estate__foot">
+        <span><i class="dot"></i>Power</span>
+        <span><i class="dot"></i>Cooling</span>
+        <span><i class="dot dot--warn"></i>IT</span>
+        <span><i class="dot"></i>Life safety</span>
+      </div>
+    </div>
+  </PageHero>
+
+  <!-- tour -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Tour" title="Seven Menus, One Model Behind Them" center>
+        Each menu is a different question asked of the same data, so a reading means the same thing wherever you meet
+        it.
+      </SectionHead>
+      <div class="tour" data-tabs>
+        <div class="tour__tabs" role="tablist" aria-label="Platform menus" data-anim="up">
+          {
+            tour.map((t, k) => (
+              <button type="button" role="tab" id={`tab-${t.id}`} aria-controls={`panel-${t.id}`} aria-selected={k === 0 ? 'true' : 'false'}>
+                {t.name}
+              </button>
+            ))
+          }
+        </div>
+        <div class="card card--grid tour__stage" data-anim="up-block">
+          {
+            tour.map((t) => (
+              <div class="tour__panel" role="tabpanel" id={`panel-${t.id}`} aria-labelledby={`tab-${t.id}`} tabindex="0">
+                <div class="tour__text">
+                  <h3>{t.title}</h3>
+                  {t.lines.map((l) => (
+                    <p>{l}</p>
+                  ))}
+                  {t.href && (
+                    <a class="link-arrow" href={t.href}>
+                      {t.link}
+                      <span class="circle">
+                        <Icon name="arrow" size={16} />
+                      </span>
+                    </a>
+                  )}
+                </div>
+                <div class="tour__visual">
+                  {t.id === 'home' && <MockWorldMap list={false} />}
+                  {t.id === 'thermal' && <MockHall />}
+                  {t.id === 'power' && <MockOneLine />}
+                  {t.id === 'capacity' && <MockCapacityBars />}
+                  {t.id === 'visualization' && <MockHall title="Hall A / Replay" scrubber />}
+                  {t.id === 'assets' && (
+                    <div class="mock units" role="img" aria-label="Illustration of a rack elevation listing devices by rack unit, with one device found on the network but not yet recorded">
+                      <div class="mock__bar">
+                        <i />
+                        <i />
+                        <i />
+                        Hall A / Row 3 / Rack 07<span>1 to review</span>
+                      </div>
+                      <ul>
+                        {rackUnits.map((r) => (
+                          <li class:list={{ flag: r.flag }}>
+                            <span class="mono">{r.u}</span>
+                            <strong>{r.name}</strong>
+                            <em>{r.kind}</em>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {t.id === 'status' && (
+                    <div class="mock units" role="img" aria-label="Illustration of a system status panel listing the health of collectors, ingest, alarm rules and storage">
+                      <div class="mock__bar">
+                        <i />
+                        <i />
+                        <i />
+                        System Status<span>1 late</span>
+                      </div>
+                      <ul>
+                        {health.map((h) => (
+                          <li class:list={{ flag: h.sev }}>
+                            <span class:list={['dot', h.sev && `dot--${h.sev}`]} />
+                            <strong>{h.name}</strong>
+                            <em class="mono">{h.value}</em>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- data flow -->
+  <section class="section pbg">
+    <Backdrop view="hall" />
+    <div class="wrap">
+      <SectionHead pill="How Data Flows" title="From The Device To The Console In Five Steps">
+        The platform and its collectors run on your own infrastructure, so telemetry stays inside your network.
+      </SectionHead>
+      <ol class="flow">
+        {
+          flow.map((f, k) => (
+            <li class="card card--raised flow__step" data-anim="up">
+              <div class="flow__head">
+                <span class="tile">
+                  <Icon name={f.icon} />
+                </span>
+                <span class="flow__n mono">{k + 1}</span>
+              </div>
+              <h3>{f.name}</h3>
+              <p>{f.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="flow__note" data-anim="up">
+        Collectors enrol with mutual TLS, hold their device credentials encrypted, and run signed releases.
+      </p>
+    </div>
+  </section>
+
+  <!-- standards -->
+  <section class="section">
+    <div class="wrap split split--top">
+      <div>
+        <SectionHead pill="Built To Standards" title="The Same Yardsticks Your Engineers Already Use">
+          Thresholds and alarm behaviour follow published practice, so the console does not invent its own definition
+          of too warm or of acknowledged.
+        </SectionHead>
+      </div>
+      <div class="grid std">
+        <div class="card card--grid std__card" data-anim="up">
+          <span class="tile"><Icon name="thermal" /></span>
+          <h3>ASHRAE TC 9.9 Thermal Envelopes</h3>
+          <p>
+            Rack inlet temperatures are judged against ASHRAE TC 9.9 thermal envelopes, so too warm means the same thing
+            in every hall.
+          </p>
+        </div>
+        <div class="card card--grid std__card" data-anim="up">
+          <span class="tile"><Icon name="bell" /></span>
+          <h3>Alarm Handling Aligned With ISA-18.2</h3>
+          <p>
+            The alarm lifecycle, priorities and operator actions are aligned with ISA-18.2. The alignment is partial
+            today, and we will show you where it stops.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- modules -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Modules" title="Go Deeper Into Each Part" center />
+      <div class="grid grid-3">
+        {
+          modules.map((m) => (
+            <a class="card card--grid mod" href={m.href} data-anim="up">
+              <span class="tile">
+                <Icon name={m.icon} />
+              </span>
+              <h3>{m.title}</h3>
+              <p>{m.text}</p>
+              <span class="mod__go" aria-hidden="true">
+                <Icon name="arrow" size={16} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  /* hero estate mock */
+  .estate__kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-bottom: 1px solid var(--line);
+  }
+  .estate__kpis > div {
+    padding: 14px 16px;
+    display: grid;
+    gap: 4px;
+  }
+  .estate__kpis > div + div {
+    border-left: 1px solid var(--line);
+  }
+  .estate__kpis span {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .estate__kpis b {
+    font-weight: 500;
+    font-size: 24px;
+    color: var(--head);
+    white-space: nowrap;
+  }
+  .estate__kpis small {
+    font-size: 12px;
+    margin-left: 3px;
+    color: var(--muted);
+  }
+  .estate__sites {
+    list-style: none;
+    margin: 0;
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+  }
+  .estate__sites li {
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--ink-0);
+    display: grid;
+    gap: 12px;
+  }
+  .estate__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .estate__top strong {
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--head);
+  }
+  .estate__top small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .estate__meter {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 14px;
+    align-items: center;
+    font-size: 12px;
+    color: var(--body);
+  }
+  .estate__meter i {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--ink-2);
+    overflow: hidden;
+  }
+  .estate__meter b {
+    display: block;
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent-deep), var(--accent-text));
+  }
+  .estate__foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    padding: 10px 16px 12px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  @media (max-width: 480px) {
+    .estate__kpis {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .estate__kpis > div:nth-child(3) {
+      border-left: 0;
+    }
+    .estate__kpis > div:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+    }
+  }
+
+  /* tour tabs */
+  .tour__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .tour__tabs button {
+    min-height: 44px;
+    padding: 9px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--ink-1);
+    color: var(--body);
+    font-family: var(--font-head);
+    font-size: 15px;
+    cursor: pointer;
+    transition:
+      background 0.15s ease-in-out,
+      color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out;
+  }
+  .tour__tabs button:hover {
+    color: var(--head);
+    border-color: var(--accent-text);
+  }
+  .tour__tabs button[aria-selected='true'] {
+    background: var(--accent);
+    border-color: var(--line-strong);
+    color: #fff;
+  }
+  .tour__stage {
+    padding: clamp(20px, 3vw, 44px);
+  }
+  .tour__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 64px);
+    align-items: center;
+  }
+  @media (min-width: 901px) {
+    .tour__panel {
+      min-height: 420px;
+    }
+  }
+  .tour__panel[hidden] {
+    display: none;
+  }
+  .tour__panel + .tour__panel:not([hidden]) {
+    margin-top: 0;
+  }
+  .tour__panel:not([hidden]) {
+    animation: tourIn 0.45s ease both;
+  }
+  @keyframes tourIn {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tour__panel:not([hidden]) {
+      animation: none;
+    }
+  }
+  /* without JavaScript every panel is shown, so space them */
+  :global(html:not(.js)) .tour__panel + .tour__panel {
+    margin-top: 48px;
+  }
+  .tour__text {
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+  }
+  .tour__text h3 {
+    font-size: clamp(24px, 2.4vw, 32px);
+  }
+  .tour__text .link-arrow {
+    margin-top: 8px;
+  }
+  @media (max-width: 900px) {
+    .tour__panel {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .tour__tabs {
+      justify-content: flex-start;
+    }
+  }
+
+  /* small list mocks used by the Assets and System Status panels */
+  .units ul {
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    display: grid;
+    gap: 6px;
+  }
+  .units li {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--ink-0);
+    border: 1px solid transparent;
+  }
+  .units li.flag {
+    border-color: var(--warn);
+  }
+  .units li > .mono:first-child {
+    font-size: 12px;
+    color: var(--accent-text);
+  }
+  .units li > .dot {
+    margin: 0;
+    justify-self: center;
+  }
+  .units strong {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--head);
+  }
+  .units em {
+    font-style: normal;
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--ink-2);
+    color: var(--body);
+    white-space: nowrap;
+  }
+
+  /* data flow */
+  .flow {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .flow__step {
+    padding: 24px;
+    overflow: visible;
+  }
+  .flow__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .flow__n {
+    font-size: 14px;
+    color: var(--accent-text);
+  }
+  .flow__step h3 {
+    font-size: 20px;
+  }
+  .flow__step p {
+    margin-top: 12px;
+    font-size: 15px;
+  }
+  /* connector between steps on one row */
+  .flow__step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50px;
+    width: 21px;
+    height: 2px;
+    background: var(--accent-text);
+  }
+  .flow__note {
+    margin-top: 32px;
+    max-width: 70ch;
+    color: var(--muted);
+  }
+  @media (max-width: 1100px) {
+    .flow {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .flow__step::after {
+      display: none;
+    }
+  }
+  @media (max-width: 640px) {
+    .flow {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* standards */
+  .std {
+    gap: 20px;
+  }
+  .std__card p {
+    max-width: 52ch;
+  }
+
+  /* modules (same card as Home) */
+  .mod {
+    min-height: 270px;
+  }
+  .mod__go {
+    position: absolute;
+    right: 26px;
+    bottom: 26px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--ink-2);
+    color: var(--head);
+    transition:
+      background 0.15s ease-in-out,
+      transform 0.2s ease;
+  }
+  .mod:hover .mod__go {
+    background: var(--accent);
+    transform: rotate(-45deg);
+  }
+  .mod p {
+    max-width: 30ch;
+    padding-bottom: 40px;
+  }
+</style>

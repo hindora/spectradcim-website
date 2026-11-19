@@ -10,13 +10,13 @@ const classes = [
   { icon: 'rack', title: 'IT', items: ['Servers and their management controllers', 'Switches', 'Routers', 'Firewalls', 'Load balancers', 'Storage'] },
   { icon: 'power', title: 'Power', items: ['Utility feed', 'Transformer', 'Switchgear', 'Transfer switch', 'Generator', 'UPS', 'Remote power panel', 'Rack PDU'] },
   { icon: 'fan', title: 'Cooling', items: ['CRAH', 'Chiller', 'Pump', 'Cooling tower', 'Valve', 'Coolant distribution unit'] },
-  { icon: 'thermal', title: 'Sensors And Fire', items: ['Temperature and humidity sensors', 'Power and energy meters', 'Fire panels, monitoring only'] },
+  { icon: 'thermal', title: 'Sensors and fire', items: ['Temperature and humidity sensors', 'Power and energy meters', 'Fire panels, monitoring only'] },
 ];
 
 const integrations = [
-  { icon: 'file', title: 'REST API With OpenAPI', text: 'Everything the console shows can be read through the API, and the OpenAPI description documents every call.' },
-  { icon: 'chart', title: 'WebSocket Feed', text: 'Subscribe to live readings and alarm changes as they happen, without asking again and again.' },
-  { icon: 'layers', title: 'Prometheus Metrics', text: 'Metrics published in the Prometheus format, ready for the monitoring you already run.' },
+  { icon: 'file', title: 'REST API with OpenAPI', text: 'Everything the console shows can be read through the API, and the OpenAPI description documents every call.' },
+  { icon: 'chart', title: 'WebSocket feed', text: 'Subscribe to live readings and alarm changes as they happen, without asking again and again.' },
+  { icon: 'layers', title: 'Prometheus metrics', text: 'Metrics published in the Prometheus format, ready for the monitoring you already run.' },
   { icon: 'mail', title: 'Email', text: 'Alarm notifications sent through your own mail server.' },
   { icon: 'link', title: 'Jira / JSM', beta: true, text: 'Tickets opened from incidents, and inventory exported to Jira Assets.' },
 ];
@@ -26,16 +26,16 @@ const flow = [
   { icon: 'search', title: 'Collectors', text: 'One pool per network plane' },
   { icon: 'chart', title: 'Stream', text: 'Readings and events in order' },
   { icon: 'layers', title: 'Platform', text: 'Rules, correlation, history' },
-  { icon: 'cube', title: 'Console And API', text: 'People and other systems' },
+  { icon: 'cube', title: 'Console and API', text: 'People and other systems' },
 ];
 
 const facts = [
-  { title: 'A Collector Per Network Plane', text: 'Production, management and plant networks each get their own collectors, so no plane has to be bridged to another.' },
-  { title: 'Pools And A Shard Map', text: 'Collectors work in pools. A shard map decides which collector reads which device, and hands the work over if one stops.' },
-  { title: 'Disk Spool', text: 'If the link to the platform drops, a collector keeps reading and stores the results on disk until it can send them.' },
-  { title: 'Signed Self-Update', text: 'Collectors update themselves only from releases that carry a valid signature.' },
-  { title: 'Your Choice Of Package', text: 'Collectors are written in Go and ship as a Docker image, a .deb package or an .rpm package.' },
-  { title: 'Self-Hosted Platform', text: 'The platform runs on your own infrastructure and stores its data in PostgreSQL with TimescaleDB.' },
+  { title: 'A collector per network plane', text: 'Production, management and plant networks each get their own collectors, so no plane has to be bridged to another.' },
+  { title: 'Pools and a shard map', text: 'Collectors work in pools. A shard map decides which collector reads which device, and hands the work over if one stops.' },
+  { title: 'Disk spool', text: 'If the link to the platform drops, a collector keeps reading and stores the results on disk until it can send them.' },
+  { title: 'Signed self-update', text: 'Collectors update themselves only from releases that carry a valid signature.' },
+  { title: 'Your choice of package', text: 'Collectors are written in Go and ship as a Docker image, a .deb package or an .rpm package.' },
+  { title: 'Self-hosted platform', text: 'The platform runs on your own infrastructure and stores its data in PostgreSQL with TimescaleDB.' },
 ];
 
 const today = [
@@ -50,10 +50,10 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
 ---
 
 <Base
-  title="Works With"
+  title="Works with"
   description="The device classes SpectraDCIM reads, the systems it shares data with, and how collectors connect to your equipment without agents."
 >
-  <PageHero slot="hero" pill="Works With" title="Named Device Classes. Open Integrations. No Black Box." center>
+  <PageHero slot="hero" pill="Works with" title="Named device classes. Open integrations. No black box." center>
     What SpectraDCIM reads, what it shares, how the pieces are deployed and how they are secured, stated plainly.
   </PageHero>
 
@@ -61,7 +61,7 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
   <section class="section">
     <div class="wrap split">
       <div>
-        <SectionHead pill="How It Connects" title="Standard Interfaces, No Agents">
+        <SectionHead pill="How it connects" title="Standard interfaces, no agents">
           Collectors sit on your network and read each device over the interface it already exposes. IT equipment is
           read over SNMP, gNMI streaming and Redfish; power and cooling plant over BACnet and Modbus. Traps and
           change-of-value updates are taken as they happen and confirmed by polling.
@@ -81,8 +81,8 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
   <section class="section pbg">
     <Backdrop view="ups" />
     <div class="wrap">
-      <SectionHead pill="Device Classes" title="The Equipment It Reads" center>
-        White space and grey space in one model. Each class comes with its own readings and alarm rules.
+      <SectionHead pill="Device classes" title="The equipment it reads" center>
+        White space and gray space in one model. Each class comes with its own readings and alarm rules.
       </SectionHead>
       <div class="grid grid-4">
         {
@@ -105,7 +105,7 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
   <!-- integrations -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Integrations" title="Your Data Is Yours To Use">
+      <SectionHead pill="Integrations" title="Your data is yours to use">
         Open ways out of the platform, for scripts, dashboards and the tools your teams already work in.
       </SectionHead>
       <div class="grid grid-3">
@@ -124,7 +124,7 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
           ))
         }
         <a class="card silk-card intg-cta" href="/demo" data-anim="up">
-          <h3>Need Something Else?</h3>
+          <h3>Need something else?</h3>
           <p>Tell us which system you need to reach and we will show how the API covers it.</p>
           <span class="link-arrow">
             Request a demo
@@ -139,13 +139,13 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
   <section class="section pbg">
     <Backdrop view="yard" />
     <div class="wrap">
-      <SectionHead pill="Architecture" title="Where Each Part Runs" center>
+      <SectionHead pill="Architecture" title="Where each part runs" center>
         A fleet of collectors, sharded by site and network plane, feeds one self-hosted platform.
       </SectionHead>
 
       <div class="card card--grid arch" role="img" aria-label="Illustration of the architecture: devices are read by collectors, which send a stream to the platform, which serves the console and the API" data-anim="up-block">
-        <div class="arch__scope arch__scope--site"><span>Each Site</span></div>
-        <div class="arch__scope arch__scope--core"><span>Self-Hosted Platform</span></div>
+        <div class="arch__scope arch__scope--site"><span>Each site</span></div>
+        <div class="arch__scope arch__scope--core"><span>Self-hosted platform</span></div>
         <ol class="arch__flow">
           {
             flow.map((f, k) => (
@@ -177,7 +177,7 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
   <!-- security -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Security" title="What Is In Place, And What Is Not Yet">
+      <SectionHead pill="Security" title="What is in place, and what is not yet">
         We would rather list the gaps ourselves than have you find them in a review.
       </SectionHead>
       <div class="grid grid-2 sec">
@@ -188,7 +188,7 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
           </ul>
         </div>
         <div class="card sec__road" data-anim="up-block">
-          <h3>On The Roadmap</h3>
+          <h3>On the roadmap</h3>
           <ul class="road">
             {roadmap.map((t) => <li>{t}</li>)}
           </ul>
@@ -212,11 +212,11 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
   /* device classes */
   .cls ul {
     list-style: none;
-    margin: 18px 0 0;
+    margin: var(--s-4) 0 0;
     padding: 0;
   }
   .cls li {
-    padding: 11px 0;
+    padding: var(--s-3) 0;
     border-top: 1px solid var(--line);
     color: var(--body);
     line-height: 1.35;
@@ -226,8 +226,8 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
   .intg-cta {
     display: grid;
     align-content: space-between;
-    gap: 18px;
-    border-color: rgba(126, 145, 203, 0.5);
+    gap: var(--s-4);
+    border-color: rgba(76, 195, 255, 0.5);
   }
   .intg-cta p {
     color: var(--body);
@@ -238,14 +238,14 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
     padding: clamp(46px, 5vw, 64px) clamp(18px, 2.4vw, 34px) clamp(22px, 2.4vw, 34px);
     display: grid;
     grid-template-columns: 2fr 3fr;
-    column-gap: 22px;
+    column-gap: var(--s-5);
   }
   .arch__scope {
     grid-row: 1;
     position: relative;
-    border: 1px dashed rgba(126, 145, 203, 0.5);
-    border-radius: 14px;
-    margin: -28px -8px -10px;
+    border: 1px dashed rgba(76, 195, 255, 0.5);
+    border-radius: var(--r-card);
+    margin: calc(-1 * var(--s-6)) calc(-1 * var(--s-2)) calc(-1 * var(--s-2));
     z-index: 0;
   }
   .arch__scope--site {
@@ -258,10 +258,10 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
     position: absolute;
     top: -11px;
     left: 16px;
-    padding: 0 10px;
+    padding: 0 var(--s-2);
     background: var(--ink-0);
     font-family: var(--font-head);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--accent-text);
   }
   .arch__flow {
@@ -272,26 +272,26 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
     padding: 0;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 22px;
+    gap: var(--s-5);
   }
   .arch__node {
     position: relative;
     display: grid;
     justify-items: center;
     align-content: start;
-    gap: 6px;
-    padding: 20px 10px;
+    gap: var(--s-2);
+    padding: var(--s-5) var(--s-2);
     text-align: center;
-    border-radius: 12px;
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-1);
   }
   .arch__node--hi {
-    border-color: rgba(126, 145, 203, 0.6);
+    border-color: rgba(76, 195, 255, 0.6);
     background: var(--ink-2);
   }
   .arch__node .tile {
-    margin-bottom: 8px;
+    margin-bottom: var(--s-2);
   }
   .arch__node strong {
     font-family: var(--font-head);
@@ -299,7 +299,7 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
     color: var(--head);
   }
   .arch__node small {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--muted);
     line-height: 1.35;
   }
@@ -325,14 +325,14 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
     }
     .arch__flow {
       grid-template-columns: 1fr;
-      gap: 26px;
+      gap: var(--s-5);
     }
     .arch__node {
       grid-template-columns: 54px minmax(0, 1fr);
       justify-items: start;
       text-align: left;
-      column-gap: 16px;
-      padding: 16px;
+      column-gap: var(--s-4);
+      padding: var(--s-4);
     }
     .arch__node .tile {
       grid-row: 1 / span 2;
@@ -349,10 +349,10 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
 
   .facts {
     margin-top: clamp(36px, 4vw, 56px);
-    gap: 32px 40px;
+    gap: var(--s-6) var(--s-7);
   }
   .fact {
-    padding-top: 20px;
+    padding-top: var(--s-5);
     border-top: 2px solid var(--accent-deep);
   }
   .fact h3 {
@@ -360,13 +360,13 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
     line-height: 1.25;
   }
   .fact p {
-    margin-top: 10px;
+    margin-top: var(--s-2);
   }
 
   /* security */
   .sec .card {
     display: grid;
-    gap: 22px;
+    gap: var(--s-5);
     align-content: start;
   }
   .sec__road {
@@ -379,12 +379,12 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 14px;
+    gap: var(--s-4);
   }
   .road li {
     display: grid;
     grid-template-columns: 24px 1fr;
-    gap: 12px;
+    gap: var(--s-3);
     align-items: center;
     color: var(--head);
   }

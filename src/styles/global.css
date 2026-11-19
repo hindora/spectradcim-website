@@ -1,5 +1,5 @@
 /* SpectraDCIM site styles.
-   Type, colour, link and button values follow docs/content-brief.md section 7.3. */
+   Type, color, link and button values follow docs/content-brief.md section 7.3. */
 
 :root {
   --black: #000;
@@ -70,14 +70,14 @@ h4 {
   font-weight: 500;
   line-height: 1.1;
   color: var(--head);
-  text-transform: capitalize;
+  text-transform: none;
   text-wrap: balance;
 }
 
 h1,
 .h1 {
   font-size: clamp(38px, 5.2vw, 67px);
-  padding-bottom: 5px;
+  padding-bottom: var(--s-1);
   background: linear-gradient(#f1f2ff 0%, #cccfd8 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -115,7 +115,7 @@ a:hover {
 :focus-visible {
   outline: 2px solid var(--accent-text);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: var(--r-input);
 }
 
 .skip {
@@ -123,7 +123,7 @@ a:hover {
   left: 16px;
   top: -60px;
   z-index: 200;
-  padding: 10px 16px;
+  padding: var(--s-2) var(--s-4);
   background: var(--accent);
   color: #fff;
   border-radius: var(--radius-sm);
@@ -178,7 +178,7 @@ a:hover {
 
 .grid {
   display: grid;
-  gap: 24px;
+  gap: var(--s-5);
 }
 
 .grid-2 {
@@ -294,17 +294,17 @@ a:hover {
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 16px;
-  border-radius: 999px;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-4);
+  border-radius: var(--r-round);
   background: var(--ink-1);
-  border: 1px solid rgba(126, 145, 203, 0.5);
+  border: 1px solid rgba(76, 195, 255, 0.5);
   color: var(--accent-text);
   font-family: var(--font-head);
   font-size: 14px;
   font-weight: 500;
   line-height: 1.3;
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 .pill::before {
@@ -325,9 +325,9 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: var(--s-3);
   min-height: 54px;
-  padding: 13px 30px;
+  padding: var(--s-3) 30px;
   border-radius: var(--radius-sm);
   border: 2px solid var(--line-strong);
   background: var(--accent);
@@ -364,7 +364,7 @@ a:hover {
 .btn--dark {
   background: var(--ink-2);
   border-color: var(--line);
-  box-shadow: 0 5px 18px -6px rgba(89, 116, 199, 0.36);
+  box-shadow: 0 5px 18px -6px rgba(76, 195, 255, 0.36);
 }
 
 .btn--dark:hover {
@@ -375,7 +375,7 @@ a:hover {
 .btn--light {
   background: var(--head);
   color: var(--accent-tile);
-  border-color: rgba(97, 117, 179, 0.14);
+  border-color: rgba(76, 195, 255, 0.14);
   box-shadow: none;
 }
 
@@ -387,7 +387,7 @@ a:hover {
 .btn-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: var(--s-5);
 }
 
 .center .btn-row {
@@ -397,7 +397,7 @@ a:hover {
 .link-arrow {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--s-3);
   color: var(--accent-text);
   letter-spacing: 1px;
 }
@@ -421,7 +421,6 @@ a:hover {
 }
 
 .link-arrow:hover .circle {
-  transform: rotate(-45deg);
   background: var(--accent);
 }
 
@@ -449,7 +448,7 @@ a:hover {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(520px 300px at 100% 0%, rgba(97, 117, 179, 0.22), transparent 70%);
+  background: radial-gradient(520px 300px at 100% 0%, rgba(76, 195, 255, 0.22), transparent 70%);
   pointer-events: none;
 }
 
@@ -469,7 +468,7 @@ a.card,
 
 a.card:hover,
 .card--hover:hover {
-  border-color: rgba(126, 145, 203, 0.55);
+  border-color: rgba(76, 195, 255, 0.55);
   transform: translateY(-6px);
   color: inherit;
 }
@@ -481,7 +480,7 @@ a.card:hover,
 
 .card h3 + p,
 .card h4 + p {
-  margin-top: 12px;
+  margin-top: var(--s-3);
 }
 
 .tile {
@@ -489,10 +488,10 @@ a.card:hover,
   place-items: center;
   width: 54px;
   height: 54px;
-  border-radius: 10px;
+  border-radius: var(--r-card);
   background: var(--accent-tile);
   color: var(--head);
-  margin-bottom: 24px;
+  margin-bottom: var(--s-5);
 }
 
 .tile svg {
@@ -502,20 +501,20 @@ a.card:hover,
 
 .tag {
   display: inline-block;
-  padding: 2px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(126, 145, 203, 0.5);
+  padding: 2px var(--s-2);
+  border-radius: var(--r-round);
+  border: 1px solid rgba(76, 195, 255, 0.5);
   color: var(--accent-text);
-  font-size: 12px;
+  font-size: 13px;
   vertical-align: middle;
-  margin-left: 8px;
+  margin-left: var(--s-2);
   text-transform: none;
 }
 
 /* ---------- stats ---------- */
 
 .stat {
-  padding: 28px;
+  padding: var(--s-6);
   border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--ink-0);
@@ -536,16 +535,16 @@ a.card:hover,
 }
 
 .stat__label {
-  margin-top: 14px;
+  margin-top: var(--s-4);
   font-family: var(--font-head);
   font-weight: 500;
   font-size: 18px;
   color: var(--head);
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 .stat__cap {
-  margin-top: 6px;
+  margin-top: var(--s-2);
   font-size: 14px;
   color: var(--muted);
 }
@@ -557,13 +556,13 @@ a.card:hover,
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 14px;
+  gap: var(--s-4);
 }
 
 .checks li {
   display: grid;
   grid-template-columns: 24px 1fr;
-  gap: 12px;
+  gap: var(--s-3);
   align-items: start;
 }
 
@@ -592,15 +591,15 @@ a.card:hover,
 }
 
 .page-hero .lead {
-  margin-top: 24px;
+  margin-top: var(--s-5);
 }
 
 .page-hero .btn-row {
-  margin-top: 36px;
+  margin-top: var(--s-6);
 }
 
 .page-hero h1 {
-  margin-top: 22px;
+  margin-top: var(--s-5);
   max-width: 18ch;
 }
 
@@ -621,11 +620,11 @@ a.card:hover,
 }
 
 .sec-head h2 {
-  margin-top: 18px;
+  margin-top: var(--s-4);
 }
 
 .sec-head p {
-  margin-top: 18px;
+  margin-top: var(--s-4);
 }
 
 /* ---------- marquee ---------- */
@@ -639,8 +638,8 @@ a.card:hover,
 .marquee__track {
   display: flex;
   width: max-content;
-  gap: 100px;
-  padding-right: 100px;
+  gap: var(--s-9);
+  padding-right: var(--s-9);
   animation: marquee 42s linear infinite;
 }
 
@@ -668,18 +667,18 @@ a.card:hover,
 
 .faq {
   display: grid;
-  gap: 16px;
+  gap: var(--s-4);
 }
 
 .faq details {
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--r-card);
   background: var(--ink-0);
   transition: border-color 0.2s ease;
 }
 
 .faq details[open] {
-  border-color: rgba(126, 145, 203, 0.5);
+  border-color: rgba(76, 195, 255, 0.5);
   background: var(--ink-1);
 }
 
@@ -687,15 +686,15 @@ a.card:hover,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  padding: 22px 26px;
+  gap: var(--s-5);
+  padding: var(--s-5) var(--s-5);
   cursor: pointer;
   list-style: none;
   font-family: var(--font-head);
   font-weight: 500;
   font-size: 18px;
   color: var(--head);
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 .faq summary::-webkit-details-marker {
@@ -723,7 +722,7 @@ a.card:hover,
 }
 
 .faq .faq__a {
-  padding: 0 26px 24px;
+  padding: 0 var(--s-5) var(--s-5);
   max-width: 70ch;
 }
 
@@ -749,13 +748,13 @@ a.card:hover,
 
 .form {
   display: grid;
-  gap: 18px;
+  gap: var(--s-4);
 }
 
 .form .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  gap: var(--s-4);
 }
 
 @media (max-width: 640px) {
@@ -766,7 +765,7 @@ a.card:hover,
 
 .field label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: var(--s-2);
   font-size: 14px;
   color: var(--head);
 }
@@ -776,7 +775,7 @@ a.card:hover,
 .field textarea {
   width: 100%;
   min-height: 50px;
-  padding: 12px 16px;
+  padding: var(--s-3) var(--s-4);
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background: var(--ink-0);
@@ -802,11 +801,16 @@ a.card:hover,
 }
 
 .form__status {
-  padding: 14px 16px;
+  padding: var(--s-4) var(--s-4);
   border-radius: var(--radius-sm);
   border: 1px solid rgba(79, 191, 139, 0.5);
   background: rgba(79, 191, 139, 0.08);
   color: var(--head);
+}
+
+.form__status.is-error {
+  border-color: rgba(227, 160, 8, 0.55);
+  background: rgba(227, 160, 8, 0.08);
 }
 
 /* ---------- table ---------- */
@@ -826,7 +830,7 @@ table {
 
 th,
 td {
-  padding: 14px 20px;
+  padding: var(--s-4) var(--s-5);
   text-align: left;
   border-bottom: 1px solid var(--line);
 }
@@ -846,23 +850,23 @@ tr:last-child td {
 
 .mock {
   position: relative;
-  border-radius: 14px;
+  border-radius: var(--r-card);
   border: 1px solid var(--line);
   background: #06070f;
   overflow: hidden;
-  box-shadow: 0 30px 80px -30px rgba(89, 116, 199, 0.45);
-  font-size: 13px;
+  box-shadow: 0 30px 80px -30px rgba(76, 195, 255, 0.45);
+  font-size: 14px;
   color: var(--body);
 }
 
 .mock__bar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-4);
   border-bottom: 1px solid var(--line);
   background: var(--ink-0);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
 }
 
@@ -878,7 +882,7 @@ tr:last-child td {
 }
 
 .mock__body {
-  padding: 16px;
+  padding: var(--s-4);
 }
 
 .dot {
@@ -886,7 +890,7 @@ tr:last-child td {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  margin-right: 8px;
+  margin-right: var(--s-2);
   background: var(--ok);
 }
 
@@ -983,7 +987,7 @@ tr:last-child td {
     flex-wrap: wrap;
     justify-content: center;
     width: auto;
-    gap: 24px 60px;
+    gap: var(--s-5) var(--s-8);
     padding: 0;
   }
 
@@ -998,38 +1002,90 @@ tr:last-child td {
 
 
 /* =====================================================================================
-   THEME 2 (2026-11-17): type, colour, buttons and links in the manner of the reference
-   DCIM site: one humanist sans, bold white headings, spaced-caps coloured eyebrow, pill
-   buttons, solid sticky header, flat dark-grey page with hard-edged picture bands.
+   THEME 2 (2026-11-17): type, color, buttons and links in the manner of the reference
+   DCIM site: one humanist sans, bold white headings, spaced-caps colored eyebrow, pill
+   buttons, solid sticky header, flat dark-gray page with hard-edged picture bands.
    The earlier theme is kept in docs/themes/global.nexios.css.
    To change the accent, edit the --accent* values below.
    ===================================================================================== */
 
 :root {
-  --black: #212124;
-  --ink-0: #18181b;
-  --ink-1: #2a2a2e;
-  --ink-2: #35353b;
+  /* Source of truth: docs/style-guide.html. Change values here and nowhere else. */
+
+  /* surfaces */
+  --page: #16181d;
+  --surface-sunk: #101216;
+  --surface: #22252c;
+  --surface-2: #2c3038;
+  --picture: #000;
+
+  /* lines */
   --line: rgba(255, 255, 255, 0.12);
+  --line-input: rgba(255, 255, 255, 0.25);
   --line-strong: rgba(255, 255, 255, 0.9);
-  --head: #ffffff;
-  --body: #f7fafc;
-  --muted: rgba(247, 250, 252, 0.74);
 
-  --accent: #d31e03; /* button fill */
-  --accent-hover: #b01802;
-  --accent-text: #fbbd08; /* eyebrow, links, highlights, icons */
-  --accent-deep: #9a7300;
-  --accent-tile: #35353b;
-  --accent-shadow: transparent;
+  /* text */
+  --text-head: #fff;
+  --text: #eef0f3;
+  --text-muted: #b3b7bf;
 
+  /* brand, from the logo: lower bars (fill) and the word "DCIM" (text). */
+  --action: #2563eb;
+  --action-hover: #1d4fd8;
+  --signal: #4cc3ff;
+  --signal-soft: rgba(76, 195, 255, 0.12);
+  --signal-line: rgba(76, 195, 255, 0.55);
+
+  /* status: alarms and form feedback only */
+  --ok: #4fbf8b;
+  --warn: #e3a008;
+  --crit: #e5484d;
+
+  /* type */
   --font-head: 'Lato', 'Segoe UI', sans-serif;
   --font-body: 'Lato', 'Segoe UI', sans-serif;
 
-  --radius: 8px;
-  --radius-sm: 4px;
-  --grid-lines: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  /* spacing, 4px base */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --section: clamp(72px, 9vw, 128px);
+
+  /* radius */
+  --r-input: 4px;
+  --r-small: 6px;
+  --r-button: 30px;           /* pill buttons */
+  --r-card: 8px;
+  --r-round: 999px;
+
+  /* controls */
+  --btn-h: 56px;
+  --btn-h-sm: 44px;
+  --input-h: 50px;
+
+  /* earlier names, kept so existing rules keep working */
+  --black: var(--page);
+  --ink-0: var(--surface-sunk);
+  --ink-1: var(--surface);
+  --ink-2: var(--surface-2);
+  --head: var(--text-head);
+  --body: var(--text);
+  --muted: var(--text-muted);
+  --accent: var(--action);
+  --accent-hover: var(--action-hover);
+  --accent-text: var(--signal);
+  --accent-deep: #1e40af;
+  --accent-tile: var(--surface-2);
+  --accent-shadow: transparent;
+  --radius: var(--r-card);
+  --radius-sm: var(--r-input);
+  --grid-lines: none;
 }
 
 html {
@@ -1041,6 +1097,7 @@ body {
   color: var(--body);
   font-size: 18px;
   line-height: 1.5;
+  font-variant-numeric: tabular-nums;
 }
 
 h1,
@@ -1051,6 +1108,7 @@ h4 {
   line-height: 1.2;
   text-transform: none;
   letter-spacing: normal;
+  text-wrap: balance;
 }
 
 h1,
@@ -1112,7 +1170,7 @@ a:hover {
   min-height: 56px;
   padding: 15px 30px;
   border: 2px solid transparent;
-  border-radius: 30px;
+  border-radius: var(--r-button);
   background: var(--accent);
   color: #fff;
   font-family: var(--font-body);
@@ -1167,12 +1225,16 @@ a:hover {
   background: var(--ink-1);
 }
 
+.card--grid {
+  background-image: none;
+}
+
 .card--grid::after {
-  background: radial-gradient(520px 300px at 100% 0%, rgba(251, 189, 8, 0.1), transparent 70%);
+  display: none;
 }
 
 .card--glow {
-  background: linear-gradient(163deg, #3a3a40 1%, #121214 60%);
+  background: var(--ink-1);
 }
 
 .silk-card {
@@ -1182,16 +1244,17 @@ a:hover {
 
 a.card:hover,
 .card--hover:hover {
-  border-color: rgba(251, 189, 8, 0.6);
+  border-color: var(--accent-text);
+  transform: none;
 }
 
 .tile {
-  background: rgba(251, 189, 8, 0.12);
+  background: rgba(76, 195, 255, 0.12);
   color: var(--accent-text);
 }
 
 .tag {
-  border-color: rgba(251, 189, 8, 0.55);
+  border-color: rgba(76, 195, 255, 0.55);
   color: var(--accent-text);
 }
 
@@ -1213,10 +1276,10 @@ a.card:hover,
 }
 
 .band {
-  background: #18181b;
+  background: var(--ink-0);
 }
 
-/* pictures behind bands sit on black; plain sections are the dark grey page */
+/* pictures behind bands sit on black; plain sections are the dark gray page */
 .pbg {
   background: #000;
 }
@@ -1231,7 +1294,7 @@ a.card:hover,
 }
 
 .faq details[open] {
-  border-color: rgba(251, 189, 8, 0.55);
+  border-color: rgba(76, 195, 255, 0.55);
   background: var(--ink-1);
 }
 
@@ -1258,5 +1321,73 @@ th {
 }
 
 .mock {
-  box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.9);
+  box-shadow: none;
+}
+
+/* No scroll entrances, except the home hero below. Background pictures still drift (see .pbg__img). */
+.js [data-anim],
+.js [data-anim].is-in {
+  visibility: visible;
+  animation: none;
+}
+
+/* The one exception: the home page hero rises into place on load. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero--rise [data-anim] {
+    visibility: hidden;
+  }
+
+  .js .hero--rise [data-anim].is-in {
+    visibility: visible;
+    animation: fadeInUp 1.25s ease both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .js .hero--rise [data-anim].is-in.is-done {
+    animation: none;
+  }
+}
+
+/* ---------- refinements from docs/style-guide.html ---------- */
+
+.tag {
+  border-color: var(--signal-line);
+}
+
+.field input,
+.field select,
+.field textarea {
+  border-color: var(--line-input);
+}
+
+.field input,
+.field select {
+  min-height: var(--input-h);
+}
+
+.field textarea {
+  min-height: 128px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid var(--signal);
+  outline-offset: 0;
+  border-color: var(--signal);
+}
+
+.btn {
+  min-height: var(--btn-h);
+  border-radius: var(--r-button);
+}
+
+/* compact button: the header only */
+.hdr__cta .btn {
+  min-height: var(--btn-h-sm);
+}
+
+/* a heading block inside a two-column section sits close to the text that continues it */
+.split .sec-head {
+  margin-bottom: var(--s-5);
 }

@@ -1,0 +1,471 @@
+---
+import Backdrop from '../../components/Backdrop.astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import MockChart from '../../components/MockChart.astro';
+import MockOneLine from '../../components/MockOneLine.astro';
+import MockPowerChain from '../../components/MockPowerChain.astro';
+import MockCapacityBars from '../../components/MockCapacityBars.astro';
+
+const census = [
+  { name: 'UPS, Hall A', want: '2N', now: '2N', sev: '' },
+  { name: 'Generators', want: 'N+1', now: 'N', sev: 'warn', note: 'One set in maintenance' },
+  { name: 'Chillers', want: 'N+1', now: 'N+1', sev: '' },
+  { name: 'Rack feeds, Row 3', want: 'A+B', now: 'A+B', sev: '' },
+];
+
+const headroom = [
+  { name: 'Hall A', drawn: 54, free: 27, stranded: 19, kw: '114 kW stranded' },
+  { name: 'Hall B', drawn: 41, free: 48, stranded: 11, kw: '66 kW stranded' },
+  { name: 'Rack R3-07', drawn: 78, free: 22, stranded: 0, kw: '1.6 kW free' },
+];
+
+const outlets = [1.9, 2.4, 0.0, 3.1, 1.2, 2.8, 4.6, 0.7, 2.2, 1.5, 0.0, 3.4];
+const outletMax = 5;
+
+const pueChecks = [
+  'One figure per site, recalculated through the day.',
+  'Trends over days and months, so a plant change shows up as a step you can date.',
+  'Facility and IT energy shown side by side, so you can see which one moved.',
+];
+---
+
+<Base
+  title="Power & Capacity"
+  description="Follow power from the utility feed to the outlet, see which redundancy is intact, and know which resource runs out first."
+>
+  <PageHero slot="hero" pill="Platform" title="Know The Whole Power Chain, And How Much Of It Is Left">
+    SpectraDCIM follows power from the utility feed to the server outlet, shows which redundancy is still intact, and
+    names the resource that runs out first.
+    <MockOneLine slot="visual" />
+  </PageHero>
+
+  <!-- chain -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Power Chain" title="Eight Steps From Utility To Outlet, On One Line">
+        Every stage shows its load against its rating. A problem upstream is read in the same view as the racks it
+        feeds.
+      </SectionHead>
+      <div data-anim="up-block">
+        <MockPowerChain />
+      </div>
+      <div class="grid grid-3 chain-notes">
+        <div data-anim="up">
+          <h3>Upstream And Downstream</h3>
+          <p>Pick any stage to see what feeds it and what depends on it, down to the outlet.</p>
+        </div>
+        <div data-anim="up">
+          <h3>Both Feeds, Side By Side</h3>
+          <p>A and B paths are drawn separately, so a rack running on one cord is visible before the second one fails.</p>
+        </div>
+        <div data-anim="up">
+          <h3>Panels Read Through Their Meters</h3>
+          <p>Where a panel has no interface of its own, its branch meter supplies the reading and the view says so.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- three cards -->
+  <section class="section pbg">
+    <Backdrop view="power" />
+    <div class="wrap">
+      <SectionHead pill="Right Now" title="What Is Still Redundant, And What Is Left Over" center />
+      <div class="grid grid-3 trio">
+        <div class="card card--raised" data-anim="up-block">
+          <span class="tile"><Icon name="shield" /></span>
+          <h3>Redundancy, Right Now</h3>
+          <p>A census of every redundant group: which still meet their design, which are running short, and since when.</p>
+          <div class="mini" role="img" aria-label="Illustration of a redundancy census listing four groups, one of them below its design redundancy">
+            {
+              census.map((c) => (
+                <div class:list={['mini__row', { short: c.sev }]}>
+                  <span class:list={['dot', c.sev && `dot--${c.sev}`]} />
+                  <div>
+                    <strong>{c.name}</strong>
+                    {c.note && <small>{c.note}</small>}
+                  </div>
+                  <em class="mono">
+                    {c.now}
+                    <small>of {c.want}</small>
+                  </em>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="card card--raised" data-anim="up-block">
+          <span class="tile"><Icon name="chart" /></span>
+          <h3>Headroom And Stranded <span class="keep-case">kW</span></h3>
+          <p>Per room and per rack: what is drawn, what is free, and what is provisioned but cannot be reached.</p>
+          <div class="mini" role="img" aria-label="Illustration of stacked bars showing drawn, free and stranded power for two halls and one rack">
+            {
+              headroom.map((h) => (
+                <div class="mini__stack">
+                  <div class="mini__cap">
+                    <strong>{h.name}</strong>
+                    <span class="mono">{h.kw}</span>
+                  </div>
+                  <div class="mini__bar">
+                    <b class="drawn" style={`width:${h.drawn}%`} />
+                    <b class="free" style={`width:${h.free}%`} />
+                    <b class="stranded" style={`width:${h.stranded}%`} />
+                  </div>
+                </div>
+              ))
+            }
+            <div class="mini__legend">
+              <span><i class="drawn"></i>Drawn</span>
+              <span><i class="free"></i>Free</span>
+              <span><i class="stranded"></i>Stranded</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card--raised" data-anim="up-block">
+          <span class="tile"><Icon name="plug" /></span>
+          <h3>Per-Outlet Current</h3>
+          <p>Current for each outlet on metered PDUs. Where a PDU does not report it, the gap is shown, not filled in.</p>
+          <div class="mini" role="img" aria-label="Illustration of per-outlet current bars for twelve outlets on one rack PDU">
+            <div class="mini__cap">
+              <strong>PDU A, Rack R3-07</strong>
+              <span class="mono">23.8 A total</span>
+            </div>
+            <div class="outlets">
+              {
+                outlets.map((a, k) => (
+                  <div class:list={['outlets__o', { idle: a === 0, high: a > 4 }]}>
+                    <i>
+                      <b style={`height:${Math.max(4, (a / outletMax) * 100)}%`} />
+                    </i>
+                    <span class="mono">{k + 1}</span>
+                  </div>
+                ))
+              }
+            </div>
+            <div class="mini__legend">
+              <span>Outlet 7 at 4.6 A</span>
+              <span>2 outlets idle</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PUE -->
+  <section class="section">
+    <div class="wrap split">
+      <div class="pue" data-anim="up-block">
+        <MockChart label="Site 1 PUE, 30 days" value="1.38" unit="" points={[58, 56, 60, 57, 55, 52, 54, 50, 51, 47, 48, 44, 45, 42, 43, 40]} band={false} mark={11} />
+        <MockChart label="Site 2 PUE, 30 days" value="1.46" unit="" points={[50, 52, 49, 53, 51, 55, 58, 62, 66, 61, 57, 55, 56, 54, 55, 53]} band={false} mark={8} />
+      </div>
+      <div>
+        <SectionHead pill="Efficiency" title="PUE Per Site, With The Trend Behind It">
+          PUE is worked out per site from facility power and IT power, hour by hour, so you can see what a hot
+          afternoon or a change of chiller did to it.
+        </SectionHead>
+        <ul class="checks" data-anim="up">
+          {pueChecks.map((c) => <li>{c}</li>)}
+        </ul>
+        <p class="pue__note" data-anim="up">
+          Under the EU Energy Efficiency Directive, sites with 500 kW or more of installed IT power report PUE and
+          related figures every year. A dated trend is easier to report than a single reading.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- capacity -->
+  <section class="section pbg">
+    <Backdrop view="levels" />
+    <div class="wrap split split--top">
+      <div>
+        <SectionHead pill="Capacity" title="What Runs Out First?">
+          A hall with free rack space can still be full, because power or cooling ran out before the floor did.
+          SpectraDCIM measures all four against what is installed and names the limit.
+        </SectionHead>
+        <div class="card card--raised forecast" data-anim="up-block">
+          <h3>A Forecast That States Its Limits</h3>
+          <p>
+            Each resource is projected forward from its own history. When there is not enough history to forecast, the
+            panel says so and draws no line.
+          </p>
+          <div class="forecast__rows" role="img" aria-label="Illustration of forecast rows, two with a projected date and one stating there is not enough history yet">
+            <div>
+              <span>Power, Hall A</span>
+              <em class="mono">Reaches limit in about 5 months</em>
+            </div>
+            <div>
+              <span>Cooling, Hall A</span>
+              <em class="mono">Reaches limit in about 11 months</em>
+            </div>
+            <div class="na">
+              <span>Ports, Hall B</span>
+              <em>Not enough history to forecast yet</em>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-anim="up-block">
+        <MockCapacityBars />
+      </div>
+    </div>
+  </section>
+
+  <!-- sources -->
+  <section class="section">
+    <div class="wrap">
+      <div class="card card--grid sources" data-anim="up-block">
+        <div>
+          <span class="pill">Readings</span>
+          <h2>Where The Readings Come From</h2>
+        </div>
+        <div class="sources__text">
+          <p>
+            Collectors on your network read the equipment directly. UPS and rack PDUs are read over SNMP, meters and
+            switchgear over Modbus/TCP, and the plant over BACnet/IP, so nothing is installed on the equipment itself.
+          </p>
+          <a class="link-arrow" href="/works-with">
+            See what it works with
+            <span class="circle"><Icon name="arrow" size={16} /></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  /* chain notes */
+  .chain-notes {
+    margin-top: clamp(32px, 4vw, 56px);
+    gap: clamp(24px, 3vw, 48px);
+  }
+  .chain-notes h3 {
+    font-size: 20px;
+  }
+  .chain-notes p {
+    margin-top: 12px;
+    max-width: 38ch;
+  }
+
+  .keep-case {
+    text-transform: none;
+  }
+
+  /* three cards */
+  .trio .card {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    align-content: start;
+  }
+  .trio .tile {
+    margin-bottom: 20px;
+  }
+  .mini {
+    margin-top: 24px;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--ink-0);
+    display: grid;
+    gap: 10px;
+    font-size: 13px;
+    align-self: end;
+  }
+  .mini strong {
+    font-weight: 500;
+    color: var(--head);
+  }
+  .mini__row {
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 9px 10px;
+    border-radius: 8px;
+    background: var(--ink-1);
+    border: 1px solid transparent;
+  }
+  .mini__row.short {
+    border-color: var(--warn);
+  }
+  .mini__row .dot {
+    margin: 0;
+  }
+  .mini__row div small {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .mini__row em {
+    font-style: normal;
+    color: var(--head);
+    white-space: nowrap;
+  }
+  .mini__row em small {
+    margin-left: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .mini__cap {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .mini__cap span {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .mini__stack {
+    display: grid;
+    gap: 6px;
+  }
+  .mini__bar {
+    display: flex;
+    height: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--ink-2);
+  }
+  .drawn {
+    background: var(--accent);
+  }
+  .free {
+    background: var(--ink-2);
+  }
+  .stranded {
+    background: repeating-linear-gradient(135deg, var(--warn) 0 4px, transparent 4px 8px);
+  }
+  .mini__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .mini__legend i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: -1px;
+    border: 1px solid var(--line);
+  }
+  .outlets {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 5px;
+    height: 112px;
+  }
+  .outlets__o {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 5px;
+    text-align: center;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .outlets__o i {
+    display: flex;
+    align-items: flex-end;
+    border-radius: 4px;
+    background: var(--ink-1);
+    overflow: hidden;
+  }
+  .outlets__o b {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    background: linear-gradient(var(--accent-text), var(--accent-deep));
+  }
+  .outlets__o.idle b {
+    background: var(--ink-2);
+  }
+  .outlets__o.high b {
+    background: linear-gradient(var(--warn), var(--accent-deep));
+  }
+
+  /* PUE */
+  .pue {
+    display: grid;
+    gap: 20px;
+  }
+  .pue__note {
+    margin-top: 28px;
+    padding-left: 18px;
+    border-left: 2px solid var(--accent-text);
+    color: var(--muted);
+    max-width: 58ch;
+  }
+
+  /* forecast */
+  .forecast__rows {
+    margin-top: 22px;
+    display: grid;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .forecast__rows > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 16px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--ink-0);
+  }
+  .forecast__rows span {
+    color: var(--head);
+  }
+  .forecast__rows em {
+    font-style: normal;
+    font-size: 12px;
+    color: var(--accent-text);
+  }
+  .forecast__rows .na {
+    border-style: dashed;
+    border-color: var(--line-strong);
+  }
+  .forecast__rows .na em {
+    color: var(--muted);
+  }
+
+  /* sources */
+  .sources {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 64px);
+    align-items: center;
+    padding: clamp(28px, 4vw, 56px);
+  }
+  .sources h2 {
+    margin-top: 18px;
+  }
+  .sources__text {
+    display: grid;
+    gap: 24px;
+    justify-items: start;
+  }
+  .sources__text p {
+    font-size: 18px;
+    max-width: 56ch;
+  }
+  @media (max-width: 900px) {
+    .sources {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

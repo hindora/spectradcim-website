@@ -1,5 +1,5 @@
 ---
-// World map with site pins coloured by worst open alarm, a weather layer and one hazard area.
+// World map with site pins colored by worst open alarm, a weather layer and one hazard area.
 // Illustrative values only; the land shapes are deliberately rough.
 interface Props {
   title?: string;
@@ -22,7 +22,7 @@ const sites = [
 const uid = `wm-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
-<div class="mock wmap" role="img" aria-label="Illustration of a world map with four site pins coloured by their worst open alarm, a weather layer and one hazard area near a site">
+<div class="mock wmap" role="img" aria-label="Illustration of a world map with four site pins colored by their worst open alarm, a weather layer and one hazard area near a site">
   <div class="mock__bar"><i></i><i></i><i></i>{title}<span>Weather and hazards on</span></div>
   <svg viewBox="0 0 640 300" preserveAspectRatio="xMidYMid meet">
     <defs>
@@ -100,7 +100,7 @@ const uid = `wm-${Math.random().toString(36).slice(2, 8)}`;
   .wm-name {
     fill: var(--head);
     font-family: var(--font-head);
-    font-size: 11px;
+    font-size: 12px;
   }
   .wm-pin {
     color: var(--ok);
@@ -150,8 +150,8 @@ const uid = `wm-${Math.random().toString(36).slice(2, 8)}`;
     border-top: 1px solid var(--line);
   }
   .wmap__list li {
-    padding: 10px 14px;
-    font-size: 12px;
+    padding: var(--s-2) var(--s-4);
+    font-size: 13px;
   }
   .wmap__list li + li {
     border-left: 1px solid var(--line);
@@ -164,7 +164,7 @@ const uid = `wm-${Math.random().toString(36).slice(2, 8)}`;
     display: block;
     margin-top: 2px;
     color: var(--muted);
-    font-size: 11px;
+    font-size: 12px;
   }
   @media (max-width: 560px) {
     .wmap__list {

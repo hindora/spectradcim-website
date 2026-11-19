@@ -1,0 +1,669 @@
+---
+import Backdrop from '../../components/Backdrop.astro';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+
+/* rack elevation: u = top rack unit, h = height in units */
+const RU = 42;
+const rack = [
+  { u: 42, h: 1, kind: 'panel' },
+  { u: 41, h: 1, kind: 'switch' },
+  { u: 40, h: 1, kind: 'switch' },
+  ...Array.from({ length: 11 }, (_, k) => ({ u: 38 - k * 2, h: 2, kind: 'server' })),
+  { u: 16, h: 4, kind: 'reserved' },
+  { u: 4, h: 4, kind: 'storage' },
+];
+const rackList = [
+  { at: 'U42', what: 'Patch panel' },
+  { at: 'U41', what: 'Top-of-rack switch' },
+  { at: 'U40', what: 'Management switch' },
+  { at: 'U17 to U38', what: '11 servers, 2U each' },
+  { at: 'U13 to U16', what: 'Reserved for a storage shelf' },
+  { at: 'U1 to U4', what: 'Storage shelf' },
+];
+
+const queue = [
+  { addr: '10.51.4.27', what: 'Rack PDU, 24 outlets', cls: 'Power', net: 'Hall A management', seen: '2 min ago', act: 'Commission' },
+  { addr: '10.51.4.31', what: 'Server management controller', cls: 'IT', net: 'Hall A management', seen: '2 min ago', act: 'Commission' },
+  { addr: '10.50.2.14', what: 'Top-of-rack switch, 48 ports', cls: 'IT', net: 'Production', seen: '9 min ago', act: 'Commission' },
+  { addr: '10.52.1.9', what: 'Cooling unit controller', cls: 'Cooling', net: 'Plant', seen: '1 h ago', act: 'Commission' },
+  { addr: '10.51.4.40', what: 'Not recognised yet', cls: 'Unclassified', net: 'Hall A management', seen: '1 h ago', act: 'Review' },
+];
+
+const steps = [
+  { title: 'Found', text: 'Collectors sweep the address ranges you give them and list every device that answers.' },
+  { title: 'Reviewed', text: 'You check the make, model and class each device was identified as, and correct it if needed.' },
+  { title: 'Commissioned', text: 'You give it a rack position. From that moment it is part of the inventory.' },
+  { title: 'Monitored', text: 'Readings and the alarm rules for its class start without further setup.' },
+];
+
+const tree = [
+  { d: 0, icon: 'globe', name: 'Site North', meta: '2 rooms' },
+  { d: 1, icon: 'building', name: 'Hall A', meta: '8 rows' },
+  { d: 2, icon: 'layers', name: 'Row 3', meta: '12 racks' },
+  { d: 3, icon: 'rack', name: 'Rack 07', meta: '42 U', on: true },
+  { d: 4, name: 'U41', item: 'Top-of-rack switch' },
+  { d: 4, name: 'U37 to U38', item: 'Server' },
+  { d: 4, name: 'U13 to U16', item: 'Reserved', ghost: true },
+  { d: 2, icon: 'layers', name: 'Row 4', meta: '12 racks' },
+  { d: 1, icon: 'building', name: 'Plant Room', meta: '31 devices' },
+  { d: 0, icon: 'globe', name: 'Site South', meta: '1 room' },
+];
+
+const records = [
+  { icon: 'file', title: 'Contracts', text: 'Warranty and support contracts sit on the devices they cover, with their end dates in view.' },
+  { icon: 'wrench', title: 'Spare Parts', text: 'What is on the shelf, at which site, and which equipment it fits.' },
+  { icon: 'flag', title: 'Reservations', text: 'Hold rack units for equipment that is on order, so the space is still free when it arrives.' },
+  { icon: 'tag', title: 'Tags', text: 'Label devices by owner, project or tenant, then filter any list by the label.' },
+  { icon: 'clock', title: 'Maintenance Windows', text: 'Plan the work against the device, and its alarms are suppressed for exactly that period.' },
+  { icon: 'link', title: 'Export To Jira Assets', beta: true, text: 'Send the inventory to Jira Assets so a ticket can point at the real device.' },
+];
+
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const windows = [
+  { what: 'CRAH 4 filter change', where: 'Hall A', state: 'Done', from: 4, len: 8, cls: 'done' },
+  { what: 'Row 3 PDU firmware', where: 'Hall A / Row 3', state: 'Active, 14 alarms suppressed', from: 38, len: 10, cls: 'live' },
+  { what: 'UPS B battery service', where: 'Plant Room', state: 'Scheduled', from: 73, len: 12, cls: 'plan' },
+];
+---
+
+<Base
+  title="Assets & Discovery"
+  description="SpectraDCIM finds devices on the network, commissions them into racks, and keeps the inventory true from site down to rack unit."
+>
+  <PageHero slot="hero" pill="Platform" title="An Inventory That Matches The Floor.">
+    Devices are found on the network, placed in a rack position, and monitored from then on. The record and the room
+    stay the same thing.
+    <div slot="visual" class="mock elev" role="img" aria-label="Illustration of a rack elevation showing occupied, reserved and free rack units">
+      <div class="mock__bar"><i></i><i></i><i></i>Hall A / Row 3 / Rack 07<span class="mono">42 U</span></div>
+      <div class="elev__body">
+        <div class="elev__rack" aria-hidden="true">
+          <div class="elev__nums">
+            {[42, 35, 28, 21, 14, 7, 1].map((n) => <span style={`grid-row:${RU - n + 1}`}>{n}</span>)}
+          </div>
+          <div class="elev__slots">
+            {rack.map((r) => <i class={`dev dev--${r.kind}`} style={`grid-row:${RU - r.u + 1} / span ${r.h}`} />)}
+          </div>
+        </div>
+        <div class="elev__side">
+          <div class="elev__kpis">
+            <div><strong class="mono">29</strong><span>Used</span></div>
+            <div><strong class="mono">4</strong><span>Reserved</span></div>
+            <div><strong class="mono">9</strong><span>Free</span></div>
+          </div>
+          <ul class="elev__list">
+            {
+              rackList.map((r) => (
+                <li>
+                  <span class="mono">{r.at}</span>
+                  {r.what}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </PageHero>
+
+  <!-- discovery queue -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Discovery" title="New Devices Wait In A Queue, Not In A Spreadsheet">
+        Anything that appears on the network is listed with what it looks like. Nothing joins the inventory until a
+        person commissions it.
+      </SectionHead>
+
+      <div class="mock queue" role="img" aria-label="Illustration of the discovery queue, a table of newly found devices each with a Commission action" data-anim="up-block">
+        <div class="mock__bar"><i></i><i></i><i></i>Discovery Queue<span class="mono">5 waiting</span></div>
+        <div class="queue__scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Address</th>
+                <th scope="col">Identified As</th>
+                <th scope="col">Class</th>
+                <th scope="col">Network</th>
+                <th scope="col">First Seen</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                queue.map((q) => (
+                  <tr>
+                    <td class="mono">{q.addr}</td>
+                    <th scope="row">{q.what}</th>
+                    <td>{q.cls}</td>
+                    <td>{q.net}</td>
+                    <td>{q.seen}</td>
+                    <td>
+                      <span class:list={['queue__act', { 'queue__act--alt': q.act !== 'Commission' }]}>{q.act}</span>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <ol class="grid grid-4 steps">
+        {
+          steps.map((s, k) => (
+            <li class="card card--raised step" data-anim="up">
+              <span class="step__n mono">{k + 1}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- estate tree -->
+  <section class="section pbg">
+    <Backdrop view="building" />
+    <div class="wrap split">
+      <div class="card card--grid treebox" role="img" aria-label="Illustration of the estate tree running from site to room, row, rack and rack unit" data-anim="up-block">
+        <ul class="tree">
+          {
+            tree.map((n) => (
+              <li class:list={[`d${n.d}`, { on: n.on, ghost: n.ghost }]}>
+                {n.icon ? (
+                  <span class="tree__ico">
+                    <Icon name={n.icon} size={16} />
+                  </span>
+                ) : (
+                  <span class="tree__u" />
+                )}
+                <strong class:list={{ mono: !n.icon }}>{n.name}</strong>
+                {n.item && <span class="tree__item">{n.item}</span>}
+                {n.meta && <em>{n.meta}</em>}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <SectionHead pill="Estate" title="From The Site Down To The Rack Unit">
+          Every device has one address in the estate: site, room, row, rack and the units it occupies. Alarms, power
+          readings and floor views all use that same address.
+        </SectionHead>
+        <ul class="checks">
+          <li data-anim="up"><span><strong>Rack elevations.</strong> Front view of each rack with what is fitted, what is reserved and what is free.</span></li>
+          <li data-anim="up"><span><strong>Complete rows.</strong> Empty cabinets are part of the model, so free space is counted and not guessed.</span></li>
+          <li data-anim="up"><span><strong>One record per device.</strong> Edit it once and every page that shows the device follows.</span></li>
+        </ul>
+        <p class="more" data-anim="up">
+          <a class="link-arrow" href="/platform/visualization">
+            See the same racks in 3-D
+            <span class="circle"><Icon name="arrow" size={16} /></span>
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- records -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Records" title="What Else Is Kept Beside The Device" center>
+        The paperwork an operations team otherwise tracks in separate files.
+      </SectionHead>
+      <div class="grid grid-3">
+        {
+          records.map((r) => (
+            <div class="card card--grid rec" data-anim="up">
+              <span class="tile">
+                <Icon name={r.icon} />
+              </span>
+              <h3>
+                {r.title}
+                {r.beta && <span class="tag">Beta</span>}
+              </h3>
+              <p>{r.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- maintenance windows -->
+  <section class="section pbg">
+    <Backdrop view="netroom" />
+    <div class="wrap split">
+      <div>
+        <SectionHead pill="Maintenance" title="Planned Work Should Not Look Like A Fault">
+          Put a device, a rack or a whole room into a maintenance window. Its alarms are held back while the work is
+          done, and they are still recorded.
+        </SectionHead>
+        <p data-anim="up">
+          When the window closes, monitoring returns to normal on its own. Nobody has to remember to switch the alarms
+          back on.
+        </p>
+        <p class="more" data-anim="up">
+          <a class="link-arrow" href="/platform/alarms">
+            How alarms are handled
+            <span class="circle"><Icon name="arrow" size={16} /></span>
+          </a>
+        </p>
+      </div>
+
+      <div class="mock win" role="img" aria-label="Illustration of a week of maintenance windows, one finished, one active with alarms suppressed, one scheduled" data-anim="up-block">
+        <div class="mock__bar"><i></i><i></i><i></i>Maintenance Windows<span class="mono">This week</span></div>
+        <div class="mock__body">
+          <div class="win__days" aria-hidden="true">{days.map((d) => <span>{d}</span>)}</div>
+          <ul class="win__rows">
+            {
+              windows.map((w) => (
+                <li>
+                  <div class="win__track">
+                    <b class={`win__bar win__bar--${w.cls}`} style={`left:${w.from}%;width:${w.len}%`} />
+                  </div>
+                  <div class="win__info">
+                    <div>
+                      <strong>{w.what}</strong>
+                      <small>{w.where}</small>
+                    </div>
+                    <em class={`win__state win__state--${w.cls}`}>{w.state}</em>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .checks li > span {
+    min-width: 0;
+  }
+  .more {
+    margin-top: 28px;
+  }
+
+  /* rack elevation */
+  .elev__body {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.8fr) minmax(0, 1fr);
+    gap: 20px;
+    padding: 18px;
+  }
+  .elev__rack {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 8px;
+  }
+  .elev__nums,
+  .elev__slots {
+    display: grid;
+    grid-template-rows: repeat(42, 8px);
+    gap: 2px;
+  }
+  .elev__nums {
+    padding-block: 7px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 8px;
+    color: var(--muted);
+    text-align: right;
+  }
+  .elev__slots {
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background:
+      repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0 8px, transparent 8px 10px) content-box,
+      var(--ink-0);
+  }
+  .dev {
+    border-radius: 2px;
+    background: var(--accent-deep);
+    position: relative;
+  }
+  .dev::after {
+    content: '';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    margin-top: -2px;
+    border-radius: 50%;
+    background: var(--ok);
+  }
+  .dev--server {
+    background:
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.35) 0 2px, transparent 2px 9px) 6px 50% / 55% 60% no-repeat,
+      var(--accent-deep);
+  }
+  .dev--switch {
+    background:
+      repeating-linear-gradient(90deg, rgba(241, 242, 255, 0.5) 0 3px, transparent 3px 6px) 6px 50% / 70% 3px no-repeat,
+      var(--accent);
+  }
+  .dev--panel {
+    background: var(--ink-2);
+    border: 1px solid var(--line-strong);
+  }
+  .dev--panel::after {
+    display: none;
+  }
+  .dev--storage {
+    background:
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0 1px, transparent 1px 12px) 6px 50% / 80% 76% no-repeat,
+      var(--accent-tile);
+  }
+  .dev--reserved {
+    background: repeating-linear-gradient(135deg, rgba(126, 145, 203, 0.22) 0 6px, transparent 6px 12px);
+    border: 1px dashed var(--accent-text);
+  }
+  .dev--reserved::after {
+    display: none;
+  }
+  .elev__side {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+    min-width: 0;
+  }
+  .elev__kpis {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .elev__kpis div {
+    padding: 10px;
+    border-radius: 10px;
+    background: var(--ink-0);
+    border: 1px solid var(--line);
+    display: grid;
+    gap: 2px;
+  }
+  .elev__kpis strong {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--head);
+  }
+  .elev__kpis span {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .elev__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--head);
+    line-height: 1.35;
+  }
+  .elev__list li {
+    display: grid;
+    gap: 1px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .elev__list li:last-child {
+    border-bottom: 0;
+  }
+  .elev__list .mono {
+    font-size: 11px;
+    color: var(--accent-text);
+  }
+  @media (max-width: 420px) {
+    .elev__body {
+      grid-template-columns: 118px minmax(0, 1fr);
+      gap: 14px;
+      padding: 14px;
+    }
+    .elev__kpis {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* discovery queue */
+  .queue__scroll {
+    overflow-x: auto;
+  }
+  .queue table {
+    min-width: 760px;
+    font-size: 14px;
+  }
+  .queue th[scope='col'] {
+    font-size: 13px;
+    color: var(--muted);
+    background: transparent;
+    white-space: nowrap;
+  }
+  .queue th[scope='row'] {
+    background: transparent;
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+  .queue td {
+    white-space: nowrap;
+  }
+  .queue td.mono {
+    font-size: 13px;
+    color: var(--accent-text);
+  }
+  .queue__act {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    border: 1px solid var(--line-strong);
+    color: #fff;
+    font-size: 13px;
+  }
+  .queue__act--alt {
+    background: var(--ink-2);
+    border-color: var(--line);
+    color: var(--body);
+  }
+
+  .steps {
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+  }
+  .step__n {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 18px;
+    border-radius: 50%;
+    background: var(--accent-tile);
+    color: var(--head);
+    font-size: 14px;
+  }
+
+  /* estate tree */
+  .treebox {
+    padding: clamp(18px, 2.4vw, 34px);
+  }
+  .tree {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+  }
+  .tree li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 42px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--ink-1);
+    position: relative;
+  }
+  .tree .d1 {
+    margin-left: 7%;
+  }
+  .tree .d2 {
+    margin-left: 14%;
+  }
+  .tree .d3 {
+    margin-left: 21%;
+  }
+  .tree .d4 {
+    margin-left: 28%;
+    background: var(--ink-0);
+  }
+  .tree li:not(.d0)::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: -7px;
+    width: 13px;
+    height: calc(50% + 7px);
+    border-left: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    border-bottom-left-radius: 6px;
+  }
+  .tree .on {
+    border-color: rgba(126, 145, 203, 0.6);
+    background: var(--ink-2);
+  }
+  .tree .ghost {
+    border-style: dashed;
+  }
+  .tree__ico {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: var(--accent-tile);
+    color: var(--head);
+  }
+  .tree__u {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--accent-text);
+  }
+  .tree strong {
+    font-weight: 500;
+    color: var(--head);
+    white-space: nowrap;
+  }
+  .tree strong.mono {
+    font-size: 12px;
+    color: var(--accent-text);
+  }
+  .tree__item {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tree em {
+    margin-left: auto;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* records */
+  .rec h3 {
+    line-height: 1.25;
+  }
+
+  /* maintenance windows */
+  .win__days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .win__days span {
+    padding: 0 0 8px 8px;
+    border-left: 1px solid var(--line);
+  }
+  .win__rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 24px;
+  }
+  .win__track {
+    position: relative;
+    height: 14px;
+    border-radius: 7px;
+    background:
+      repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px calc(100% / 7)),
+      var(--ink-0);
+  }
+  .win__bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 7px;
+  }
+  .win__bar--done {
+    background: var(--ink-2);
+    border: 1px solid var(--line-strong);
+  }
+  .win__bar--live {
+    background: var(--warn);
+  }
+  .win__bar--plan {
+    background: var(--accent);
+  }
+  .win__info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px 14px;
+    margin-top: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--ink-0);
+    border: 1px solid var(--line);
+  }
+  .win__info strong {
+    display: block;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--head);
+  }
+  .win__info small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .win__state {
+    font-style: normal;
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--ink-2);
+    color: var(--body);
+  }
+  .win__state--live {
+    color: var(--warn);
+  }
+</style>

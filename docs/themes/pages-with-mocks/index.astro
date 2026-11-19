@@ -1,0 +1,668 @@
+---
+import Base from '../layouts/Base.astro';
+import Btn from '../components/Btn.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import MockHall from '../components/MockHall.astro';
+import MockAlarms from '../components/MockAlarms.astro';
+import MockChart from '../components/MockChart.astro';
+import Backdrop from '../components/Backdrop.astro';
+
+
+const modules = [
+  { href: '/platform/power', icon: 'power', title: 'Power & Capacity', text: 'The whole power chain, its redundancy, and how much headroom is left.' },
+  { href: '/platform/thermal', icon: 'thermal', title: 'Thermal & Cooling', text: 'One cooling picture from the chiller plant to the server inlet.' },
+  { href: '/platform/visualization', icon: 'cube', title: '3-D Floor & Replay', text: 'Walk the building, read the heat map, then rewind the last hours.' },
+  { href: '/platform/alarms', icon: 'bell', title: 'Alarms & Incidents', text: 'One condition, one alarm, and one incident with its evidence.' },
+  { href: '/platform/assets', icon: 'rack', title: 'Assets & Discovery', text: 'An inventory that matches the floor, from site down to rack unit.' },
+  { href: '/works-with', icon: 'plug', title: 'Works With', text: 'The equipment classes it reads and the systems it shares data with.' },
+];
+
+const personas = [
+  { role: 'DC Operations', q: 'Which of these 700 alarms is the cause?' },
+  { role: 'Facility Manager', q: 'Which train is carrying the load, and what happens if it trips?' },
+  { role: 'Capacity Planner', q: 'What runs out first: power, cooling, space or ports?' },
+  { role: 'Sustainability Lead', q: 'What is our PUE, site by site, hour by hour?' },
+];
+
+const starts = [
+  {
+    title: 'Live Demo',
+    text: 'Thirty minutes on a running estate.',
+    href: '/demo',
+    link: 'Request a demo',
+    checks: ['Live estate overview', 'Chiller-loss scenario, first alarm to incident', 'Power chain and thermal replay'],
+  },
+  {
+    title: 'Design Partner Pilot',
+    text: 'One site, deployed with our engineers.',
+    href: '/early-access',
+    link: 'Apply for early access',
+    checks: ['Guided deployment on your network', 'Direct line to the engineering team', 'A say in what gets built next'],
+    featured: true,
+  },
+  {
+    title: 'Partner Programme',
+    text: 'Resell it or integrate with it.',
+    href: '/partners',
+    link: 'Become a partner',
+    checks: ['Reseller and integrator tracks', 'A simulated data centre for demos', 'Technical enablement'],
+  },
+];
+
+const faqs = [
+  { q: 'Is SpectraDCIM hosted or self-hosted?', a: 'Self-hosted, on your own infrastructure. The platform and its collectors run inside your network, and your telemetry stays there.' },
+  { q: 'How does it connect to my equipment?', a: 'Collectors on your network read devices over the standard interfaces they already expose, such as SNMP, Redfish, BACnet and Modbus, so no agents are installed on the equipment.' },
+  { q: 'Does it replace my BMS?', a: 'No. The building management system keeps controlling the plant. SpectraDCIM reads the plant alongside the electrical chain and the IT equipment, so one console shows how they affect each other.' },
+  { q: 'Is it available today?', a: 'It is in early access. We are onboarding a small number of design partners; a live demo is available now.' },
+];
+
+const guides = [
+  { href: '/resources', topic: 'Guide', title: 'What Is DCIM?', text: 'What the term covers, what it does not, and where it meets the BMS.' },
+  { href: '/resources', topic: 'Guide', title: 'DCIM vs BMS vs EPMS', text: 'Three systems, three jobs, and the gaps between them.' },
+  { href: '/resources', topic: 'Alarms', title: 'Traps vs Polling: Why You Need Both', text: 'The trap makes it fast. The poll makes it true.' },
+];
+---
+
+<Base
+  title="Home"
+  description="SpectraDCIM monitors every site from the utility feed to the server outlet, and turns alarm floods into the one problem that caused them."
+>
+  <Fragment slot="hero">
+    <section class="hero">
+      <div class="wrap">
+        <span class="pill" data-anim="up">Data Centre Infrastructure Management</span>
+        <h1 data-anim="up">Power, Cooling And IT. One System, Watched As One.</h1>
+        <p class="lead" data-anim="up">
+          SpectraDCIM monitors every site from the utility feed to the server outlet, and turns alarm floods into the
+          one problem that caused them.
+        </p>
+        <div class="btn-row">
+          <Btn href="/demo" anim>Request A Demo</Btn>
+          <Btn href="/platform" variant="dark" anim>Tour The Platform</Btn>
+        </div>
+      </div>
+    </section>
+  </Fragment>
+
+  <!-- bento -->
+  <section class="section--tight">
+    <div class="wrap bento">
+      <div class="card card--glow bento__main" data-anim="up-block">
+        <MockHall title="Hall A / Live" />
+      </div>
+      <div class="card card--raised bento__side" data-anim="up-block">
+        <h3>See The Room, Then Replay It</h3>
+        <p>A heat map drawn from live sensors, and a timeline you can scrub back through like video.</p>
+        <MockChart label="Row 3 inlet, last 2 hours" value="27.4" />
+      </div>
+    </div>
+  </section>
+
+  <!-- about -->
+  <section class="section">
+    <div class="wrap about">
+      <div><span class="pill" data-anim="up">About SpectraDCIM</span></div>
+      <div>
+        <p class="about__statement" data-anim="up">
+          One telemetry model for white space and grey space: servers, switches, PDUs, UPS, switchgear, chillers, CRAHs
+          and CDUs in the same console.
+        </p>
+        <div class="about__row">
+          <div class="about__fig" data-anim="up">
+            <MockChart label="Site PUE, 7 days" value="1.41" unit="" points={[52, 50, 54, 51, 49, 47, 50, 48, 45, 46, 43, 44, 42, 43, 41, 40]} band={false} mark={12} />
+          </div>
+          <div class="stack">
+            <p data-anim="up">
+              Most tools watch the IT room or the plant. An outage does not respect that line: a pump trips, a hall
+              warms, servers throttle. SpectraDCIM models the dependency between them, so the alarm you see first is
+              the one that matters.
+            </p>
+            <Btn href="/platform" variant="dark" anim>Explore The Platform</Btn>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- why -->
+  <section class="section pbg">
+    <Backdrop view="plant" />
+    <div class="wrap split">
+      <div>
+        <SectionHead pill="Why SpectraDCIM" title="Most Outages Start In The Plant, Not The Rack">
+          Power is the leading cause of impactful outages, and cooling is next. Watching IT alone finds the problem
+          last.
+        </SectionHead>
+        <div class="grid grid-2">
+          <div class="stat" data-anim="up">
+            <div class="stat__num"><span data-count="45">45</span><em>%</em></div>
+            <div class="stat__label">Outages Caused By Power</div>
+            <p class="stat__cap">Uptime Institute Global Data Center Survey, 2025</p>
+          </div>
+          <div class="stat" data-anim="up">
+            <div class="stat__num stat__num--pair"><span data-count="727">727</span><em aria-hidden="true">&rarr;</em><span class="sr-only"> to </span><span data-count="10" data-from="727">10</span></div>
+            <div class="stat__label">Alarms To Console Lines</div>
+            <p class="stat__cap">In a simulated chiller-plant loss: 9 lines and 1 summary alarm</p>
+          </div>
+        </div>
+      </div>
+      <div class="why__visual" data-anim="up-block">
+        <div class="card card--grid why__panel">
+          <MockAlarms />
+        </div>
+        <span class="pill why__float">One Condition, One Alarm</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- platform -->
+  <section class="section">
+    <div class="wrap">
+      <SectionHead pill="Platform" title="Everything Between The Utility Feed And The Outlet" center />
+      <div class="grid grid-3">
+        {
+          modules.map((m) => (
+            <a class="card card--grid mod" href={m.href} data-anim="up">
+              <span class="tile">
+                <Icon name={m.icon} />
+              </span>
+              <h3>{m.title}</h3>
+              <p>{m.text}</p>
+              <span class="mod__go" aria-hidden="true">
+                <Icon name="arrow" size={16} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- personas -->
+  <section class="section pbg">
+    <Backdrop view="racks" />
+    <div class="wrap split">
+      <div data-carousel>
+        <span class="pill" data-anim="up">Who It Is For</span>
+        <div class="quote" data-anim="up">
+          <span class="quote__mark" aria-hidden="true"><Icon name="quote" size={40} /></span>
+          {
+            personas.map((p, k) => (
+              <figure data-slide hidden={k !== 0}>
+                <blockquote>{p.q}</blockquote>
+                <figcaption>{p.role}</figcaption>
+              </figure>
+            ))
+          }
+        </div>
+        <div class="quote__ctl" data-anim="up">
+          <div class="quote__dots">
+            {personas.map((p, k) => <button type="button" data-dot aria-label={`Show question from ${p.role}`} aria-current={k === 0 ? 'true' : 'false'} />)}
+          </div>
+          <button type="button" class="quote__pause" data-carousel-toggle>Pause</button>
+        </div>
+        <div class="grid grid-2 quote__more">
+          {
+            personas.slice(1, 3).map((p) => (
+              <div class="card card--raised" data-anim="up">
+                <p class="quote__small">{p.q}</p>
+                <p class="quote__role">{p.role}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div class="card card--grid persona__visual" data-anim="up-block">
+        <MockHall title="Hall A / Replay" scrubber />
+      </div>
+    </div>
+  </section>
+
+  <!-- get started -->
+  <section class="section pbg">
+    <Backdrop view="world" />
+    <div class="wrap">
+      <SectionHead pill="Get Started" title="Three Ways To Begin" center />
+      <div class="grid grid-3 starts">
+        {
+          starts.map((s) => (
+            <div class:list={['card', s.featured ? 'silk-card start--featured' : 'card--raised']} data-anim="up">
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+              <a class="link-arrow" href={s.href}>
+                {s.link}
+                <span class="circle">
+                  <Icon name="arrow" size={16} />
+                </span>
+              </a>
+              <div class="start__inner">
+                <ul class="checks">
+                  {s.checks.map((c) => <li>{c}</li>)}
+                </ul>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- faq -->
+  <section class="section">
+    <div class="wrap faq-split">
+      <div class="card silk-card faq-contact" data-anim="up-block">
+        <h3>Contact</h3>
+        <p>Questions about your kind of site? Tell us what you run and we will show it.</p>
+        <ul>
+          <li><a href="/demo"><span class="ico"><Icon name="mail" size={20} /></span>Request a demo</a></li>
+          <li><a href="/early-access"><span class="ico"><Icon name="flag" size={20} /></span>Apply for early access</a></li>
+          <li><a href="/partners"><span class="ico"><Icon name="handshake" size={20} /></span>Partner with us</a></li>
+        </ul>
+      </div>
+      <div>
+        <SectionHead pill="FAQ" title="Frequently Asked Questions" />
+        <div class="faq" data-anim="up-block">
+          {
+            faqs.map((f, k) => (
+              <details name="home-faq" open={k === 0}>
+                <summary>{f.q}</summary>
+                <p class="faq__a">{f.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- resources -->
+  <section class="section">
+    <div class="wrap">
+      <div class="res-head">
+        <div>
+          <span class="pill" data-anim="up">Resources</span>
+          <h2 data-anim="up">Plain Answers About Running Data Centres</h2>
+        </div>
+        <Btn href="/resources" variant="dark" anim>View All</Btn>
+      </div>
+      <div class="grid grid-3" data-anim="up-block">
+        {
+          guides.map((g, k) => (
+            <a class="card card--raised guide" href={g.href}>
+              <div class={`guide__art guide__art--${k}`} aria-hidden="true" />
+              <p class="guide__topic">{g.topic}</p>
+              <h3>{g.title}</h3>
+              <p>{g.text}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  /* hero */
+  .hero {
+    padding-top: clamp(40px, 7vw, 96px);
+    padding-bottom: clamp(50px, 7vw, 96px);
+  }
+  .hero h1 {
+    margin: 22px 0 0;
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .hero .lead {
+    margin-top: 28px;
+    max-width: 44ch;
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: #fff;
+  }
+  .hero .btn-row {
+    margin-top: 40px;
+  }
+
+  /* bento */
+  .bento {
+    display: grid;
+    grid-template-columns: minmax(0, 1.52fr) minmax(0, 1fr);
+    gap: 20px;
+  }
+  .bento__main {
+    padding: clamp(18px, 2.4vw, 34px);
+    display: grid;
+    gap: 16px;
+  }
+  .bento__side {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 16px;
+  }
+  .bento__side :global(.chart) {
+    align-self: end;
+  }
+  .stat__num--pair {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25em;
+    white-space: nowrap;
+    font-size: clamp(34px, 3.4vw, 48px);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  @media (max-width: 900px) {
+    .bento {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* about */
+  .about {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 40px;
+  }
+  .about__statement {
+    font-family: var(--font-head);
+    font-size: clamp(22px, 2.5vw, 34px);
+    line-height: 1.3;
+    color: var(--head);
+  }
+  .about__row {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 40px;
+    margin-top: 44px;
+    align-items: center;
+  }
+  .about__row .stack {
+    --gap: 28px;
+  }
+  @media (max-width: 900px) {
+    .about,
+    .about__row {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  /* why */
+  .why__visual {
+    position: relative;
+  }
+  .why__panel {
+    padding: clamp(18px, 2.2vw, 30px);
+    min-height: 420px;
+    display: grid;
+    align-content: center;
+  }
+  .why__float {
+    position: absolute;
+    left: 24px;
+    bottom: -16px;
+    background: var(--accent);
+    border-color: var(--line-strong);
+    color: #fff;
+    box-shadow: 0 10px 30px -8px var(--accent-shadow);
+  }
+  .why__float::before {
+    background: #fff;
+  }
+
+  /* modules */
+  .mod {
+    min-height: 270px;
+  }
+  .mod__go {
+    position: absolute;
+    right: 26px;
+    bottom: 26px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--ink-2);
+    color: var(--head);
+    transition:
+      background 0.15s ease-in-out,
+      transform 0.2s ease;
+  }
+  .mod:hover .mod__go {
+    background: var(--accent);
+    transform: rotate(-45deg);
+  }
+  .mod p {
+    max-width: 30ch;
+    padding-bottom: 40px;
+  }
+
+  /* personas */
+  .quote {
+    margin-top: 26px;
+    min-height: 210px;
+  }
+  .quote__mark {
+    color: var(--accent-text);
+  }
+  .quote figure {
+    margin: 14px 0 0;
+  }
+  .quote figure.is-active {
+    animation: quoteIn 0.5s ease both;
+  }
+  @keyframes quoteIn {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+  .quote blockquote {
+    margin: 0;
+    font-family: var(--font-head);
+    font-size: clamp(24px, 2.8vw, 36px);
+    line-height: 1.25;
+    color: var(--head);
+  }
+  .quote figcaption {
+    margin-top: 18px;
+    color: var(--accent-text);
+    font-family: var(--font-head);
+  }
+  .quote__ctl {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+  }
+  .quote__dots {
+    display: flex;
+    gap: 4px;
+  }
+  .quote__dots button {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .quote__dots button::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--ink-2);
+    border: 1px solid var(--line-strong);
+    transition:
+      width 0.25s ease,
+      background 0.2s ease;
+  }
+  .quote__dots button[aria-current='true']::before {
+    width: 24px;
+    border-radius: 6px;
+    background: var(--accent-text);
+  }
+  .quote__pause {
+    border: 1px solid var(--line);
+    background: none;
+    color: var(--muted);
+    font: inherit;
+    font-size: 13px;
+    padding: 5px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .quote__pause:hover {
+    color: var(--head);
+    border-color: var(--accent-text);
+  }
+  .quote__more {
+    margin-top: 34px;
+  }
+  .quote__small {
+    color: var(--head);
+  }
+  .quote__role {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--accent-text);
+  }
+  .persona__visual {
+    padding: clamp(18px, 2.2vw, 30px);
+  }
+
+  /* starts */
+  .starts {
+    align-items: center;
+  }
+  .starts .card {
+    display: grid;
+    gap: 18px;
+  }
+  .start--featured {
+    padding-block: clamp(36px, 3.4vw, 56px);
+    border-color: rgba(126, 145, 203, 0.5);
+  }
+  .start__inner {
+    margin-top: 8px;
+    padding: 22px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--line);
+  }
+
+  /* faq */
+  .faq-split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.46fr) minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 60px);
+    align-items: start;
+  }
+  .faq-contact {
+    min-height: 340px;
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+  .faq-contact ul {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .faq-contact a {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--head);
+  }
+  .faq-contact a:hover {
+    color: var(--accent-text);
+  }
+  .faq-contact .ico {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent-tile);
+  }
+  @media (max-width: 900px) {
+    .faq-split {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* resources */
+  .res-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: 24px;
+    margin-bottom: clamp(36px, 4vw, 60px);
+  }
+  .res-head h2 {
+    margin-top: 18px;
+    max-width: 16ch;
+  }
+  .guide {
+    padding: 14px 14px 28px;
+  }
+  .guide > :not(.guide__art) {
+    padding-inline: 14px;
+  }
+  .guide__art {
+    height: 190px;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    background-color: var(--ink-0);
+    background-image: var(--grid-lines);
+    background-size: 28px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .guide__art::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .guide__art--0::after {
+    background:
+      radial-gradient(circle at 30% 60%, rgba(126, 145, 203, 0.55), transparent 42%),
+      radial-gradient(circle at 72% 36%, rgba(89, 116, 199, 0.5), transparent 38%);
+  }
+  .guide__art--1::after {
+    background:
+      linear-gradient(90deg, transparent 31%, rgba(126, 145, 203, 0.4) 31% 35%, transparent 35% 64%, rgba(126, 145, 203, 0.4) 64% 68%, transparent 68%),
+      radial-gradient(circle at 50% 110%, rgba(89, 116, 199, 0.5), transparent 60%);
+  }
+  .guide__art--2::after {
+    background:
+      repeating-linear-gradient(115deg, transparent 0 22px, rgba(126, 145, 203, 0.22) 22px 24px),
+      radial-gradient(circle at 80% 20%, rgba(89, 116, 199, 0.55), transparent 50%);
+  }
+  .guide__topic {
+    font-size: 14px;
+    color: var(--accent-text);
+    margin-bottom: 10px;
+  }
+  .guide h3 + p {
+    margin-top: 10px;
+  }
+</style>

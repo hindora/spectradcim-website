@@ -12,45 +12,45 @@ const tracks = [
   {
     icon: 'tag',
     title: 'Reseller',
-    text: 'You already sell to and support data centre operators.',
+    text: 'You already sell to and support data center operators.',
     checks: ['Deal registration for the accounts you bring', 'A demo environment you can run yourself', 'Sales and technical training'],
   },
   {
     icon: 'wrench',
-    title: 'System Integrator Or MEP Contractor',
+    title: 'System integrator or MEP contractor',
     text: 'You design, build or commission the plant and the electrical chain.',
     checks: ['Hand over a site that is monitored, not only built', 'Plant, power and IT in one console for your client', 'Deployment training for your engineers'],
     featured: true,
   },
   {
     icon: 'plug',
-    title: 'Technology Partner',
+    title: 'Technology partner',
     text: 'You make devices or sensors, or you run a service desk product.',
     checks: ['Check how your equipment reads in the platform', 'A documented REST API to build against', 'Joint material once the integration works'],
   },
 ];
 
 const benefits = [
-  { icon: 'flag', title: 'Deal Registration', text: 'Register an opportunity and it stays yours while you work it.' },
-  { icon: 'cube', title: 'Demo Environment', text: 'A simulated data centre to show and to practise on, with no customer site involved.' },
-  { icon: 'file', title: 'Technical Enablement', text: 'Deployment guides and working sessions with the engineers who build the product.' },
-  { icon: 'users', title: 'Co-Marketing', text: 'Shared guides and case material, written once there is real work to describe.' },
+  { icon: 'flag', title: 'Deal registration', text: 'Register an opportunity and it stays yours while you work it.' },
+  { icon: 'cube', title: 'Demo environment', text: 'A simulated data center to show and to practice on, with no customer site involved.' },
+  { icon: 'file', title: 'Technical enablement', text: 'Deployment guides and working sessions with the engineers who build the product.' },
+  { icon: 'users', title: 'Co-marketing', text: 'Shared guides and case material, written once there is real work to describe.' },
 ];
 ---
 
 <Base
   title="Partners"
-  description="Resell, deploy or integrate with SpectraDCIM. Three partner tracks, and a full simulated data centre for demos and training."
+  description="Resell, deploy or integrate with SpectraDCIM. Three partner tracks, and a full simulated data center for demos and training."
 >
-  <PageHero slot="hero" pill="Partners" title="Bring SpectraDCIM To The Sites You Already Serve" cta={false} center>
-    Resell it, deploy it or integrate with it. The partner programme is opening alongside early access, and the first
+  <PageHero slot="hero" pill="Partners" title="Bring SpectraDCIM to the sites you already serve" cta={false} center>
+    Resell it, deploy it or integrate with it. The partner program is opening alongside early access, and the first
     partners will help shape its terms.
   </PageHero>
 
   <!-- tracks -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Partner Tracks" title="Three Ways To Work With Us" center />
+      <SectionHead pill="Partner tracks" title="Three ways to work with us" center />
       <div class="grid grid-3 tracks">
         {
           tracks.map((t) => (
@@ -76,8 +76,8 @@ const benefits = [
   <section class="section pbg">
     <Backdrop view="building" />
     <div class="wrap">
-      <SectionHead pill="Benefits" title="What Every Partner Gets">
-        The programme is new. These four things are in it from the start.
+      <SectionHead pill="Benefits" title="What every partner gets">
+        The program is new. These four things are in it from the start.
       </SectionHead>
       <div class="grid grid-4">
         {
@@ -102,7 +102,7 @@ const benefits = [
         <Shot name="site-view" alt="The simulated site in 3-D: building, substation, generator yard and compound" />
       </div>
       <div>
-        <SectionHead pill="Demo Environment" title="A Full Simulated Data Centre For Your Demos And Training">
+        <SectionHead pill="Demo environment" title="A full simulated data center for your demos and training">
           Partners get the same simulated estate we test against: two sites, with chiller plant, electrical chain and IT
           equipment.
         </SectionHead>
@@ -121,7 +121,7 @@ const benefits = [
           </li>
           <li>
             <span
-              ><strong>Somewhere to learn.</strong> Your engineers can practise a deployment before they do one for a
+              ><strong>Somewhere to learn.</strong> Your engineers can practice a deployment before they do one for a
               client.</span
             >
           </li>
@@ -135,8 +135,8 @@ const benefits = [
     <Backdrop view="hall" />
     <div class="wrap split split--top">
       <div>
-        <SectionHead pill="Apply" title="Become A Partner">
-          Tell us who you are, where you work and which track fits. We will come back with what the programme can offer
+        <SectionHead pill="Apply" title="Become a partner">
+          Tell us who you are, where you work and which track fits. We will come back with what the program can offer
           you today.
         </SectionHead>
         <ul class="checks" data-anim="up">
@@ -145,7 +145,7 @@ const benefits = [
         </ul>
       </div>
       <div class="card card--raised" data-anim="up-block">
-        <form class="form" data-demo-form>
+        <form class="form" data-demo-form data-form-name="Partner inquiry">
           <div class="row">
             <div class="field">
               <label for="pt-company">Company <span class="req">(required)</span></label>
@@ -180,41 +180,38 @@ const benefits = [
             <label for="pt-message">Message</label>
             <textarea id="pt-message" name="message" autocomplete="off"></textarea>
           </div>
-          <button class="btn" type="submit"><span>Become A Partner</span></button>
-          <p class="form__status" data-form-status hidden tabindex="-1" role="status">
-            This form is not connected to a mailbox yet, so nothing was sent. It will be wired up before launch.
-          </p>
+          <button class="btn" type="submit"><span>Become a partner</span></button>
+          <p class="form__status" data-form-status hidden tabindex="-1" role="status"></p>
         </form>
       </div>
     </div>
   </section>
 
-  <CtaBand pill="Prefer To See It First?" />
+  <CtaBand pill="Prefer to see it first?" />
 </Base>
 
 <style>
   .tracks {
-    align-items: center;
+    align-items: stretch;
   }
   .track {
     display: grid;
-    gap: 16px;
+    gap: var(--s-4);
     align-content: start;
   }
   .track .tile {
-    margin-bottom: 8px;
+    margin-bottom: var(--s-2);
   }
   .track h3 + p {
     margin-top: 0;
   }
   .track--featured {
-    padding-block: clamp(36px, 3.4vw, 56px);
-    border-color: var(--accent-text);
+    border-color: var(--signal-line);
   }
   .track__inner {
-    margin-top: 8px;
-    padding: 22px;
-    border-radius: 12px;
+    margin-top: var(--s-2);
+    padding: var(--s-5);
+    border-radius: var(--r-card);
     background: color-mix(in srgb, var(--black) 45%, transparent);
     border: 1px solid var(--line);
   }
@@ -230,7 +227,7 @@ const benefits = [
 
   .req {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 14px;
   }
   .form .btn {
     justify-self: start;

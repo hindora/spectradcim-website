@@ -8,20 +8,20 @@ const cols = [
     title: 'Platform',
     links: [
       ['/platform', 'Overview'],
-      ['/platform/power', 'Power & Capacity'],
-      ['/platform/thermal', 'Thermal & Cooling'],
-      ['/platform/visualization', '3-D Floor & Replay'],
-      ['/platform/alarms', 'Alarms & Incidents'],
-      ['/platform/assets', 'Assets & Discovery'],
+      ['/platform/power', 'Power & capacity'],
+      ['/platform/thermal', 'Thermal & cooling'],
+      ['/platform/visualization', '3-D floor & replay'],
+      ['/platform/alarms', 'Alarms & incidents'],
+      ['/platform/assets', 'Assets & discovery'],
     ],
   },
   {
     title: 'Explore',
     links: [
       ['/solutions', 'Solutions'],
-      ['/works-with', 'Works With'],
+      ['/works-with', 'Works with'],
       ['/resources', 'Resources'],
-      ['/early-access', 'Early Access'],
+      ['/early-access', 'Early access'],
     ],
   },
   {
@@ -29,7 +29,7 @@ const cols = [
     links: [
       ['/company', 'About'],
       ['/partners', 'Partners'],
-      ['/demo', 'Request A Demo'],
+      ['/demo', 'Request a demo'],
     ],
   },
 ];
@@ -42,7 +42,7 @@ const cols = [
       <div class="ftr__brand" data-anim="up">
         <Logo />
         <p>
-          Power, cooling and IT in one system, watched as one. Self-hosted data centre infrastructure management, now in
+          Power, cooling and IT in one system, watched as one. Self-hosted data center infrastructure management, now in
           early access.
         </p>
       </div>
@@ -75,27 +75,27 @@ const cols = [
 <style>
   .ftr {
     padding-top: clamp(80px, 10vw, 140px);
-    padding-bottom: 34px;
+    padding-bottom: var(--s-6);
   }
   .ftr__top {
     display: grid;
     grid-template-columns: 1.6fr repeat(3, 1fr);
-    gap: 40px;
+    gap: var(--s-7);
   }
   .ftr__brand p {
-    margin-top: 22px;
+    margin-top: var(--s-5);
     max-width: 38ch;
   }
   .ftr__col h3 {
     font-size: 20px;
-    margin-bottom: 22px;
+    margin-bottom: var(--s-5);
   }
   .ftr__col ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 12px;
+    gap: var(--s-3);
   }
   .ftr__col a {
     color: var(--body);
@@ -106,15 +106,15 @@ const cols = [
   .ftr__contact {
     display: flex;
     flex-wrap: wrap;
-    gap: 18px 46px;
-    margin-top: 60px;
-    padding: 28px 0;
+    gap: var(--s-4) var(--s-7);
+    margin-top: var(--s-8);
+    padding: var(--s-6) 0;
     border-block: 1px solid var(--line);
   }
   .ftr__contact a {
     display: inline-flex;
     align-items: center;
-    gap: 14px;
+    gap: var(--s-4);
     color: var(--head);
   }
   .ftr__contact a:hover {
@@ -133,8 +133,8 @@ const cols = [
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 10px;
-    margin-top: 26px;
+    gap: var(--s-2);
+    margin-top: var(--s-5);
     font-size: 14px;
     color: var(--muted);
   }

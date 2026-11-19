@@ -35,19 +35,19 @@ const pueChecks = [
 ---
 
 <Base
-  title="Power & Capacity"
+  title="Power & capacity"
   description="Follow power from the utility feed to the outlet, see which redundancy is intact, and know which resource runs out first."
 >
-  <PageHero slot="hero" pill="Platform" title="Know The Whole Power Chain, And How Much Of It Is Left">
+  <PageHero slot="hero" pill="Platform" title="Know the whole power chain, and how much of it is left">
     SpectraDCIM follows power from the utility feed to the server outlet, shows which redundancy is still intact, and
     names the resource that runs out first.
-    <Shot slot="visual" name="hall-power" alt="Server hall in 3-D with racks coloured by power utilisation" />
+    <Shot slot="visual" name="hall-power" alt="Server hall in 3-D with racks colored by power utilization" />
   </PageHero>
 
   <!-- chain -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Power Chain" title="Eight Steps From Utility To Outlet, On One Line">
+      <SectionHead pill="Power chain" title="Eight steps from utility to outlet, on one line">
         Every stage shows its load against its rating. A problem upstream is read in the same view as the racks it
         feeds.
       </SectionHead>
@@ -56,15 +56,15 @@ const pueChecks = [
       </div>
       <div class="grid grid-3 chain-notes">
         <div data-anim="up">
-          <h3>Upstream And Downstream</h3>
+          <h3>Upstream and downstream</h3>
           <p>Pick any stage to see what feeds it and what depends on it, down to the outlet.</p>
         </div>
         <div data-anim="up">
-          <h3>Both Feeds, Side By Side</h3>
+          <h3>Both feeds, side by side</h3>
           <p>A and B paths are drawn separately, so a rack running on one cord is visible before the second one fails.</p>
         </div>
         <div data-anim="up">
-          <h3>Panels Read Through Their Meters</h3>
+          <h3>Panels read through their meters</h3>
           <p>Where a panel has no interface of its own, its branch meter supplies the reading and the view says so.</p>
         </div>
       </div>
@@ -75,25 +75,25 @@ const pueChecks = [
   <section class="section pbg">
     <Backdrop view="power" />
     <div class="wrap">
-      <SectionHead pill="Right Now" title="What Is Still Redundant, And What Is Left Over" center />
+      <SectionHead pill="Right now" title="What is still redundant, and what is left over" center />
       <div class="grid grid-3 trio">
         <div class="card card--raised" data-anim="up-block">
           <span class="tile"><Icon name="shield" /></span>
-          <h3>Redundancy, Right Now</h3>
+          <h3>Redundancy, right now</h3>
           <p>A census of every redundant group: which still meet their design, which are running short, and since when.</p>
           <Shot name="rack-redundancy" alt="Rack page: what happens if one supply side is lost" />
         </div>
 
         <div class="card card--raised" data-anim="up-block">
           <span class="tile"><Icon name="chart" /></span>
-          <h3>Headroom And Stranded <span class="keep-case">kW</span></h3>
+          <h3>Headroom and stranded <span class="keep-case">kW</span></h3>
           <p>Per room and per rack: what is drawn, what is free, and what is provisioned but cannot be reached.</p>
           <Shot name="power-headroom" alt="Power page: load, share of rating and headroom per site" />
         </div>
 
         <div class="card card--raised" data-anim="up-block">
           <span class="tile"><Icon name="plug" /></span>
-          <h3>Per-Outlet Current</h3>
+          <h3>Per-outlet current</h3>
           <p>Current for each outlet on metered PDUs. Where a PDU does not report it, the gap is shown, not filled in.</p>
           <Shot name="rack-feeds" alt="Rack page: both power feeds with their load against rating" />
         </div>
@@ -109,7 +109,7 @@ const pueChecks = [
         <Shot name="power-draw" alt="Draw across the estate over seven days: total, IT and cooling" />
       </div>
       <div>
-        <SectionHead pill="Efficiency" title="PUE Per Site, With The Trend Behind It">
+        <SectionHead pill="Efficiency" title="PUE per site, with the trend behind it">
           PUE is worked out per site from facility power and IT power, hour by hour, so you can see what a hot
           afternoon or a change of chiller did to it.
         </SectionHead>
@@ -129,14 +129,14 @@ const pueChecks = [
     <Backdrop view="levels" />
     <div class="wrap split split--top">
       <div>
-        <SectionHead pill="Capacity" title="What Runs Out First?">
+        <SectionHead pill="Capacity" title="What runs out first?">
           A hall with free rack space can still be full, because power or cooling ran out before the floor did.
           SpectraDCIM measures all four against what is installed and names the limit.
         </SectionHead>
       </div>
       <div>
         <div class="card card--raised forecast" data-anim="up-block">
-          <h3>A Forecast That States Its Limits</h3>
+          <h3>A forecast that states its limits</h3>
           <p>
             Each resource is projected forward from its own history. When there is not enough history to forecast, the
             panel says so and draws no line.
@@ -157,7 +157,7 @@ const pueChecks = [
       <div class="card card--grid sources" data-anim="up-block">
         <div>
           <span class="pill">Readings</span>
-          <h2>Where The Readings Come From</h2>
+          <h2>Where the readings come from</h2>
         </div>
         <div class="sources__text">
           <p>
@@ -186,7 +186,7 @@ const pueChecks = [
     font-size: 20px;
   }
   .chain-notes p {
-    margin-top: 12px;
+    margin-top: var(--s-3);
     max-width: 38ch;
   }
 
@@ -201,17 +201,17 @@ const pueChecks = [
     align-content: start;
   }
   .trio .tile {
-    margin-bottom: 20px;
+    margin-bottom: var(--s-5);
   }
   .mini {
-    margin-top: 24px;
-    padding: 14px;
-    border-radius: 12px;
+    margin-top: var(--s-5);
+    padding: var(--s-4);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-0);
     display: grid;
-    gap: 10px;
-    font-size: 13px;
+    gap: var(--s-2);
+    font-size: 14px;
     align-self: end;
   }
   .mini strong {
@@ -221,10 +221,10 @@ const pueChecks = [
   .mini__row {
     display: grid;
     grid-template-columns: 10px minmax(0, 1fr) auto;
-    gap: 10px;
+    gap: var(--s-2);
     align-items: center;
-    padding: 9px 10px;
-    border-radius: 8px;
+    padding: var(--s-2) var(--s-2);
+    border-radius: var(--r-card);
     background: var(--ink-1);
     border: 1px solid transparent;
   }
@@ -236,7 +236,7 @@ const pueChecks = [
   }
   .mini__row div small {
     display: block;
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
   }
   .mini__row em {
@@ -245,29 +245,29 @@ const pueChecks = [
     white-space: nowrap;
   }
   .mini__row em small {
-    margin-left: 6px;
-    font-size: 11px;
+    margin-left: var(--s-2);
+    font-size: 12px;
     color: var(--muted);
   }
   .mini__cap {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    gap: 10px;
+    gap: var(--s-2);
   }
   .mini__cap span {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
     white-space: nowrap;
   }
   .mini__stack {
     display: grid;
-    gap: 6px;
+    gap: var(--s-2);
   }
   .mini__bar {
     display: flex;
     height: 12px;
-    border-radius: 6px;
+    border-radius: var(--r-small);
     overflow: hidden;
     background: var(--ink-2);
   }
@@ -283,9 +283,9 @@ const pueChecks = [
   .mini__legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 16px;
-    margin-top: 4px;
-    font-size: 11px;
+    gap: var(--s-1) var(--s-4);
+    margin-top: var(--s-1);
+    font-size: 12px;
     color: var(--muted);
   }
   .mini__legend i {
@@ -293,28 +293,28 @@ const pueChecks = [
     width: 10px;
     height: 10px;
     border-radius: 2px;
-    margin-right: 6px;
+    margin-right: var(--s-2);
     vertical-align: -1px;
     border: 1px solid var(--line);
   }
   .outlets {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 5px;
+    gap: var(--s-1);
     height: 112px;
   }
   .outlets__o {
     display: grid;
     grid-template-rows: 1fr auto;
-    gap: 5px;
+    gap: var(--s-1);
     text-align: center;
-    font-size: 10px;
+    font-size: 12px;
     color: var(--muted);
   }
   .outlets__o i {
     display: flex;
     align-items: flex-end;
-    border-radius: 4px;
+    border-radius: var(--r-input);
     background: var(--ink-1);
     overflow: hidden;
   }
@@ -333,37 +333,37 @@ const pueChecks = [
   /* PUE */
   .pue {
     display: grid;
-    gap: 20px;
+    gap: var(--s-5);
   }
   .pue__note {
-    margin-top: 28px;
-    padding-left: 18px;
+    margin-top: var(--s-6);
+    padding-left: var(--s-4);
     border-left: 2px solid var(--accent-text);
     color: var(--muted);
     max-width: 58ch;
   }
 
   .capacity-wide {
-    margin-top: 48px;
+    margin-top: var(--s-7);
   }
   .forecast :global(.shot),
   .trio :global(.shot) {
-    margin-top: 18px;
+    margin-top: var(--s-4);
   }
   /* forecast */
   .forecast__rows {
-    margin-top: 22px;
+    margin-top: var(--s-5);
     display: grid;
-    gap: 8px;
-    font-size: 13px;
+    gap: var(--s-2);
+    font-size: 14px;
   }
   .forecast__rows > div {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 4px 16px;
-    padding: 12px 14px;
-    border-radius: 10px;
+    gap: var(--s-1) var(--s-4);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-0);
   }
@@ -372,7 +372,7 @@ const pueChecks = [
   }
   .forecast__rows em {
     font-style: normal;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--accent-text);
   }
   .forecast__rows .na {
@@ -392,11 +392,11 @@ const pueChecks = [
     padding: clamp(28px, 4vw, 56px);
   }
   .sources h2 {
-    margin-top: 18px;
+    margin-top: var(--s-4);
   }
   .sources__text {
     display: grid;
-    gap: 24px;
+    gap: var(--s-5);
     justify-items: start;
   }
   .sources__text p {

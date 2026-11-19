@@ -101,22 +101,22 @@ const towers = [
 
 <style>
   .plant__body {
-    padding: 16px;
+    padding: var(--s-4);
     display: grid;
-    gap: 14px;
+    gap: var(--s-4);
   }
   .plant__chillers {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    gap: var(--s-2);
   }
   .plant__ch {
-    padding: 12px;
-    border-radius: 10px;
+    padding: var(--s-3);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-0);
     display: grid;
-    gap: 10px;
+    gap: var(--s-2);
     justify-items: center;
     text-align: center;
   }
@@ -125,8 +125,8 @@ const towers = [
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 4px 8px;
-    font-size: 12px;
+    gap: var(--s-1) var(--s-2);
+    font-size: 13px;
     color: var(--muted);
   }
   .plant__ch-top strong {
@@ -136,7 +136,7 @@ const towers = [
     color: var(--head);
   }
   .plant__ch-top .dot {
-    margin-right: 5px;
+    margin-right: var(--s-1);
   }
   .plant__ring {
     width: 76px;
@@ -157,18 +157,18 @@ const towers = [
     color: var(--muted);
   }
   .plant__ch small {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
   }
   .plant__loop {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    border-radius: 10px;
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-1);
   }
   .plant__loop > div {
-    padding: 12px 14px;
+    padding: var(--s-3) var(--s-4);
     display: grid;
     gap: 2px;
   }
@@ -176,7 +176,7 @@ const towers = [
     border-left: 1px solid var(--line);
   }
   .plant__loop span {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
   }
   .plant__loop b {
@@ -186,43 +186,43 @@ const towers = [
     white-space: nowrap;
   }
   .plant__loop small {
-    font-size: 11px;
+    font-size: 12px;
     margin-left: 3px;
     color: var(--muted);
   }
   .plant__rows {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: var(--s-2);
   }
   .plant__group,
   .plant__valve {
-    padding: 12px 14px;
-    border-radius: 10px;
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-card);
     border: 1px solid var(--line);
     background: var(--ink-0);
   }
   .plant__group {
     display: grid;
-    gap: 8px;
+    gap: var(--s-2);
   }
   .plant__label {
     font-family: var(--font-head);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--head);
   }
   .plant__bar,
   .plant__valve {
     display: grid;
     grid-template-columns: 38px minmax(0, 1fr) 46px;
-    gap: 10px;
+    gap: var(--s-2);
     align-items: center;
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
   }
   .plant__valve {
     grid-template-columns: auto minmax(0, 1fr) auto;
-    font-size: 12px;
+    font-size: 13px;
   }
   .plant__bar > span:last-child {
     text-align: right;

@@ -1,5 +1,5 @@
 // Scroll entrances, counters, carousel and form feedback.
-// Entrances reproduce the reference behaviour: an element stays hidden until it
+// Entrances reproduce the reference behavior: an element stays hidden until it
 // enters the viewport, then plays once (fade-in-up 1.25 s, or zoom-in).
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -93,11 +93,8 @@ if (counters.length && 'IntersectionObserver' in window) {
 document.querySelectorAll('[data-carousel]').forEach((root) => {
   const slides = [...root.querySelectorAll('[data-slide]')];
   const dots = [...root.querySelectorAll('[data-dot]')];
-  const toggle = root.querySelector('[data-carousel-toggle]');
   if (slides.length < 2) return;
   let i = 0;
-  let timer = null;
-  let paused = reduce;
 
   const show = (n) => {
     i = (n + slides.length) % slides.length;
@@ -107,36 +104,8 @@ document.querySelectorAll('[data-carousel]').forEach((root) => {
     });
     dots.forEach((d, k) => d.setAttribute('aria-current', k === i ? 'true' : 'false'));
   };
-  const start = () => {
-    stop();
-    if (!paused) timer = setInterval(() => show(i + 1), 5000);
-  };
-  const stop = () => timer && clearInterval(timer);
-
-  dots.forEach((d, k) =>
-    d.addEventListener('click', () => {
-      show(k);
-      start();
-    }),
-  );
-  root.addEventListener('mouseenter', stop);
-  root.addEventListener('mouseleave', start);
-  root.addEventListener('focusin', stop);
-  root.addEventListener('focusout', start);
-  if (toggle) {
-    const label = () => {
-      toggle.setAttribute('aria-pressed', String(paused));
-      toggle.textContent = paused ? 'Play' : 'Pause';
-    };
-    toggle.addEventListener('click', () => {
-      paused = !paused;
-      label();
-      start();
-    });
-    label();
-  }
+  dots.forEach((d, k) => d.addEventListener('click', () => show(k)));
   show(0);
-  start();
 });
 
 /* ---------- tabs ---------- */
@@ -162,15 +131,64 @@ document.querySelectorAll('[data-tabs]').forEach((root) => {
   select(0);
 });
 
-/* ---------- forms: no mailbox is connected yet, so say so instead of pretending ---------- */
+/* ---------- forms: post to the form service named at build time ----------
+   PUBLIC_FORM_ENDPOINT is the service URL and PUBLIC_FORM_KEY its public access key (see .env.example).
+   With neither set, the form says plainly that nothing was sent. */
+const FORM_ENDPOINT = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+const FORM_KEY = import.meta.env.PUBLIC_FORM_KEY || '';
+const FORM_TEXT = {
+  off: 'This form is not connected to a mailbox yet, so nothing was sent.',
+  ok: 'Thank you. Your message has been sent, and we will reply by email.',
+  fail: 'Your message could not be sent. Nothing was lost on this page, so please try again in a moment.',
+};
+
 document.querySelectorAll('form[data-demo-form]').forEach((form) => {
-  form.addEventListener('submit', (ev) => {
+  const status = form.querySelector('[data-form-status]');
+  const button = form.querySelector('button[type="submit"]');
+  const say = (kind) => {
+    if (!status) return;
+    status.textContent = FORM_TEXT[kind];
+    status.classList.toggle('is-error', kind !== 'ok');
+    status.hidden = false;
+    status.focus();
+  };
+
+  // A field people never see. Programs that fill every field give themselves away with it.
+  const trap = document.createElement('input');
+  trap.type = 'checkbox';
+  trap.name = 'botcheck';
+  trap.tabIndex = -1;
+  trap.hidden = true;
+  trap.setAttribute('aria-hidden', 'true');
+  form.append(trap);
+
+  form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
     if (!form.reportValidity()) return;
-    const status = form.querySelector('[data-form-status]');
-    if (status) {
-      status.hidden = false;
-      status.focus();
+    if (!FORM_ENDPOINT) return say('off');
+    if (trap.checked) return say('ok');
+
+    const data = Object.fromEntries(new FormData(form));
+    delete data.botcheck;
+    const name = form.dataset.formName || 'Website form';
+    const body = { ...data, subject: `${name}: ${data.company || data.name || ''}`.trim(), from_name: 'SpectraDCIM website', form: name, page: location.pathname };
+    if (FORM_KEY) body.access_key = FORM_KEY;
+
+    if (button) button.disabled = true;
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok || out.success === false) throw new Error('rejected');
+      form.reset();
+      say('ok');
+    } catch {
+      say('fail');
+    } finally {
+      if (button) button.disabled = false;
     }
   });
 });
