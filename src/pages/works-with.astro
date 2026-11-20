@@ -46,7 +46,6 @@ const today = [
   'Audit trail on alarm actions',
   'Three roles: viewer, operator and admin',
 ];
-const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
 ---
 
 <Base
@@ -63,8 +62,8 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
       <div>
         <SectionHead pill="How it connects" title="Standard interfaces, no agents">
           Collectors sit on your network and read each device over the interface it already exposes. IT equipment is
-          read over SNMP, gNMI streaming and Redfish; power and cooling plant over BACnet and Modbus. Traps and
-          change-of-value updates are taken as they happen and confirmed by polling.
+          read over its management interfaces, and power and cooling plant over the building-automation interfaces
+          it already speaks. Device events are taken as they happen and confirmed by a regular reading.
         </SectionHead>
       </div>
       <div class="card card--grid" data-anim="up">
@@ -177,23 +176,13 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
   <!-- security -->
   <section class="section">
     <div class="wrap">
-      <SectionHead pill="Security" title="What is in place, and what is not yet">
-        We would rather list the gaps ourselves than have you find them in a review.
+      <SectionHead pill="Security" title="How it is protected">
+        The controls in place between your devices, the collectors and the platform.
       </SectionHead>
-      <div class="grid grid-2 sec">
-        <div class="card card--raised" data-anim="up-block">
-          <h3>Today</h3>
-          <ul class="checks">
-            {today.map((t) => <li>{t}</li>)}
-          </ul>
-        </div>
-        <div class="card sec__road" data-anim="up-block">
-          <h3>On the roadmap</h3>
-          <ul class="road">
-            {roadmap.map((t) => <li>{t}</li>)}
-          </ul>
-          <p>These are not available today. Ask us where they stand before you plan around them.</p>
-        </div>
+      <div class="card card--raised sec" data-anim="up-block">
+        <ul class="checks">
+          {today.map((t) => <li>{t}</li>)}
+        </ul>
       </div>
     </div>
   </section>
@@ -364,39 +353,13 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
   }
 
   /* security */
-  .sec .card {
-    display: grid;
-    gap: var(--s-5);
-    align-content: start;
+  .sec .checks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-4) var(--s-6);
   }
-  .sec__road {
-    border-style: dashed;
-    border-color: var(--line-strong);
-    background: transparent;
-  }
-  .road {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: var(--s-4);
-  }
-  .road li {
-    display: grid;
-    grid-template-columns: 24px 1fr;
-    gap: var(--s-3);
-    align-items: center;
-    color: var(--head);
-  }
-  .road li::before {
-    content: '';
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px dashed var(--accent-text);
-  }
-  .sec__road p {
-    font-size: 14px;
-    color: var(--muted);
+  @media (max-width: 800px) {
+    .sec .checks {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 </style>

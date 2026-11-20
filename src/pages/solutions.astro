@@ -96,10 +96,7 @@ const roles = [
 ];
 
 const indicators = [
-  { k: 'PUE', name: 'Power usage effectiveness', state: 'Measured today', on: true },
-  { k: 'WUE', name: 'Water usage effectiveness', state: 'Not available' },
-  { k: 'ERF', name: 'Energy reuse factor', state: 'Not available' },
-  { k: 'REF', name: 'Renewable energy factor', state: 'Not available' },
+  { k: 'PUE', name: 'Power usage effectiveness', state: 'Measured per site', on: true },
 ];
 
 const shared = [
@@ -215,12 +212,12 @@ const shared = [
     <div class="wrap split">
       <div>
         <SectionHead pill="Sustainability reporting" title="What you can report from it today">
-          Under the EU Energy Efficiency Directive, sites with 500 kW or more of installed IT power report PUE, WUE, ERF
-          and REF every year.
+          Under the EU Energy Efficiency Directive, sites with 500 kW or more of installed IT power report their energy
+          performance every year, and PUE is the figure it starts from.
         </SectionHead>
         <p data-anim="up">
-          SpectraDCIM measures PUE today, for each site and hour by hour. It does not yet produce the other three
-          indicators, so plan to source those elsewhere for now.
+          SpectraDCIM measures PUE for each site, hour by hour, and keeps the trend behind it, so the figure you report
+          has its history attached.
         </p>
         <ul class="ind">
           {

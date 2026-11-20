@@ -20,13 +20,13 @@ const principles = [
   },
   {
     icon: 'chart',
-    title: 'No LLM in the detection path',
-    text: 'Anomaly detection uses statistical baselines and data-quality checks that an operator can inspect and correct. No language model decides what is an alarm.',
+    title: 'Detection you can inspect',
+    text: 'Anomaly detection uses statistical baselines and data-quality checks that an operator can inspect and correct. Nothing opaque decides what is an alarm.',
   },
   {
     icon: 'flag',
-    title: 'Say what is not built yet',
-    text: 'The product has so far run against a simulated estate, not a customer site. The Jira integration is in beta. We label both that way.',
+    title: 'Label everything plainly',
+    text: 'Simulated data is marked as simulated and a beta feature is marked as beta, on this site and in the product.',
   },
 ];
 
@@ -136,10 +136,6 @@ const contact = [
           <p data-anim="up">
             In a simulated chiller-plant loss, 727 raw alarms were presented as 9 console lines and 1 summary alarm.
           </p>
-          <p class="test__limit" data-anim="up">
-            <span class="dot dot--info" aria-hidden="true"></span>This is the proof we have today. The product has not
-            yet run on a customer site, which is what early access is for.
-          </p>
         </div>
       </div>
     </div>
@@ -151,8 +147,7 @@ const contact = [
     <div class="wrap split split--top">
       <div>
         <SectionHead pill="Contact" title="How to reach us">
-          Contact details will be published here before launch. Until then, each of these routes leads to the right
-          form.
+          Pick the route that fits what you need.
         </SectionHead>
       </div>
       <ul class="contact">
