@@ -14,35 +14,35 @@ const classes = [
 ];
 
 const integrations = [
-  { icon: 'file', title: 'REST API with OpenAPI', text: 'Everything the console shows can be read through the API, and the OpenAPI description documents every call.' },
-  { icon: 'chart', title: 'WebSocket feed', text: 'Subscribe to live readings and alarm changes as they happen, without asking again and again.' },
-  { icon: 'layers', title: 'Prometheus metrics', text: 'Metrics published in the Prometheus format, ready for the monitoring you already run.' },
+  { icon: 'file', title: 'Open API', text: 'Everything the console shows can be read by your own tools, and every call is documented.' },
+  { icon: 'chart', title: 'Live feed', text: 'Live readings and alarm changes are sent to your systems as they happen.' },
+  { icon: 'layers', title: 'Metrics export', text: 'Metrics in a standard format, ready for the monitoring you already run.' },
   { icon: 'mail', title: 'Email', text: 'Alarm notifications sent through your own mail server.' },
   { icon: 'link', title: 'Jira / JSM', beta: true, text: 'Tickets opened from incidents, and inventory exported to Jira Assets.' },
 ];
 
 const flow = [
   { icon: 'rack', title: 'Devices', text: 'IT, power, cooling, sensors' },
-  { icon: 'search', title: 'Collectors', text: 'One pool per network plane' },
-  { icon: 'chart', title: 'Stream', text: 'Readings and events in order' },
+  { icon: 'search', title: 'Collectors', text: 'On each network at the site' },
+  { icon: 'chart', title: 'Secure link', text: 'Encrypted and authenticated' },
   { icon: 'layers', title: 'Platform', text: 'Rules, correlation, history' },
-  { icon: 'cube', title: 'Console and API', text: 'People and other systems' },
+  { icon: 'cube', title: 'Console and integrations', text: 'People and other systems' },
 ];
 
 const facts = [
-  { title: 'A collector per network plane', text: 'Production, management and plant networks each get their own collectors, so no plane has to be bridged to another.' },
-  { title: 'Pools and a shard map', text: 'Collectors work in pools. A shard map decides which collector reads which device, and hands the work over if one stops.' },
-  { title: 'Disk spool', text: 'If the link to the platform drops, a collector keeps reading and stores the results on disk until it can send them.' },
-  { title: 'Signed self-update', text: 'Collectors update themselves only from releases that carry a valid signature.' },
-  { title: 'Your choice of package', text: 'Collectors are written in Go and ship as a Docker image, a .deb package or an .rpm package.' },
-  { title: 'Self-hosted platform', text: 'The platform runs on your own infrastructure and stores its data in PostgreSQL with TimescaleDB.' },
+  { title: 'A collector per network', text: 'Production, management and plant networks each get their own collectors, so no network has to be bridged to another.' },
+  { title: 'Automatic failover', text: 'If a collector stops, another one takes over its devices without anyone stepping in.' },
+  { title: 'Nothing lost when a link drops', text: 'If the connection to the platform drops, a collector keeps reading and sends the results when it returns.' },
+  { title: 'Verified updates', text: 'Collectors update themselves, and only with releases that have been verified as genuine.' },
+  { title: 'Installs where you need it', text: 'A collector runs as a container or directly on a server or virtual machine at the site.' },
+  { title: 'Self-hosted platform', text: 'The platform runs on your own infrastructure, and your data stays there.' },
 ];
 
 const today = [
   'Encrypted, authenticated device polling',
-  'Collectors enrolled with mutual TLS',
-  'Signed releases',
-  'Device credentials encrypted for each collector',
+  'Every collector proves its identity to the platform',
+  'Verified software updates',
+  'Device credentials stored encrypted',
   'Audit trail on alarm actions',
   'Three roles: viewer, operator and admin',
 ];
@@ -139,11 +139,11 @@ const roadmap = ['Single sign-on (SSO)', 'Per-user accounts'];
   <section class="section pbg">
     <Backdrop view="yard" />
     <div class="wrap">
-      <SectionHead pill="Architecture" title="Where each part runs" center>
-        A fleet of collectors, sharded by site and network plane, feeds one self-hosted platform.
+      <SectionHead pill="Deployment" title="Where each part runs" center>
+        Collectors at each site send their readings securely to one platform that you host.
       </SectionHead>
 
-      <div class="card card--grid arch" role="img" aria-label="Illustration of the architecture: devices are read by collectors, which send a stream to the platform, which serves the console and the API" data-anim="up-block">
+      <div class="card card--grid arch" role="img" aria-label="Illustration of the deployment: devices are read by collectors, which send readings over a secure link to the platform, which serves the console and your other systems" data-anim="up-block">
         <div class="arch__scope arch__scope--site"><span>Each site</span></div>
         <div class="arch__scope arch__scope--core"><span>Self-hosted platform</span></div>
         <ol class="arch__flow">

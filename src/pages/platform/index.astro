@@ -62,16 +62,16 @@ const tour = [
     id: 'status',
     name: 'System status',
     title: 'The monitor, monitored',
-    lines: ['Collectors, ingest and rule evaluation report their own health.', 'If data is late or a collector goes quiet, the console says so.'],
+    lines: ['Collectors, data intake and alarm rules report their own health.', 'If data is late or a collector goes quiet, the console says so.'],
   },
 ];
 
 const flow = [
   { name: 'Devices', icon: 'rack', text: 'IT, power and cooling equipment keep the interfaces they already expose. Nothing is installed on them.' },
-  { name: 'Collectors', icon: 'tree', text: 'A collector fleet inside your network, sharded by site and network plane, polls and listens.' },
-  { name: 'Stream', icon: 'layers', text: 'Readings and events travel to the platform as one ordered stream.' },
+  { name: 'Collectors', icon: 'tree', text: 'Collectors inside your network, at each site and on each management network, read the devices.' },
+  { name: 'Secure link', icon: 'layers', text: 'Readings and events travel to the platform over an encrypted, authenticated connection.' },
   { name: 'Platform', icon: 'cube', text: 'One telemetry model stores readings, evaluates alarm rules and folds symptoms under their cause.' },
-  { name: 'Console and API', icon: 'chart', text: 'Operators use the web console. Other systems use the REST API, WebSocket feed, Prometheus metrics or email.' },
+  { name: 'Console and integrations', icon: 'chart', text: 'Operators use the web console. Your other systems receive data through the open API, a live feed or email.' },
 ];
 
 const modules = [
@@ -98,7 +98,7 @@ const rackUnits = [
 ];
 
 const health = [
-  { name: 'Collector fleet', value: 'All reporting', sev: '' },
+  { name: 'Collectors', value: 'All reporting', sev: '' },
   { name: 'Newest reading', value: '4 s ago', sev: '' },
   { name: 'Alarm rules', value: 'Evaluated 12 s ago', sev: '' },
   { name: 'Collector, Site 2 plant', value: 'Late by 40 s', sev: 'warn' },
@@ -196,7 +196,7 @@ const health = [
         }
       </ol>
       <p class="flow__note" data-anim="up">
-        Collectors enroll with mutual TLS, hold their device credentials encrypted, and run signed releases.
+        Each collector proves its identity to the platform, keeps device credentials encrypted, and runs only verified software.
       </p>
     </div>
   </section>
