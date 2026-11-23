@@ -15,7 +15,7 @@ const [w, h] = (sizes as Record<string, number[]>)[name] ?? [1600, 900];
 
 <figure class="shot">
   <a href={`/shots/${name}.webp`} target="_blank" rel="noopener" aria-label={`${alt} (opens the full-size screen)`}>
-    <img src={`/shots/${name}.webp`} width={w} height={h} alt={alt} loading="lazy" decoding="async" />
+    <img src={`/shots/${name}.webp`} width={w} height={h} alt={alt} title={caption ?? alt} loading="lazy" decoding="async" />
   </a>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>

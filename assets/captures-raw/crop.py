@@ -81,8 +81,8 @@ if __name__ == '__main__':
         src, box = spec[0], spec[1]
         im = Image.open(src).convert('RGB').crop(box)
         if len(spec) > 2: im = fade(im, spec[2])
-        if im.width > 2600: im = im.resize((2600, round(im.height * 2600 / im.width)), Image.LANCZOS)
-        im.save(os.path.join(SHOTS, k + '.webp'), 'WEBP', quality=88, method=6)
+        if im.width > 1920: im = im.resize((1920, round(im.height * 1920 / im.width)), Image.LANCZOS)
+        im.save(os.path.join(SHOTS, k + '.webp'), 'WEBP', quality=76, method=6)
         sizes[k] = [im.width, im.height]
         print(f'{k:18} {im.width}x{im.height}')
     json.dump(sizes, open(os.path.join(SHOTS, '_sizes.json'), 'w'), indent=1)
