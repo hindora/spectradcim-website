@@ -36,8 +36,8 @@ const byPath: Record<string, string> = {
 };
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const view = bg ?? byPath[path] ?? 'hall';
-// The one public address of this page (always with the trailing slash the server serves).
-const canonical = new URL(path === '/' ? '/' : `${path}/`, Astro.site).href;
+// The one public address of this page: no trailing slash, the same form every internal link uses.
+const canonical = new URL(path, Astro.site).href;
 // The picture a link preview shows. Source: assets/share/og.html.
 const shareImage = new URL('/og.jpg', Astro.site).href;
 const fullTitle = title === 'Home' ? 'SpectraDCIM | Power, cooling and IT watched as one' : `${title} | SpectraDCIM`;

@@ -87,6 +87,8 @@ CONTENT=$(cat <<'EOF'
         include @HEADERS@;
         add_header Cache-Control "public, max-age=86400";
     }
+    # One address per page: /solutions/ goes to /solutions (matches the canonical tag and the sitemap).
+    rewrite ^/(.+)/$ /$1 permanent;
     location / {
         include @HEADERS@;
         try_files $uri $uri/index.html =404;
