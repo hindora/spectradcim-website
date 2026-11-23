@@ -40,6 +40,50 @@ const view = bg ?? byPath[path] ?? 'hall';
 const canonical = new URL(path, Astro.site).href;
 // The picture a link preview shows. Source: assets/share/og.html.
 const shareImage = new URL('/og.jpg', Astro.site).href;
+const site = Astro.site!.href.replace(/\/$/, '');
+// Structured data: who publishes the site, the site itself, this page, and where it sits.
+const crumbs = path === '/' ? [] : path.split('/').filter(Boolean);
+const crumbName = (seg: string, i: number) => (i === crumbs.length - 1 ? title : seg.charAt(0).toUpperCase() + seg.slice(1).replace(/-/g, ' '));
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${site}/#organization`,
+      name: 'SpectraDCIM',
+      url: `${site}/`,
+      logo: { '@type': 'ImageObject', url: `${site}/brand/spectradcim-logo.webp`, width: 860, height: 216 },
+      description: 'Data center infrastructure management that watches power, cooling and IT as one.',
+    },
+    { '@type': 'WebSite', '@id': `${site}/#website`, url: `${site}/`, name: 'SpectraDCIM', publisher: { '@id': `${site}/#organization` } },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: title === 'Home' ? 'SpectraDCIM' : title,
+      description,
+      isPartOf: { '@id': `${site}/#website` },
+      publisher: { '@id': `${site}/#organization` },
+      inLanguage: 'en',
+      ...(crumbs.length ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}),
+    },
+    ...(crumbs.length
+      ? [{
+          '@type': 'BreadcrumbList',
+          '@id': `${canonical}#breadcrumb`,
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${site}/` },
+            ...crumbs.map((seg, i) => ({
+              '@type': 'ListItem',
+              position: i + 2,
+              name: crumbName(seg, i),
+              item: `${site}/${crumbs.slice(0, i + 1).join('/')}`,
+            })),
+          ],
+        }]
+      : []),
+  ],
+};
 const fullTitle = title === 'Home' ? 'SpectraDCIM | Power, cooling and IT watched as one' : `${title} | SpectraDCIM`;
 ---
 
@@ -54,6 +98,7 @@ const fullTitle = title === 'Home' ? 'SpectraDCIM | Power, cooling and IT watche
     <meta property="og:description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     {!noindex && <meta property="og:url" content={canonical} />}
+    {!noindex && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="SpectraDCIM" />
     <meta property="og:image" content={shareImage} />
